@@ -33,6 +33,24 @@ output "powered_by_okta" {
   value       = okta_brand.this.remove_powered_by_okta
 }
 
+output "custom_domains" {
+  description = <<EOF
+  The configurations for the custom domains of the brand.
+  EOF
+  value = {
+    for name, domain in okta_domain.this :
+    name => {
+      id   = domain.id
+      name = name
+      type = domain.certificate_source_type
+      validation = {
+        status      = domain.validation_status
+        dns_records = domain.dns_records
+      }
+    }
+  }
+}
+
 # output "debug" {
 #   description = <<EOF
 #   The configurations for the team permissions.

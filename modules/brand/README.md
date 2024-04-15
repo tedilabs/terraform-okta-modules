@@ -3,6 +3,7 @@
 This module creates following resources.
 
 - `okta_brand`
+- `okta_domain` (optional)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

@@ -41,3 +41,25 @@ variable "powered_by_okta" {
   default     = false
   nullable    = false
 }
+
+variable "custom_domains" {
+  description = <<EOF
+  (Optional) A list of configurations for the custom domains. Each block of `custom_domains` block as defined below.
+    (Required) `name` - The name of custom domain like `id.example.com`.
+    (Optional) `type` - The certificate source type that indicates whether the certificate is provided by the user or Okta. Valid values are `MANUAL` and `OKTA_MANAGED`. Defaults to `OKTA_MANAGED`.
+  EOF
+  type = list(object({
+    name = string
+    type = optional(string, "OKTA_MANAGED")
+  }))
+  default  = []
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for domain in var.custom_domains :
+      contains(["MANUAL", "OKTA_MANAGED"], domain.type)
+    ])
+    error_message = "Valid values for `type` are `MANUAL` and `OKTA_MANAGED`."
+  }
+}
