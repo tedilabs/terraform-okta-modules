@@ -107,6 +107,7 @@ variable "address_info" {
     (Optional) `state` - A state or region of the user address.
     (Optional) `city` - A city or locality of the user address.
     (Optional) `street_address` - A full street address of the user address.
+    (Optional) `postal_address` - A mailing address of the user address.
     (Optional) `zip_code` - A postal code of the user address.
   EOF
   type = object({
@@ -114,6 +115,7 @@ variable "address_info" {
     state          = optional(string)
     city           = optional(string)
     street_address = optional(string)
+    postal_address = optional(string)
     zip_code       = optional(string)
   })
   default  = {}

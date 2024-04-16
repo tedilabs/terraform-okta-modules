@@ -24,7 +24,6 @@ locals {
 # - `custom_profile_attributes_to_ignore`
 # - `user_type`
 # - `status`
-# - `postal_address`
 # INFO: Not supported attributes
 # - `password`
 # - `expire_password_on_create`
@@ -63,6 +62,7 @@ resource "okta_user" "this" {
   state          = var.address_info.state
   city           = var.address_info.city
   street_address = var.address_info.street_address
+  postal_address = var.address_info.postal_address
   zip_code       = var.address_info.zip_code
 
 

@@ -70,6 +70,7 @@ output "address_info" {
     state          = okta_user.this.state
     city           = okta_user.this.city
     street_address = okta_user.this.street_address
+    postal_address = okta_user.this.postal_address
     zip_code       = okta_user.this.zip_code
   }
 }
