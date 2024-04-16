@@ -5,5 +5,8 @@
 ":floppy_disk: group":
 - modules/group/**/*
 
+":floppy_disk: group-rule":
+- modules/group-rule/**/*
+
 ":floppy_disk: user":
 - modules/user/**/*
