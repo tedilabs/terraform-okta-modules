@@ -27,6 +27,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [okta_group_rule.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/group_rule) | resource |
+| [okta_group.this](https://registry.terraform.io/providers/okta/okta/latest/docs/data-sources/group) | data source |
 
 ## Inputs
 
@@ -46,7 +47,7 @@ No modules.
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether to enable the Okta Group Rule. |
 | <a name="output_excluded_users"></a> [excluded\_users](#output\_excluded\_users) | The list of user IDs that would be excluded when rules are processed. |
 | <a name="output_expression"></a> [expression](#output\_expression) | The Okta expression for Okta group rule. |
-| <a name="output_groups"></a> [groups](#output\_groups) | The list of group ids to assign the users to. |
+| <a name="output_groups"></a> [groups](#output\_groups) | The information for the assigned groups by the Okta group rule. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the Okta group rule. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the Okta group rule. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

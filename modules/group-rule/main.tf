@@ -16,3 +16,9 @@ resource "okta_group_rule" "this" {
   group_assignments = var.groups
   users_excluded    = var.excluded_users
 }
+
+data "okta_group" "this" {
+  for_each = toset(okta_group_rule.this.group_assignments)
+
+  id = each.value
+}

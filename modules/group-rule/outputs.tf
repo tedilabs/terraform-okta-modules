@@ -19,8 +19,11 @@ output "expression" {
 }
 
 output "groups" {
-  description = "The list of group ids to assign the users to."
-  value       = okta_group_rule.this.group_assignments
+  description = "The information for the assigned groups by the Okta group rule."
+  value = [
+    for group in data.okta_group.this :
+    group.name
+  ]
 }
 
 output "excluded_users" {
