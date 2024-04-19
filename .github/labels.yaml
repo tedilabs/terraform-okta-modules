@@ -53,5 +53,8 @@
   description: "This issue or pull request is related to group-rule module."
   name: ":floppy_disk: group-rule"
 - color: "fbca04"
+  description: "This issue or pull request is related to organization module."
+  name: ":floppy_disk: organization"
+- color: "fbca04"
   description: "This issue or pull request is related to user module."
   name: ":floppy_disk: user"

@@ -11,5 +11,8 @@
 ":floppy_disk: group-rule":
 - modules/group-rule/**/*
 
+":floppy_disk: organization":
+- modules/organization/**/*
+
 ":floppy_disk: user":
 - modules/user/**/*
