@@ -6,8 +6,10 @@
 
 Terraform module to manage all of things on Okta organization.
 
+- [bookmark-app](./modules/bookmark-app/)
 - [brand](./modules/brand/)
 - [group](./modules/group/)
+- [group-rule](./modules/group-rule/)
 - [user](./modules/user/)
 
 
