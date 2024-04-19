@@ -1,4 +1,7 @@
 # Modules
+":floppy_disk: bookmark-app":
+- modules/bookmark-app/**/*
+
 ":floppy_disk: brand":
 - modules/brand/**/*
 
