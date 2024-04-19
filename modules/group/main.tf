@@ -16,15 +16,15 @@ resource "okta_group" "this" {
 
 resource "okta_group_role" "this" {
   for_each = {
-    for role in var.admin_roles :
-    role.role => role
+    for assignment in var.admin_role_assignments :
+    assignment.admin_role => assignment
   }
 
   group_id  = okta_group.this.id
   role_type = each.key
 
-  target_group_list = each.value.target_groups
   target_app_list   = each.value.target_apps
+  target_group_list = each.value.target_groups
 
-  disable_notifications = !each.value.notification_enabled
+  disable_notifications = !var.admin_role_notification_enabled
 }

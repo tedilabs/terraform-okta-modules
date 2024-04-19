@@ -88,6 +88,41 @@ resource "okta_user" "this" {
 
 
 ###################################################
+# Roles of Okta User
+###################################################
+
+resource "okta_user_admin_roles" "this" {
+  user_id = okta_user.this.id
+  admin_roles = [
+    for assignment in var.admin_role_assignments :
+    assignment.admin_role
+  ]
+
+  disable_notifications = !var.admin_role_notification_enabled
+}
+
+resource "okta_admin_role_targets" "this" {
+  for_each = {
+    for assignment in var.admin_role_assignments :
+    assignment.admin_role => assignment
+    if length(assignment.target_groups) > 0 || length(assignment.target_apps) > 0
+  }
+
+  user_id   = okta_user.this.id
+  role_type = each.key
+
+  apps = (length(each.value.target_apps) > 0
+    ? each.value.target_apps
+    : null
+  )
+  groups = (length(each.value.target_groups) > 0
+    ? each.value.target_groups
+    : null
+  )
+}
+
+
+###################################################
 # Group Membership
 ###################################################
 

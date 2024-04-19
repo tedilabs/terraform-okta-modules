@@ -18,16 +18,20 @@ output "custom_profile_attributes" {
   value       = var.custom_profile_attributes
 }
 
-output "admin_roles" {
+output "admin_role_assignments" {
   description = "The configurations for admin roles assigned to the Okta group."
   value = {
-    for name, role in okta_group_role.this :
+    for name, assignment in okta_group_role.this :
     name => {
-      id                   = role.id
-      role                 = name
-      target_groups        = role.target_group_list
-      target_apps          = role.target_app_list
-      notification_enabled = !role.disable_notifications
+      id            = assignment.id
+      admin_role    = name
+      target_apps   = assignment.target_app_list
+      target_groups = assignment.target_group_list
     }
   }
+}
+
+output "admin_role_notification_enabled" {
+  description = "Whether to send the default Okta administrator emails."
+  value       = var.admin_role_notification_enabled
 }

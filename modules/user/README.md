@@ -3,7 +3,9 @@
 This module creates following resources.
 
 - `okta_user`
+- `okta_user_admin_roles`
 - `okta_user_group_memberships`
+- `okta_admin_role_targets` (optional)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -27,7 +29,9 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [okta_admin_role_targets.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/admin_role_targets) | resource |
 | [okta_user.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/user) | resource |
+| [okta_user_admin_roles.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/user_admin_roles) | resource |
 | [okta_user_group_memberships.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/user_group_memberships) | resource |
 | [okta_group.this](https://registry.terraform.io/providers/okta/okta/latest/docs/data-sources/group) | data source |
 
@@ -42,6 +46,8 @@ No modules.
 | <a name="input_secondary_email"></a> [secondary\_email](#input\_secondary\_email) | (Required) A secondary email address for the user. Typically used for account recovery. | `string` | n/a | yes |
 | <a name="input_username"></a> [username](#input\_username) | (Required) Unique identifier for the user. | `string` | n/a | yes |
 | <a name="input_address_info"></a> [address\_info](#input\_address\_info) | (Optional) A configuration for the user address. `address_info` block as defined below.<br>    (Optional) `country_code` - A country code of the user address. Formatted with ISO 3166-1<br>    alpha 2 code.<br>    (Optional) `state` - A state or region of the user address.<br>    (Optional) `city` - A city or locality of the user address.<br>    (Optional) `street_address` - A full street address of the user address.<br>    (Optional) `postal_address` - A mailing address of the user address.<br>    (Optional) `zip_code` - A postal code of the user address. | <pre>object({<br>    country_code   = optional(string)<br>    state          = optional(string)<br>    city           = optional(string)<br>    street_address = optional(string)<br>    postal_address = optional(string)<br>    zip_code       = optional(string)<br>  })</pre> | `{}` | no |
+| <a name="input_admin_role_assignments"></a> [admin\_role\_assignments](#input\_admin\_role\_assignments) | (Optional) A configurations for admin roles to assign to the Okta user. Each item of `admin_role_assignments` block as defined below.<br>    (Required) `admin_role` - The admin role assigned to the user. Valid values are `SUPER_ADMIN`, `ORG_ADMIN`, `APP_ADMIN`, `USER_ADMIN`, `HELP_DESK_ADMIN`, `READ_ONLY_ADMIN` , `MOBILE_ADMIN`, `API_ACCESS_MANAGEMENT_ADMIN`, `REPORT_ADMIN`, `GROUP_MEMBERSHIP_ADMIN`. `USER_ADMIN` is the Group Administrator.<br>    (Optional) `target_apps` - A list of app names (name represents set of app instances, like `salesforce` or `facebook`), or a combination of app name and app instance ID (like `facebook.0oapsqQ6dv19pqyEo0g3`) you would like as the targets of the admin role. Only supported when used with the role type `APP_ADMIN`.<br>    (Optional) `target_groups` - A list of group IDs you would like as the targets of the admin role. Only supported when used with the role types: `GROUP_MEMBERSHIP_ADMIN`, `HELP_DESK_ADMIN`, or `USER_ADMIN`. | <pre>list(object({<br>    admin_role    = string<br>    target_apps   = optional(set(string), [])<br>    target_groups = optional(set(string), [])<br>  }))</pre> | `[]` | no |
+| <a name="input_admin_role_notification_enabled"></a> [admin\_role\_notification\_enabled](#input\_admin\_role\_notification\_enabled) | (Optional) Whether to send the default Okta administrator emails. When this setting is disabled, the admins won't receive any of the notifications. These admins also won't have access to contact Okta Support and open support cases on behalf of your org. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | (Optional) A name of the cost center assigned to the user. | `string` | `null` | no |
 | <a name="input_department"></a> [department](#input\_department) | (Optional) The department name of the user. | `string` | `null` | no |
 | <a name="input_display_name"></a> [display\_name](#input\_display\_name) | (Optional) A name of the user, suitable to display to end users. | `string` | `null` | no |
@@ -66,6 +72,8 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_address_info"></a> [address\_info](#output\_address\_info) | The address information of the user. |
+| <a name="output_admin_role_assignments"></a> [admin\_role\_assignments](#output\_admin\_role\_assignments) | The configurations for admin roles assigned to the Okta user. |
+| <a name="output_admin_role_notification_enabled"></a> [admin\_role\_notification\_enabled](#output\_admin\_role\_notification\_enabled) | Whether to send the default Okta administrator emails. |
 | <a name="output_cost_center"></a> [cost\_center](#output\_cost\_center) | The name of the cost center assigned to the user. |
 | <a name="output_department"></a> [department](#output\_department) | The department name of the user. |
 | <a name="output_display_name"></a> [display\_name](#output\_display\_name) | The display name of the user. |

@@ -131,3 +131,20 @@ output "groups" {
     group.name
   ]
 }
+
+output "admin_role_assignments" {
+  description = "The configurations for admin roles assigned to the Okta user."
+  value = {
+    for assignment in var.admin_role_assignments :
+    assignment.admin_role => {
+      admin_role    = assignment.admin_role
+      target_apps   = assignment.target_apps
+      target_groups = assignment.target_groups
+    }
+  }
+}
+
+output "admin_role_notification_enabled" {
+  description = "Whether to send the default Okta administrator emails."
+  value       = var.admin_role_notification_enabled
+}
