@@ -1,3 +1,13 @@
+output "rate_limiting_preferences" {
+  description = "The preferences for rate limiting."
+  value = {
+    on_login     = okta_rate_limiting.this.login
+    on_authorize = okta_rate_limiting.this.authorize
+
+    warning_notification_email_enabled = okta_rate_limiting.this.communications_enabled
+  }
+}
+
 output "security_notification_email_preferences" {
   description = "The preferences for security notification emails."
   value = {

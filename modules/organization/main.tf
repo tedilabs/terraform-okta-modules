@@ -16,6 +16,18 @@
 
 
 ###################################################
+# Rate Limiting Preferences
+###################################################
+
+resource "okta_rate_limiting" "this" {
+  login     = var.rate_limiting_preferences.on_login
+  authorize = var.rate_limiting_preferences.on_authorize
+
+  communications_enabled = var.rate_limiting_preferences.warning_notification_email_enabled
+}
+
+
+###################################################
 # Security Notification Preferences for Organization
 ###################################################
 
