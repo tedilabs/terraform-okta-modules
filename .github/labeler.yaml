@@ -1,4 +1,7 @@
 # Modules
+":floppy_disk: authenticator":
+- modules/authenticator/**/*
+
 ":floppy_disk: bookmark-app":
 - modules/bookmark-app/**/*
 

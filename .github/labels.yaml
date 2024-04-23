@@ -41,6 +41,9 @@
 
 # Modules
 - color: "fbca04"
+  description: "This issue or pull request is related to authenticator module."
+  name: ":floppy_disk: authenticator"
+- color: "fbca04"
   description: "This issue or pull request is related to bookmark-app module."
   name: ":floppy_disk: bookmark-app"
 - color: "fbca04"

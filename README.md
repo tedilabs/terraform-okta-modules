@@ -6,6 +6,7 @@
 
 Terraform module to manage all of things on Okta organization.
 
+- [authenticator](./modules/authenticator/)
 - [bookmark-app](./modules/bookmark-app/)
 - [brand](./modules/brand/)
 - [group](./modules/group/)
