@@ -2,6 +2,9 @@
 ":floppy_disk: authenticator":
 - modules/authenticator/**/*
 
+":floppy_disk: authentication-policy":
+- modules/authentication-policy/**/*
+
 ":floppy_disk: bookmark-app":
 - modules/bookmark-app/**/*
 
