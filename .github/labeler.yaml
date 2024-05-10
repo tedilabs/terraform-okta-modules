@@ -8,6 +8,9 @@
 ":floppy_disk: brand":
 - modules/brand/**/*
 
+":floppy_disk: global-session-policy":
+- modules/global-session-policy/**/*
+
 ":floppy_disk: group":
 - modules/group/**/*
 
