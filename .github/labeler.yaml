@@ -1,27 +1,45 @@
 # Modules
 ":floppy_disk: authenticator":
-- modules/authenticator/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/authenticator/**/*
 
 ":floppy_disk: authentication-policy":
-- modules/authentication-policy/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/authentication-policy/**/*
 
 ":floppy_disk: bookmark-app":
-- modules/bookmark-app/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/bookmark-app/**/*
 
 ":floppy_disk: brand":
-- modules/brand/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/brand/**/*
 
 ":floppy_disk: global-session-policy":
-- modules/global-session-policy/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/global-session-policy/**/*
 
 ":floppy_disk: group":
-- modules/group/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/group/**/*
 
 ":floppy_disk: group-rule":
-- modules/group-rule/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/group-rule/**/*
 
 ":floppy_disk: organization":
-- modules/organization/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/organization/**/*
 
 ":floppy_disk: user":
-- modules/user/**/*
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/user/**/*
