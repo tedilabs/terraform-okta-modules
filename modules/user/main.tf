@@ -20,10 +20,7 @@ locals {
 ###################################################
 
 # INFO: TODO
-# - `custom_profile_attributes`
-# - `custom_profile_attributes_to_ignore`
 # - `user_type`
-# - `status`
 # INFO: Not supported attributes
 # - `password`
 # - `expire_password_on_create`
@@ -33,7 +30,8 @@ locals {
 # - `recovery_answer`
 # - `password hash`
 resource "okta_user" "this" {
-  login = var.username
+  login  = var.username
+  status = var.status
 
   ## Name
   first_name  = var.first_name
@@ -78,6 +76,11 @@ resource "okta_user" "this" {
   department   = var.department
 
   cost_center = var.cost_center
+
+
+  ## Custom Attributes
+  custom_profile_attributes           = jsonencode(var.custom_attributes)
+  custom_profile_attributes_to_ignore = var.custom_attributes_to_ignore
 
 
   ## Preferences

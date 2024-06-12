@@ -3,6 +3,11 @@ output "id" {
   value       = okta_user.this.id
 }
 
+output "status" {
+  description = "The status of the user."
+  value       = okta_user.this.status
+}
+
 output "first_name" {
   description = "The first name of the user."
   value       = okta_user.this.first_name
@@ -111,6 +116,11 @@ output "department" {
 output "cost_center" {
   description = "The name of the cost center assigned to the user."
   value       = okta_user.this.cost_center
+}
+
+output "custom_attributes" {
+  description = "The object for custom profile attributes of the user."
+  value       = jsondecode(okta_user.this.custom_profile_attributes)
 }
 
 output "preferences" {

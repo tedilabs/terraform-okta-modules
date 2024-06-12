@@ -44,13 +44,18 @@ variable "groups" {
   nullable    = false
 }
 
-# variable "enabled" {
-#   description = "(Optional) Whether the user is enabled. Defaults to `true`."
-#   type        = bool
-#   default     = true
-#   nullable    = false
-# }
-#
+variable "status" {
+  description = "(Optional) A status of the user account which provides information about the user account and whether administrative or user action is required. Valid values are `STAGED`, `ACTIVE`, `SUSPENDED`, `DEPROVISIONED`. Defaults to `ACTIVE`."
+  type        = string
+  default     = "ACTIVE"
+  nullable    = false
+
+  validation {
+    condition     = contains(["STAGED", "ACTIVE", "SUSPENDED", "DEPROVISIONED"], var.status)
+    error_message = "Valid values for `status` are `STAGED`, `ACTIVE`, `SUSPENDED`, `DEPROVISIONED`."
+  }
+}
+
 variable "first_name" {
   description = "(Required) A given name of the user."
   type        = string
@@ -209,6 +214,20 @@ variable "cost_center" {
   type        = string
   default     = null
   nullable    = true
+}
+
+variable "custom_attributes" {
+  description = "(Optional) The object for custom profile attributes of the user."
+  type        = any
+  default     = {}
+  nullable    = false
+}
+
+variable "custom_attributes_to_ignore" {
+  description = "(Optional) A set of custom attribute keys that should be excluded from being managed by Terraform. This is useful in situations where specific custom fields may contain sensitive information and should be managed outside of Terraform."
+  type        = set(string)
+  default     = []
+  nullable    = false
 }
 
 variable "locale" {

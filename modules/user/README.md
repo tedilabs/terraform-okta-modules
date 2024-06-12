@@ -49,6 +49,8 @@ No modules.
 | <a name="input_admin_role_assignments"></a> [admin\_role\_assignments](#input\_admin\_role\_assignments) | (Optional) A configurations for admin roles to assign to the Okta user. Each item of `admin_role_assignments` block as defined below.<br>    (Required) `admin_role` - The admin role assigned to the user. Valid values are `SUPER_ADMIN`, `ORG_ADMIN`, `APP_ADMIN`, `USER_ADMIN`, `HELP_DESK_ADMIN`, `READ_ONLY_ADMIN` , `MOBILE_ADMIN`, `API_ACCESS_MANAGEMENT_ADMIN`, `REPORT_ADMIN`, `GROUP_MEMBERSHIP_ADMIN`. `USER_ADMIN` is the Group Administrator.<br>    (Optional) `target_apps` - A list of app names (name represents set of app instances, like `salesforce` or `facebook`), or a combination of app name and app instance ID (like `facebook.0oapsqQ6dv19pqyEo0g3`) you would like as the targets of the admin role. Only supported when used with the role type `APP_ADMIN`.<br>    (Optional) `target_groups` - A list of group IDs you would like as the targets of the admin role. Only supported when used with the role types: `GROUP_MEMBERSHIP_ADMIN`, `HELP_DESK_ADMIN`, or `USER_ADMIN`. | <pre>list(object({<br>    admin_role    = string<br>    target_apps   = optional(set(string), [])<br>    target_groups = optional(set(string), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_admin_role_notification_enabled"></a> [admin\_role\_notification\_enabled](#input\_admin\_role\_notification\_enabled) | (Optional) Whether to send the default Okta administrator emails. When this setting is disabled, the admins won't receive any of the notifications. These admins also won't have access to contact Okta Support and open support cases on behalf of your org. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | (Optional) A name of the cost center assigned to the user. | `string` | `null` | no |
+| <a name="input_custom_attributes"></a> [custom\_attributes](#input\_custom\_attributes) | (Optional) The object for custom profile attributes of the user. | `any` | `{}` | no |
+| <a name="input_custom_attributes_to_ignore"></a> [custom\_attributes\_to\_ignore](#input\_custom\_attributes\_to\_ignore) | (Optional) A set of custom attribute keys that should be excluded from being managed by Terraform. This is useful in situations where specific custom fields may contain sensitive information and should be managed outside of Terraform. | `set(string)` | `[]` | no |
 | <a name="input_department"></a> [department](#input\_department) | (Optional) The department name of the user. | `string` | `null` | no |
 | <a name="input_display_name"></a> [display\_name](#input\_display\_name) | (Optional) A name of the user, suitable to display to end users. | `string` | `null` | no |
 | <a name="input_division"></a> [division](#input\_division) | (Optional) The division name of the user. | `string` | `null` | no |
@@ -64,6 +66,7 @@ No modules.
 | <a name="input_preferred_language"></a> [preferred\_language](#input\_preferred\_language) | (Optional) A preferred written or spoken languages of the user. Formatted with RFC 7231. | `string` | `null` | no |
 | <a name="input_primary_phone"></a> [primary\_phone](#input\_primary\_phone) | (Optional) A primary phone number of the user such as home number. | `string` | `null` | no |
 | <a name="input_profile_url"></a> [profile\_url](#input\_profile\_url) | (Optional) The URL of the user's online profile. | `string` | `null` | no |
+| <a name="input_status"></a> [status](#input\_status) | (Optional) A status of the user account which provides information about the user account and whether administrative or user action is required. Valid values are `STAGED`, `ACTIVE`, `SUSPENDED`, `DEPROVISIONED`. Defaults to `ACTIVE`. | `string` | `"ACTIVE"` | no |
 | <a name="input_timezone"></a> [timezone](#input\_timezone) | (Optional) A time zone of the user like `Asia/Seoul`. | `string` | `null` | no |
 | <a name="input_title"></a> [title](#input\_title) | (Optional) A title of the user like "Vice President". | `string` | `null` | no |
 
@@ -75,6 +78,7 @@ No modules.
 | <a name="output_admin_role_assignments"></a> [admin\_role\_assignments](#output\_admin\_role\_assignments) | The configurations for admin roles assigned to the Okta user. |
 | <a name="output_admin_role_notification_enabled"></a> [admin\_role\_notification\_enabled](#output\_admin\_role\_notification\_enabled) | Whether to send the default Okta administrator emails. |
 | <a name="output_cost_center"></a> [cost\_center](#output\_cost\_center) | The name of the cost center assigned to the user. |
+| <a name="output_custom_attributes"></a> [custom\_attributes](#output\_custom\_attributes) | The object for custom profile attributes of the user. |
 | <a name="output_department"></a> [department](#output\_department) | The department name of the user. |
 | <a name="output_display_name"></a> [display\_name](#output\_display\_name) | The display name of the user. |
 | <a name="output_division"></a> [division](#output\_division) | The division name of the user. |
@@ -95,5 +99,6 @@ No modules.
 | <a name="output_primary_phone"></a> [primary\_phone](#output\_primary\_phone) | The primary phone number of the user. |
 | <a name="output_profile_url"></a> [profile\_url](#output\_profile\_url) | The URL of the user's online profile. |
 | <a name="output_secondary_email"></a> [secondary\_email](#output\_secondary\_email) | The secondary email address of the user. |
+| <a name="output_status"></a> [status](#output\_status) | The status of the user. |
 | <a name="output_title"></a> [title](#output\_title) | The title of the user. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
