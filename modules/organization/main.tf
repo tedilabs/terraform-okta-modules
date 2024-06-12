@@ -14,6 +14,41 @@
 #   }
 # }
 
+locals {
+  country_codes = {
+    "KR" = "Korea, Republic of"
+  }
+}
+
+###################################################
+# Organization Configuration
+###################################################
+
+# TODO: `billing_contact_user`
+# TODO: `technical_contact_user`
+resource "okta_org_configuration" "this" {
+  company_name                 = var.name
+  logo                         = var.logo
+  opt_out_communication_emails = !var.communication_emails_enabled
+
+
+  ## Contact
+  country     = try(local.country_codes[var.contact.country_code], null)
+  state       = var.contact.state
+  city        = var.contact.city
+  address_1   = var.contact.address_line_1
+  address_2   = var.contact.address_line_2
+  postal_code = var.contact.postal_code
+
+  phone_number = var.contact.phone
+  website      = var.contact.website_url
+
+
+  ## End-user Support
+  support_phone_number      = var.end_user_support.phone
+  end_user_support_help_url = var.end_user_support.url
+}
+
 
 ###################################################
 # Rate Limiting Preferences
