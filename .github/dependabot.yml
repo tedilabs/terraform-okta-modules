@@ -7,12 +7,6 @@ updates:
 
 - package-ecosystem: terraform
   directories:
-  - /modules/authenticator
-  - /modules/bookmark-app
-  - /modules/brand
-  - /modules/group
-  - /modules/group-rule
-  - /modules/organization
-  - /modules/user
+  - /modules/*
   schedule:
     interval: weekly
