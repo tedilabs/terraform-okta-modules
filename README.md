@@ -14,6 +14,7 @@ Terraform module to manage all of things on Okta organization.
 - [group](./modules/group/)
 - [group-rule](./modules/group-rule/)
 - [organization](./modules/organization/)
+- [password-policy](./modules/password-policy/)
 - [user](./modules/user/)
 
 

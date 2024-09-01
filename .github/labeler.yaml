@@ -39,6 +39,11 @@
   - any-glob-to-any-file:
     - modules/organization/**/*
 
+":floppy_disk: password-policy":
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/password-policy/**/*
+
 ":floppy_disk: user":
 - changed-files:
   - any-glob-to-any-file:
