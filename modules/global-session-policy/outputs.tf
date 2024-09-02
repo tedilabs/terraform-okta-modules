@@ -31,6 +31,47 @@ output "groups" {
   ]
 }
 
+output "rules" {
+  description = "The configuration for rules of the Okta Global Session Policy."
+  value = {
+    for name, rule in okta_policy_rule_signon.this :
+    name => {
+      id       = rule.id
+      name     = rule.name
+      priority = rule.priority
+      enabled  = rule.status == "ACTIVE"
+
+      condition = {
+        excluded_users = rule.users_excluded
+        network = {
+          connection = rule.network_connection
+
+          excluded_zones = rule.network_excludes
+          included_zones = rule.network_includes
+        }
+        authentication = {
+          entrypoint        = rule.authtype
+          identity_provider = rule.identity_provider
+        }
+      }
+
+      allow_access   = rule.access == "ALLOW"
+      primary_factor = rule.primary_factor
+      mfa = {
+        required                   = rule.mfa_required
+        prompt_mode                = rule.mfa_prompt
+        session_duration           = rule.mfa_lifetime
+        remember_device_by_default = rule.mfa_remember_device
+      }
+      session = {
+        duration                  = rule.session_lifetime
+        idle_timeout              = rule.session_idle
+        persistent_cookie_enabled = rule.session_persistent
+      }
+    }
+  }
+}
+
 # output "debug" {
 #   value = {
 #     for k, v in okta_policy_signon.this :
