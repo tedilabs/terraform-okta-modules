@@ -3,7 +3,6 @@
 ###################################################
 
 resource "okta_policy_rule_password" "this" {
-
   for_each = {
     for rule in var.rules :
     rule.name => rule
