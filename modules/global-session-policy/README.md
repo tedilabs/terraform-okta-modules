@@ -5,7 +5,7 @@ This module creates following resources.
 - `okta_policy_signon`
 - `okta_policy_rule_signon` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -53,4 +53,4 @@ No modules.
 | <a name="output_name"></a> [name](#output\_name) | The name of the Okta Global Session Policy. |
 | <a name="output_priority"></a> [priority](#output\_priority) | The priority of the Okta Global Session Policy. |
 | <a name="output_rules"></a> [rules](#output\_rules) | The configuration for rules of the Okta Global Session Policy. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

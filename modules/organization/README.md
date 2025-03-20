@@ -6,7 +6,7 @@ This module creates following resources.
 - `okta_rate_limiting`
 - `okta_security_notification_emails`
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -58,4 +58,4 @@ No modules.
 | <a name="output_rate_limiting_preferences"></a> [rate\_limiting\_preferences](#output\_rate\_limiting\_preferences) | The preferences for rate limiting. |
 | <a name="output_security_notification_email_preferences"></a> [security\_notification\_email\_preferences](#output\_security\_notification\_email\_preferences) | The preferences for security notification emails. |
 | <a name="output_slug"></a> [slug](#output\_slug) | The slug of the Okta organization which is used for the sub-domain like `{slug}.okta.com`. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -5,7 +5,7 @@ This module creates following resources.
 - `okta_app_signon_policy`
 - `okta_app_signon_policy_rule` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -43,4 +43,4 @@ No modules.
 | <a name="output_description"></a> [description](#output\_description) | The description of the Okta Authentication Policy. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the Okta Authentication Policy. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the Okta Authentication Policy. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

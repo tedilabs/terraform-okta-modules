@@ -5,7 +5,7 @@ This module creates following resources.
 - `okta_brand`
 - `okta_domain` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -51,4 +51,4 @@ No modules.
 | <a name="output_locale"></a> [locale](#output\_locale) | The preferred language for the brand. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the brand. |
 | <a name="output_powered_by_okta"></a> [powered\_by\_okta](#output\_powered\_by\_okta) | Whether "Powered by Okta" appears in any visible footers. Defaults to `false`. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

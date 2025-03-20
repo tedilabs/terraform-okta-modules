@@ -4,7 +4,7 @@ This module creates following resources.
 
 - `okta_group_rule`
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -50,4 +50,4 @@ No modules.
 | <a name="output_groups"></a> [groups](#output\_groups) | The information for the assigned groups by the Okta group rule. |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the Okta group rule. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the Okta group rule. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

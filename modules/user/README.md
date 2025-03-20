@@ -7,7 +7,7 @@ This module creates following resources.
 - `okta_user_group_memberships`
 - `okta_admin_role_targets` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -101,4 +101,4 @@ No modules.
 | <a name="output_secondary_email"></a> [secondary\_email](#output\_secondary\_email) | The secondary email address of the user. |
 | <a name="output_status"></a> [status](#output\_status) | The status of the user. |
 | <a name="output_title"></a> [title](#output\_title) | The title of the user. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

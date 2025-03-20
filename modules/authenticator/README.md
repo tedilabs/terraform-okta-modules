@@ -4,7 +4,7 @@ This module creates following resources.
 
 - `okta_factor`
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -41,4 +41,4 @@ No modules.
 |------|-------------|
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether this factor is activated. |
 | <a name="output_name"></a> [name](#output\_name) | The name of the MFA provider. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

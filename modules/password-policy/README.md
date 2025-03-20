@@ -6,7 +6,7 @@ This module creates following resources.
 - `okta_policy_password_default` (optional)
 - `okta_policy_rule_password` (optional)
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -65,4 +65,4 @@ No modules.
 | <a name="output_priority"></a> [priority](#output\_priority) | The priority of the Okta Password Policy. |
 | <a name="output_recovery"></a> [recovery](#output\_recovery) | The configuration for password recovery of the Okta Password Policy. |
 | <a name="output_rules"></a> [rules](#output\_rules) | The configuration for rules of the Okta Password Policy. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

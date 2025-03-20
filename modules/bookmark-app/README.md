@@ -5,7 +5,7 @@ This module creates following resources.
 - `okta_app_bookmark`
 - `okta_app_group_assignments`
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -60,4 +60,4 @@ No modules.
 | <a name="output_notes"></a> [notes](#output\_notes) | The configurations for application notes. |
 | <a name="output_sign_on"></a> [sign\_on](#output\_sign\_on) | The configurations for application sign-on. |
 | <a name="output_url"></a> [url](#output\_url) | The URL of the bookmark application. |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
