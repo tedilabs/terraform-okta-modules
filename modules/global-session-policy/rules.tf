@@ -62,4 +62,10 @@ resource "okta_policy_rule_signon" "this" {
   session_lifetime   = each.value.session.duration
   session_idle       = each.value.session.idle_timeout
   session_persistent = each.value.session.persistent_cookie_enabled
+
+  lifecycle {
+    ignore_changes = [
+      risc_level,
+    ]
+  }
 }
