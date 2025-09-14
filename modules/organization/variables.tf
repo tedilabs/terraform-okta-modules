@@ -60,30 +60,30 @@ variable "end_user_support" {
   default  = null
 }
 
-variable "rate_limiting_preferences" {
-  description = <<EOF
-  (Optional) A preferences for rate limiting. `rate_limiting_preferences` block as defined below.
-    (Optional) `on_login` - Prevent individual clients from blocking traffic when accessing the Okta hosted login page. Valid values are `ENFORCE` (Enforce limit and log per client (recommended)), `DISABLE` (Do nothing (not recommended)), `PREVIEW` (Log per client). Defaults to `ENFORCE`.
-    (Optional) `on_authorize` - Prevent individual clients from blocking traffic during authorization. Valid values are `ENFORCE` (Enforce limit and log per client (recommended)), `DISABLE` (Do nothing (not recommended)), `PREVIEW` (Log per client). Defaults to `ENFORCE`.
-    (Optional) `warning_notification_email_enabled` - Whether to enable rate limit warning and violation notification emails when this org meets rate limits. Defaults to `true`.
-  EOF
-  type = object({
-    on_login     = optional(string, "ENFORCE")
-    on_authorize = optional(string, "ENFORCE")
-
-    warning_notification_email_enabled = optional(bool, true)
-  })
-  default  = {}
-  nullable = false
-
-  validation {
-    condition = alltrue([
-      contains(["ENFORCE", "PREVIEW", "DISABLE"], var.rate_limiting_preferences.on_login),
-      contains(["ENFORCE", "PREVIEW", "DISABLE"], var.rate_limiting_preferences.on_authorize),
-    ])
-    error_message = "Valid values for `on_lgin` and `on_authorize` are `ENFORCE`, `PREVIEW`, or `DISABLE`."
-  }
-}
+# variable "rate_limiting_preferences" {
+#   description = <<EOF
+#   (Optional) A preferences for rate limiting. `rate_limiting_preferences` block as defined below.
+#     (Optional) `on_login` - Prevent individual clients from blocking traffic when accessing the Okta hosted login page. Valid values are `ENFORCE` (Enforce limit and log per client (recommended)), `DISABLE` (Do nothing (not recommended)), `PREVIEW` (Log per client). Defaults to `ENFORCE`.
+#     (Optional) `on_authorize` - Prevent individual clients from blocking traffic during authorization. Valid values are `ENFORCE` (Enforce limit and log per client (recommended)), `DISABLE` (Do nothing (not recommended)), `PREVIEW` (Log per client). Defaults to `ENFORCE`.
+#     (Optional) `warning_notification_email_enabled` - Whether to enable rate limit warning and violation notification emails when this org meets rate limits. Defaults to `true`.
+#   EOF
+#   type = object({
+#     on_login     = optional(string, "ENFORCE")
+#     on_authorize = optional(string, "ENFORCE")
+#
+#     warning_notification_email_enabled = optional(bool, true)
+#   })
+#   default  = {}
+#   nullable = false
+#
+#   validation {
+#     condition = alltrue([
+#       contains(["ENFORCE", "PREVIEW", "DISABLE"], var.rate_limiting_preferences.on_login),
+#       contains(["ENFORCE", "PREVIEW", "DISABLE"], var.rate_limiting_preferences.on_authorize),
+#     ])
+#     error_message = "Valid values for `on_lgin` and `on_authorize` are `ENFORCE`, `PREVIEW`, or `DISABLE`."
+#   }
+# }
 
 variable "security_notification_email_preferences" {
   description = <<EOF

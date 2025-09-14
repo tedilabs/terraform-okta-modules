@@ -54,12 +54,13 @@ resource "okta_org_configuration" "this" {
 # Rate Limiting Preferences
 ###################################################
 
-resource "okta_rate_limiting" "this" {
-  login     = var.rate_limiting_preferences.on_login
-  authorize = var.rate_limiting_preferences.on_authorize
-
-  communications_enabled = var.rate_limiting_preferences.warning_notification_email_enabled
-}
+# INFO: This resource is deprecated and will be removed in a future release. A new resource to manage rate limiting settings will be implemented in the future.
+# resource "okta_rate_limiting" "this" {
+#   login     = var.rate_limiting_preferences.on_login
+#   authorize = var.rate_limiting_preferences.on_authorize
+#
+#   communications_enabled = var.rate_limiting_preferences.warning_notification_email_enabled
+# }
 
 
 ###################################################
