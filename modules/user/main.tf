@@ -136,7 +136,7 @@ resource "okta_user_group_memberships" "this" {
 }
 
 data "okta_group" "this" {
-  for_each = toset(okta_user_group_memberships.this.groups)
+  for_each = toset(var.groups)
 
   id = each.value
 }
