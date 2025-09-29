@@ -34,6 +34,11 @@
   - any-glob-to-any-file:
     - modules/group-rule/**/*
 
+":floppy_disk: network-zone":
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/network-zone/**/*
+
 ":floppy_disk: organization":
 - changed-files:
   - any-glob-to-any-file:
