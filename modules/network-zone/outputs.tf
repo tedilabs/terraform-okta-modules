@@ -10,7 +10,10 @@ output "name" {
 
 output "type" {
   description = "The type of the Network Zone."
-  value       = okta_network_zone.this.type
+  value = {
+    for k, v in local.type :
+    v => k
+  }[okta_network_zone.this.type]
 }
 
 output "enabled" {
