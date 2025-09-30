@@ -74,8 +74,11 @@ variable "rules" {
         included_zones = optional(set(string), [])
       }), {})
       authentication = optional(object({
-        entrypoint        = optional(string, "ANY")
-        identity_provider = optional(string, "ANY")
+        entrypoint = optional(string, "ANY")
+        identity_provider = optional(object({
+          type = optional(string, "ANY")
+          ids  = optional(set(string), [])
+        }), {})
       }), {})
     }), {})
 
@@ -113,9 +116,9 @@ variable "rules" {
   validation {
     condition = alltrue([
       for rule in var.rules :
-      contains(["ANY", "OKTA", "SPECIFIC_IDP"], rule.condition.authentication.identity_provider)
+      contains(["ANY", "OKTA", "SPECIFIC_IDP"], rule.condition.authentication.identity_provider.type)
     ])
-    error_message = "Valid values for `authentication.identity_provider` must be one of `ANY`, `OKTA`, or `SPECIFIC_IDP`."
+    error_message = "Valid values for `authentication.identity_provider.type` must be one of `ANY`, `OKTA`, or `SPECIFIC_IDP`."
   }
   validation {
     condition = alltrue([

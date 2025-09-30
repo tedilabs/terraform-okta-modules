@@ -50,8 +50,11 @@ output "rules" {
           included_zones = rule.network_includes
         }
         authentication = {
-          entrypoint        = rule.authtype
-          identity_provider = rule.identity_provider
+          entrypoint = rule.authtype
+          identity_provider = {
+            type = rule.identity_provider
+            ids  = rule.identity_provider_ids
+          }
         }
       }
 

@@ -37,9 +37,12 @@ resource "okta_policy_rule_signon" "this" {
   )
 
   authtype          = each.value.condition.authentication.entrypoint
-  identity_provider = each.value.condition.authentication.identity_provider
+  identity_provider = each.value.condition.authentication.identity_provider.type
+  identity_provider_ids = (each.value.condition.authentication.identity_provider.type == "SPECIFIC_IDP" && length(each.value.condition.authentication.identity_provider.ids) > 0
+    ? each.value.condition.authentication.identity_provider.ids
+    : null
+  )
 
-  risc_level = ""
   risk_level = ""
 
 
@@ -59,10 +62,4 @@ resource "okta_policy_rule_signon" "this" {
   session_lifetime   = each.value.session.duration
   session_idle       = each.value.session.idle_timeout
   session_persistent = each.value.session.persistent_cookie_enabled
-
-  lifecycle {
-    ignore_changes = [
-      risc_level,
-    ]
-  }
 }
