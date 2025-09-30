@@ -1,11 +1,17 @@
+variable "name" {
+  description = "(Required) A display name of the authenticator."
+  type        = string
+  nullable    = false
+}
+
 variable "type" {
-  description = "(Required) A type of the MFA provider. Valid values are `DUO`, `FIDO_U2F`, `FIDO_WEBAUTHN`, `GOOGLE_OTP`, `OKTA_CALL`, `OKTA_OTP`, `OKTA_PASSWORD`, `OKTA_PUSH`, `OKTA_QUESTION`, `OKTA_SMS`, `OKTA_EMAIL`, `RSA_TOKEN`, `SYMANTEC_VIP`, `YUBIKEY_TOKEN`, or `HOTP`"
+  description = "(Required) A type of the MFA provider. Valid values are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`"
   type        = string
   nullable    = false
 
   validation {
-    condition     = contains(["DUO", "FIDO_U2F", "FIDO_WEBAUTHN", "GOOGLE_OTP", "OKTA_CALL", "OKTA_OTP", "OKTA_PASSWORD", "OKTA_PUSH", "OKTA_QUESTION", "OKTA_SMS", "OKTA_EMAIL", "RSA_TOKEN", "SYMANTEC_VIP", "YUBIKEY_TOKEN", "HOTP"], var.type)
-    error_message = "Valid values for `type` are `DUO`, `FIDO_U2F`, `FIDO_WEBAUTHN`, `GOOGLE_OTP`, `OKTA_CALL`, `OKTA_OTP`, `OKTA_PASSWORD`, `OKTA_PUSH`, `OKTA_QUESTION`, `OKTA_SMS`, `OKTA_EMAIL`, `RSA_TOKEN`, `SYMANTEC_VIP`, `YUBIKEY_TOKEN`, or `HOTP`."
+    condition     = contains(["CUSTOM_OTP", "DUO", "EXTERNAL_IDP", "GOOGLE_OTP", "OKTA_EMAIL", "OKTA_PASSWORD", "OKTA_VERIFY", "ONPREM_MFA", "PHONE_NUMBER", "RSA_TOKEN", "SECURITY_QUESTION", "WEBAUTHN"], var.type)
+    error_message = "Valid values for `type` are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
   }
 }
 

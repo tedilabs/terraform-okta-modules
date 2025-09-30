@@ -1,8 +1,13 @@
+
+
 ###################################################
 # Authenticator (Factor)
 ###################################################
 
-resource "okta_factor" "this" {
-  provider_id = lower(var.type)
-  active      = var.enabled
+# INFO: Not supported attributes
+# - `legacy_ignore_name`
+resource "okta_authenticator" "this" {
+  name   = var.name
+  key    = lower(var.type)
+  status = var.enabled ? "ACTIVE" : "INACTIVE"
 }

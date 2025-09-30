@@ -1,17 +1,37 @@
+output "id" {
+  description = "The ID of the authenticator."
+  value       = okta_authenticator.this.id
+}
+
 output "name" {
-  description = "The name of the MFA provider."
-  value       = upper(okta_factor.this.provider_id)
+  description = "The display name of the authenticator."
+  value       = okta_authenticator.this.name
+}
+
+output "category" {
+  description = "The category of the authenticator provider."
+  value       = okta_authenticator.this.type
+}
+
+output "type" {
+  description = "The type of the authenticator provider."
+  value       = upper(okta_authenticator.this.key)
 }
 
 output "enabled" {
-  description = "Whether this factor is activated."
-  value       = okta_factor.this.active
+  description = "Whether this authenticator is activated."
+  value       = okta_authenticator.this.status == "ACTIVE"
+}
+
+output "settings" {
+  description = "The settings of the authenticator"
+  value       = okta_authenticator.this.settings != null ? jsondecode(okta_authenticator.this.settings) : null
 }
 
 # output "debug" {
 #   value = {
-#     for k, v in okta_factor.this :
+#     for k, v in okta_authenticator.this :
 #     k => v
-#     if !contains(["provider_id", "active", "id"], k)
+#     if !contains(["name", "status", "id", "key", "type", "legacy_ignore_name"], k)
 #   }
 # }
