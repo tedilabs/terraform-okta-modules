@@ -4,6 +4,11 @@
   - any-glob-to-any-file:
     - modules/authenticator/**/*
 
+":floppy_disk: authenticator-enrollment-policy":
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/authenticator-enrollment-policy/**/*
+
 ":floppy_disk: authentication-policy":
 - changed-files:
   - any-glob-to-any-file:
