@@ -21,3 +21,10 @@ variable "enabled" {
   default     = true
   nullable    = false
 }
+
+variable "settings" {
+  description = "(Optional) A settings of the authenticator."
+  type        = any
+  default     = null
+  nullable    = true
+}

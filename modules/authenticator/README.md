@@ -35,6 +35,7 @@ No modules.
 | <a name="input_name"></a> [name](#input\_name) | (Required) A display name of the authenticator. | `string` | n/a | yes |
 | <a name="input_type"></a> [type](#input\_type) | (Required) A type of the MFA provider. Valid values are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN` | `string` | n/a | yes |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | (Optional) Whether to activate the authenticator. Defaults to `true`. | `bool` | `true` | no |
+| <a name="input_settings"></a> [settings](#input\_settings) | (Optional) A settings of the authenticator. | `any` | `null` | no |
 
 ## Outputs
 
