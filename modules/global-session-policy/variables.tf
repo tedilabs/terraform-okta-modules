@@ -41,8 +41,9 @@ variable "rules" {
     (Optional) `condition` - A condition of the global session policy rule. `condition` block as defined below.
       (Optional) `excluded_users` - A set of user IDs to exclude.
       (Optional) `network` - A configuration for network condition. `network` block as defined below.
-        (Optional) `excluded_zones` - A set of zone IDs to exclude.
-        (Optional) `included_zones` - A set of zone IDs to include.
+        (Optional) `scope` - A network scope for network condition. Valid values are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK` or `ZONE`. Defaults to `ANYWHERE`.
+        (Optional) `excluded_zones` - A set of zone IDs to exclude. Only used when `scope` is `ZONE`.
+        (Optional) `included_zones` - A set of zone IDs to include. Only used when `scope` is `ZONE`.
       (Optional) `authentication` - A configuration for authentication condition. `authentication` block as defined below.
         (Optional) `entrypoint` - The entry point for the authentication. Valid values are `ANY`, `LDAP_INTERFACE`, or `RADIUS`. Defaults to `ANY`.
         (Optional) `identity_provider` - The identity provider for the authentication. Valid values are `ANY`, `OKTA`, or `SPECIFIC_IDP`. Defaults to `ANY`. WARNING: Use of identity_provider requires a feature flag to be enabled.
@@ -68,6 +69,7 @@ variable "rules" {
     condition = optional(object({
       excluded_users = optional(set(string), [])
       network = optional(object({
+        scope          = optional(string, "ANYWHERE")
         excluded_zones = optional(set(string), [])
         included_zones = optional(set(string), [])
       }), {})
@@ -94,6 +96,13 @@ variable "rules" {
   default  = []
   nullable = false
 
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["ANYWHERE", "ON_NETWORK", "OFF_NETWORK", "ZONE"], rule.condition.network.scope)
+    ])
+    error_message = "Valid values for `scope` are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK` or `ZONE`."
+  }
   validation {
     condition = alltrue([
       for rule in var.rules :

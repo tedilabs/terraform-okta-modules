@@ -26,15 +26,12 @@ resource "okta_policy_rule_signon" "this" {
   ## Conditions
   users_excluded = each.value.condition.excluded_users
 
-  network_connection = anytrue([
-    length(each.value.condition.network.excluded_zones) > 0,
-    length(each.value.condition.network.included_zones) > 0,
-  ]) ? "ZONE" : "ANYWHERE"
-  network_excludes = (length(each.value.condition.network.excluded_zones) > 0
+  network_connection = each.value.condition.network.scope
+  network_excludes = (each.value.condition.network.scope == "ZONE" && length(each.value.condition.network.excluded_zones) > 0
     ? each.value.condition.network.excluded_zones
     : null
   )
-  network_includes = (length(each.value.condition.network.included_zones) > 0
+  network_includes = (each.value.condition.network.scope == "ZONE" && length(each.value.condition.network.included_zones) > 0
     ? each.value.condition.network.included_zones
     : null
   )

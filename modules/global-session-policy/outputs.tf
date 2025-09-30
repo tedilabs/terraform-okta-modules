@@ -44,7 +44,7 @@ output "rules" {
       condition = {
         excluded_users = rule.users_excluded
         network = {
-          connection = rule.network_connection
+          scope = rule.network_connection
 
           excluded_zones = rule.network_excludes
           included_zones = rule.network_includes
