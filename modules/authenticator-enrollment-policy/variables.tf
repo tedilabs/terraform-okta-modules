@@ -120,7 +120,7 @@ variable "rules" {
   validation {
     condition = alltrue([
       for rule in var.rules :
-      contains(["ANYWHERE", "ON_NETWORK", "OFF_NETWORK", "ZONE"], rule.conditoin.network.scope)
+      contains(["ANYWHERE", "ON_NETWORK", "OFF_NETWORK", "ZONE"], rule.condition.network.scope)
     ])
     error_message = "Valid values for `scope` are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK` or `ZONE`."
   }
