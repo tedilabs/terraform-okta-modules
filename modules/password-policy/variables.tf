@@ -162,8 +162,9 @@ variable "rules" {
     (Optional) `condition` - A condition of the password policy rule. `condition` block as defined below.
       (Optional) `excluded_users` - A set of user IDs to exclude.
       (Optional) `network` - A configuration for network condition. `network` block as defined below.
-        (Optional) `excluded_zones` - A set of zone IDs to exclude.
-        (Optional) `included_zones` - A set of zone IDs to include.
+        (Optional) `scope` - A network scope for network condition. Valid values are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK` or `ZONE`. Defaults to `ANYWHERE`.
+        (Optional) `excluded_zones` - A set of zone IDs to exclude. Only used when `scope` is `ZONE`.
+        (Optional) `included_zones` - A set of zone IDs to include. Only used when `scope` is `ZONE`.
     (Optional) `allow_password_change` - Whether to allow users to change their password. Defaults to `true`.
     (Optional) `allow_password_reset` - Whether to allow users to reset their password. Defaults to `true`.
     (Optional) `allow_password_unlock` - Whether to allow users to unlock. Defaults to `false`.
@@ -176,6 +177,7 @@ variable "rules" {
     condition = optional(object({
       excluded_users = optional(set(string), [])
       network = optional(object({
+        scope          = optional(string, "ANYWHERE")
         excluded_zones = optional(set(string), [])
         included_zones = optional(set(string), [])
       }), {})
@@ -187,4 +189,12 @@ variable "rules" {
   }))
   default  = []
   nullable = false
+
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["ANYWHERE", "ON_NETWORK", "OFF_NETWORK", "ZONE"], rule.condition.network.scope)
+    ])
+    error_message = "Valid values for `scope` are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK` or `ZONE`."
+  }
 }
