@@ -57,6 +57,26 @@ output "saml_metadata" {
   }
 }
 
+output "saml_attributes" {
+  description = "A list of SAML attribute statements for the application."
+  value = [
+    for attribute in okta_app_saml.this.attribute_statements :
+    {
+      type      = attribute.type
+      namespace = attribute.namespace
+      name      = attribute.name
+      values    = attribute.values
+      filter = (attribute.type == "GROUP"
+        ? {
+          type  = attribute.filter_type
+          value = attribute.filter_value
+        }
+        : null
+      )
+    }
+  ]
+}
+
 output "single_logout" {
   description = "The configurations for single logout."
   value = {

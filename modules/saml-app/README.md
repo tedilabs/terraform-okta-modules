@@ -72,6 +72,7 @@ No modules.
 | <a name="output_name"></a> [name](#output\_name) | The label of the SAML application. |
 | <a name="output_notes"></a> [notes](#output\_notes) | The configurations for application notes. |
 | <a name="output_preconfigured_app"></a> [preconfigured\_app](#output\_preconfigured\_app) | The name of a preconfigured app from the Okta App Integration Network. |
+| <a name="output_saml_attributes"></a> [saml\_attributes](#output\_saml\_attributes) | A list of SAML attribute statements for the application. |
 | <a name="output_saml_metadata"></a> [saml\_metadata](#output\_saml\_metadata) | The SAML metadata configurations. |
 | <a name="output_saml_version"></a> [saml\_version](#output\_saml\_version) | The SAML version used by the application. |
 | <a name="output_sign_on"></a> [sign\_on](#output\_sign\_on) | The configurations for application sign-on. |
