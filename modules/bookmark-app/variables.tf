@@ -78,6 +78,24 @@ variable "hide_app_on_web" {
   nullable    = false
 }
 
+variable "user_assignments" {
+  description = <<EOF
+  (Optional) A configurations to assign users for the Okta bookmark application. Each item of `user_assignments` block as defined below.
+    (Required) `user` - The ID of the user to assign.
+    (Optional) `profile` - JSON document containing application profile.
+    (Optional) `username` - The username for the app user. In case the user is assigned to the app with SHARED_USERNAME_AND_PASSWORD credentials scheme, this field will be computed and should not be set.
+    (Optional) `password` - The password for the app user.
+  EOF
+  type = list(object({
+    user     = string
+    profile  = optional(map(string), {})
+    username = optional(string)
+    password = optional(string)
+  }))
+  default  = []
+  nullable = false
+}
+
 variable "group_assignments" {
   description = <<EOF
   (Optional) A configurations to assign groups for the Okta bookmark application. Each item of `group_assignments` block as defined below.

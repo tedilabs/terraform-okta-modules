@@ -54,12 +54,14 @@ output "custom_error_page" {
   value       = okta_app_bookmark.this.accessibility_error_redirect_url
 }
 
+output "user_assignments" {
+  description = "The information for the assigned users to the application."
+  value       = values(local.user_assignments)
+}
+
 output "group_assignments" {
-  description = "The information for the assigned groups by the Okta group rule."
-  value = [
-    for group in data.okta_group.this :
-    group.name
-  ]
+  description = "The information for the assigned groups to the application."
+  value       = values(local.group_assignments)
 }
 
 # output "debug" {

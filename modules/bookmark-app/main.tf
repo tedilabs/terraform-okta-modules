@@ -1,3 +1,45 @@
+data "okta_user" "this" {
+  for_each = toset([
+    for assignment in var.user_assignments :
+    assignment.user
+  ])
+
+  user_id = each.value
+}
+
+data "okta_group" "this" {
+  for_each = toset([
+    for assignment in var.group_assignments :
+    assignment.group
+  ])
+
+  id = each.value
+}
+
+locals {
+  user_assignments = {
+    for assignment in var.user_assignments :
+    assignment.user => {
+      user = {
+        id   = data.okta_user.this[assignment.user].id
+        name = data.okta_user.this[assignment.user].login
+      }
+      profile  = okta_app_user.this[assignment.user].profile
+      username = okta_app_user.this[assignment.user].username
+    }
+  }
+  group_assignments = {
+    for assignment in var.group_assignments :
+    assignment.group => merge(assignment, {
+      group = {
+        id   = data.okta_group.this[assignment.group].id
+        name = data.okta_group.this[assignment.group].name
+      }
+    })
+  }
+}
+
+
 ###################################################
 # Okta Application (Bookmark)
 ###################################################
@@ -38,6 +80,28 @@ resource "okta_app_bookmark" "this" {
 
 
 ###################################################
+# User Assignments for Okta Application
+###################################################
+
+resource "okta_app_user" "this" {
+  for_each = {
+    for assignment in var.user_assignments :
+    assignment.user => assignment
+  }
+
+  app_id = okta_app_bookmark.this.id
+
+  user_id = each.key
+  profile = jsonencode(each.value.profile)
+
+  username = each.value.username
+  password = each.value.password
+
+  retain_assignment = false
+}
+
+
+###################################################
 # Group Assignments for Okta Application
 ###################################################
 
@@ -57,13 +121,4 @@ resource "okta_app_group_assignments" "this" {
       profile  = jsonencode(group.value.profile)
     }
   }
-}
-
-data "okta_group" "this" {
-  for_each = toset([
-    for assignment in var.group_assignments :
-    assignment.group
-  ])
-
-  id = each.value
 }
