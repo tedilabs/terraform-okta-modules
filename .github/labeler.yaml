@@ -54,6 +54,11 @@
   - any-glob-to-any-file:
     - modules/password-policy/**/*
 
+":floppy_disk: saml-app":
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/saml-app/**/*
+
 ":floppy_disk: user":
 - changed-files:
   - any-glob-to-any-file:

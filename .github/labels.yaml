@@ -74,5 +74,8 @@
   description: "This issue or pull request is related to password-policy module."
   name: ":floppy_disk: password-policy"
 - color: "fbca04"
+  description: "This issue or pull request is related to saml-app module."
+  name: ":floppy_disk: saml-app"
+- color: "fbca04"
   description: "This issue or pull request is related to user module."
   name: ":floppy_disk: user"

@@ -17,6 +17,7 @@ Terraform module to manage all of things on Okta organization.
 - [organization](./modules/organization/)
 - [network-zone](./modules/network-zone/)
 - [password-policy](./modules/password-policy/)
+- [saml-app](./modules/saml-app/)
 - [user](./modules/user/)
 
 
