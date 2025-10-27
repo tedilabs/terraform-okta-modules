@@ -48,3 +48,17 @@ variable "admin_role_notification_enabled" {
   default     = true
   nullable    = false
 }
+
+variable "exclusive_membership_management_enabled" {
+  description = "(Optional) Whether to enable exclusive management for members of the Okta group. This includes removal of group members which are not explicitly configured. Defaults to `false`."
+  type        = bool
+  default     = false
+  nullable    = false
+}
+
+variable "members" {
+  description = "(Optional) A set of Okta user IDs to be members of the Okta group."
+  type        = set(string)
+  default     = []
+  nullable    = false
+}

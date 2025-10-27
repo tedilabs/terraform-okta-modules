@@ -35,3 +35,20 @@ output "admin_role_notification_enabled" {
   description = "Whether to send the default Okta administrator emails."
   value       = var.admin_role_notification_enabled
 }
+
+output "exclusive_membership_management_enabled" {
+  description = "Whether to enable exclusive management for members of the Okta group."
+  value       = var.exclusive_membership_management_enabled
+}
+
+output "members" {
+  description = "The information for the group members."
+  value = [
+    for user in data.okta_user.this : {
+      id           = user.id
+      display_name = user.display_name
+      email        = user.email
+      login        = user.login
+    }
+  ]
+}

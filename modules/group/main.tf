@@ -28,3 +28,21 @@ resource "okta_group_role" "this" {
 
   disable_notifications = !var.admin_role_notification_enabled
 }
+
+
+###################################################
+# Members of Okta Group
+###################################################
+
+resource "okta_group_memberships" "this" {
+  group_id = okta_group.this.id
+
+  track_all_users = var.exclusive_membership_management_enabled
+  users           = var.members
+}
+
+data "okta_user" "this" {
+  for_each = toset(var.members)
+
+  user_id = each.value
+}
