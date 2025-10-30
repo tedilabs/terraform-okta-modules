@@ -62,3 +62,16 @@ rule "terraform_unused_declarations" {
 rule "terraform_unused_required_providers" {
   enabled = true
 }
+
+
+###################################################
+# Rule Sets - AWS
+###################################################
+
+plugin "aws" {
+  source  = "github.com/terraform-linters/tflint-ruleset-aws"
+  version = "0.38.0"
+
+  enabled = true
+  deep_check = false
+}
