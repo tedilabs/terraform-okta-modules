@@ -44,6 +44,11 @@
   - any-glob-to-any-file:
     - modules/network-zone/**/*
 
+":floppy_disk: oidc-app":
+- changed-files:
+  - any-glob-to-any-file:
+    - modules/oidc-app/**/*
+
 ":floppy_disk: organization":
 - changed-files:
   - any-glob-to-any-file:

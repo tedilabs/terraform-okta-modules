@@ -14,6 +14,7 @@ Terraform module to manage all of things on Okta organization.
 - [global-session-policy](./modules/global-session-policy/)
 - [group](./modules/group/)
 - [group-rule](./modules/group-rule/)
+- [oidc-app](./modules/oidc-app/)
 - [organization](./modules/organization/)
 - [network-zone](./modules/network-zone/)
 - [password-policy](./modules/password-policy/)
