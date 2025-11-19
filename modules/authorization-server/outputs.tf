@@ -68,6 +68,21 @@ output "claims" {
   ]
 }
 
+output "access_policies" {
+  description = "The access policies of the authorization server."
+  value = [
+    for policy in okta_auth_server_policy.this :
+    {
+      id               = policy.id
+      priority         = policy.priority
+      name             = policy.name
+      description      = policy.description
+      enabled          = policy.status == "ACTIVE"
+      assigned_clients = policy.client_whitelist
+    }
+  ]
+}
+
 # output "debug" {
 #   value = {
 #     for k, v in okta_auth_server.this :

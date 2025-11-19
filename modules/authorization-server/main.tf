@@ -10,8 +10,6 @@ locals {
 # Authorization Server
 ###################################################
 
-# INFO: Not supported attributes
-# - `legacy_ignore_name`
 resource "okta_auth_server" "this" {
   name        = var.name
   description = var.description

@@ -112,3 +112,23 @@ variable "claims" {
     error_message = "Valid value for `operator` is `STARTS_WITH`, `EQUALS`, `CONTAINS`, or `REGEX` when `value_type` is `GROUPS`."
   }
 }
+
+variable "access_policies" {
+  description = <<EOF
+  (Optional) A list of access policies to be created for the authorization server. Each block of `access_policies` as defined below.
+    (Optional) `priority` - A priority of the access policy.
+    (Required) `name` - A name of the access policy.
+    (Optional) `description` - A description of the access policy. Defaults to `Managed by Terraform.`
+    (Optional) `enabled` - Whether to enable the access policy. Defaults to `true`.
+    (Optional) `assigned_clients` - A set of client IDs to be assigned to the access policy. `["ALL_CLIENTS"]` is a special value that can be used to whitelist all clients.
+  EOF
+  type = list(object({
+    priority         = optional(number)
+    name             = string
+    description      = optional(string, "Managed by Terraform.")
+    enabled          = optional(bool, true)
+    assigned_clients = optional(set(string), [])
+  }))
+  default  = []
+  nullable = false
+}
