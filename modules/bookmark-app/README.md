@@ -4,6 +4,7 @@ This module creates following resources.
 
 - `okta_app_bookmark`
 - `okta_app_group_assignments`
+- `okta_app_user` (optional)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements

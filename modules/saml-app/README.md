@@ -5,6 +5,7 @@ This module creates following resources.
 - `okta_app_saml`
 - `okta_app_saml_app_settings` (optional)
 - `okta_app_group_assignments`
+- `okta_app_user` (optional)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
