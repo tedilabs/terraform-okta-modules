@@ -9,6 +9,7 @@ Terraform module to manage all of things on Okta organization.
 - [authenticator](./modules/authenticator/)
 - [authenticator-enrollment-policy](./modules/authenticator-enrollment-policy/)
 - [authentication-policy](./modules/authentication-policy/)
+- [authorization-server](./modules/authorization-server/)
 - [bookmark-app](./modules/bookmark-app/)
 - [brand](./modules/brand/)
 - [global-session-policy](./modules/global-session-policy/)
