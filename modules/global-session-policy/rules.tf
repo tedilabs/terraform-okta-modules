@@ -43,8 +43,6 @@ resource "okta_policy_rule_signon" "this" {
     : null
   )
 
-  risk_level = ""
-
 
   ## Effects
   access = each.value.allow_access ? "ALLOW" : "DENY"
@@ -52,12 +50,12 @@ resource "okta_policy_rule_signon" "this" {
   primary_factor = each.value.primary_factor
 
   mfa_required = each.value.mfa.required
-  mfa_prompt   = each.value.mfa.prompt_mode
+  mfa_prompt   = each.value.mfa.required ? each.value.mfa.prompt_mode : null
   mfa_lifetime = (each.value.mfa.required && each.value.mfa.prompt_mode == "SESSION"
     ? each.value.mfa.session_duration
     : 0
   )
-  mfa_remember_device = each.value.mfa.remember_device_by_default
+  mfa_remember_device = each.value.mfa.required ? each.value.mfa.remember_device_by_default : null
 
   session_lifetime   = each.value.session.duration
   session_idle       = each.value.session.idle_timeout
