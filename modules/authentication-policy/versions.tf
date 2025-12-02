@@ -1,10 +1,10 @@
 terraform {
-  required_version = ">= 1.8"
+  required_version = ">= 1.12"
 
   required_providers {
     okta = {
       source  = "okta/okta"
-      version = ">= 4.8"
+      version = ">= 6.5"
     }
   }
 }

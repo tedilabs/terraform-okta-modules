@@ -10,14 +10,14 @@ This module creates following resources.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8 |
-| <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 4.8 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
+| <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 4.8.1 |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.5.1 |
 
 ## Modules
 
@@ -28,6 +28,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [okta_app_signon_policy.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_signon_policy) | resource |
+| [okta_app_signon_policy_rule.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_signon_policy_rule) | resource |
 
 ## Inputs
 
