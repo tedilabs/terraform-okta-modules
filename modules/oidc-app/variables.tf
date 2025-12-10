@@ -105,7 +105,7 @@ variable "login" {
 variable "oidc_id_token" {
   description = <<EOF
   (Optional) A configurations for OpenID Connect ID Token. `oidc_id_token` block as defined below.
-    (Optional) `issuer_mode` - Whether the Okta Authorization Server uses the original Okta org domain URL or a custom domain URL as the issuer of ID token for this client. Valid values are `ORG_URL` or `CUSTOM_URL`. Defaults to `ORG_URL`.
+    (Optional) `issuer_mode` - Whether the Okta Authorization Server uses the original Okta org domain URL or a custom domain URL as the issuer of ID token for this client. Valid values are `ORG_URL`, `CUSTOM_URL` or `DYNAMIC`. Defaults to `ORG_URL`.
     (Optional) `groups_claim_filter` - A configuration for filtering groups claim. `groups_claim_filter` block as defined below.
       (Required) `type` - The type of filter. Valid values are `STARTS_WITH`, `EQUALS`, `CONTAINS`, `REGEX`.
       (Required) `name` - A name of the claim that will be used in the token.
@@ -123,8 +123,8 @@ variable "oidc_id_token" {
   nullable = false
 
   validation {
-    condition     = contains(["ORG_URL", "CUSTOM_URL"], var.oidc_id_token.issuer_mode)
-    error_message = "Valid value for `oidc_id_token.issuer_mode` is `ORG_URL` or `CUSTOM_URL`."
+    condition     = contains(["ORG_URL", "CUSTOM_URL", "DYNAMIC"], var.oidc_id_token.issuer_mode)
+    error_message = "Valid value for `oidc_id_token.issuer_mode` is `ORG_URL`, `CUSTOM_URL` or `DYNAMIC`."
   }
   validation {
     condition     = var.oidc_id_token.groups_claim_filter == null || contains(["STARTS_WITH", "EQUALS", "CONTAINS", "REGEX"], var.oidc_id_token.groups_claim_filter.type)
