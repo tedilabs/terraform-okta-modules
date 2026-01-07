@@ -58,6 +58,60 @@ resource "okta_app_saml" "this" {
   status            = var.enabled ? "ACTIVE" : "INACTIVE"
 
 
+  ## SAML Config
+  sso_url = (!local.is_preconfigured
+    ? var.saml_config.sso_url
+    : null
+  )
+  recipient = (!local.is_preconfigured
+    ? var.saml_config.recipient_url
+    : null
+  )
+  destination = (!local.is_preconfigured
+    ? var.saml_config.destination_url
+    : null
+  )
+  audience = (!local.is_preconfigured
+    ? var.saml_config.audience
+    : null
+  )
+
+  subject_name_id_format = (!local.is_preconfigured
+    ? var.saml_config.subject_name_id.format
+    : null
+  )
+  subject_name_id_template = (!local.is_preconfigured
+    ? var.saml_config.subject_name_id.template
+    : null
+  )
+
+  assertion_signed = (!local.is_preconfigured
+    ? var.saml_config.assertion_signed
+    : null
+  )
+  response_signed = (!local.is_preconfigured
+    ? var.saml_config.response_signed
+    : null
+  )
+  digest_algorithm = (!local.is_preconfigured
+    ? var.saml_config.digest_algorithm
+    : null
+  )
+  signature_algorithm = (!local.is_preconfigured
+    ? var.saml_config.signature_algorithm
+    : null
+  )
+
+  authn_context_class_ref = (!local.is_preconfigured
+    ? var.saml_config.authn_context_class_ref
+    : null
+  )
+  honor_force_authn = (!local.is_preconfigured
+    ? var.saml_config.honor_force_authn
+    : null
+  )
+
+
   ## SAML Attribute Statements
   dynamic "attribute_statements" {
     for_each = var.saml_attributes

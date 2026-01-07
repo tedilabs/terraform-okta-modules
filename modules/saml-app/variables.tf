@@ -34,6 +34,49 @@ variable "app_settings" {
   nullable    = true
 }
 
+variable "saml_config" {
+  description = <<EOF
+  (Optional) A configurations for SAML settings for the application. `saml_config` block as defined below.
+    (Optional) `sso_url` - The location to send the SAML assertion using a POST operation. This URL is required and serves as the default Assertion Consumer Services (ACS) URL value for the Service Provider (SP). This URL is always used for Identity Provider (IdP) initiated sign-on requests.
+    (Optional) `recipient_url` - The location where the app can present the SAML assertion. This is usually the Single Sign-On (SSO) URL. Defaults to the value of `sso_url` if not provided.
+    (Optional) `destination_url` - The location to send the SAML Response, as defined in the SAML assertion. This is usually the Single Sign-On (SSO) URL. Defaults to the value of `sso_url` if not provided.
+    (Optional) `audience` - The intended audience of the SAML assertion. This is usually the Entity ID of your app.
+
+    (Optional) `subject_name_id` - A configuration for the subject name ID. `subject_name_id` block as defined below.
+      (Optional) `format` - The format of the subject name ID.
+      (Optional) `template` - Template for app user's username when a user is assigned to the app. Defaults to `$${user.userName}`.
+
+    (Optional) `assertion_signed` - Whether to sign the SAML assertion. Defaults to `true`.
+    (Optional) `response_signed` - Whether to sign the SAML auth response. Defaults to
+    (Optional) `digest_algorithm` - The algorithm used to digitally sign the SAML assertion and response. Valid values are `SHA1`, `SHA256`, `SHA384`, `SHA512`. Defaults to `SHA256`.
+    (Optional) `signature_algorithm` - 	The signing algorithm that's used to digitally sign the SAML assertion and response. Valid values are `RSA_SHA1`, `RSA_SHA256`, `RSA_SHA384`, `RSA_SHA512`, `DSA_SHA1`, `DSA_SHA256`, `DSA_SHA384`, `DSA_SHA512`, `ECDSA_SHA1`, `ECDSA_SHA256`, `ECDSA_SHA384`, `ECDSA_SHA512`. Defaults to `RSA_SHA256`.
+
+    (Optional) `authn_context_class_ref` - The authentication context class for the assertion’s authentication statement.
+    (Optional) `honor_force_authn` - Whether to honor the ForceAuthn attribute in the SAML request. Defaults to `false`.
+  EOF
+  type = object({
+    sso_url         = optional(string)
+    recipient_url   = optional(string)
+    destination_url = optional(string)
+    audience        = optional(string)
+
+    subject_name_id = optional(object({
+      format   = optional(string)
+      template = optional(string, "$${user.userName}")
+    }))
+
+    assertion_signed    = optional(bool, true)
+    response_signed     = optional(bool, true)
+    digest_algorithm    = optional(string, "SHA256")
+    signature_algorithm = optional(string, "RSA_SHA256")
+
+    authn_context_class_ref = optional(string)
+    honor_force_authn       = optional(bool, false)
+  })
+  default  = {}
+  nullable = false
+}
+
 variable "saml_attributes" {
   description = <<EOF
   (Optional) A list of SAML attribute statements for the application. Each item of `saml_attributes` block as defined below.

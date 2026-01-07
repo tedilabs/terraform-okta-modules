@@ -57,6 +57,29 @@ output "saml_metadata" {
   }
 }
 
+output "saml_config" {
+  description = "The SAML configurations for the application."
+  value = {
+    sso_url         = okta_app_saml.this.sso_url
+    recipient_url   = okta_app_saml.this.recipient
+    destination_url = okta_app_saml.this.destination
+    audience        = okta_app_saml.this.audience
+
+    subject_name_id = {
+      format   = okta_app_saml.this.subject_name_id_format
+      template = okta_app_saml.this.subject_name_id_template
+    }
+
+    assertion_signed    = okta_app_saml.this.assertion_signed
+    response_signed     = okta_app_saml.this.response_signed
+    digest_algorithm    = okta_app_saml.this.digest_algorithm
+    signature_algorithm = okta_app_saml.this.signature_algorithm
+
+    authn_context_class_ref = okta_app_saml.this.authn_context_class_ref
+    honor_force_authn       = okta_app_saml.this.honor_force_authn
+  }
+}
+
 output "saml_attributes" {
   description = "A list of SAML attribute statements for the application."
   value = [
@@ -142,6 +165,6 @@ output "group_assignments" {
 #   value = {
 #     for k, v in okta_app_saml.this :
 #     k => v
-#     if !contains(["id", "label", "url", "status", "authentication_policy", "accessibility_error_redirect_url", "timeouts", "request_integration", "accessibility_login_redirect_url", "accessibility_self_service", "hide_ios", "hide_web", "enduser_note", "admin_note", "auto_submit_toolbar", "logo", "logo_url", "name", "sign_on_mode", "features", "single_logout_issuer", "single_logout_url", "single_logout_certificate", "user_name_template_type", "user_name_template_suffix", "user_name_template_push_status", "user_name_template", "app_links_json", "metadata_url", "certificate", "preconfigured_app", "entity_key", "embed_url", "app_settings_json", "saml_version", "metadata", "http_post_binding", "http_redirect_binding"], k)
+#     if !contains(["id", "label", "url", "status", "authentication_policy", "accessibility_error_redirect_url", "timeouts", "request_integration", "accessibility_login_redirect_url", "accessibility_self_service", "hide_ios", "hide_web", "enduser_note", "admin_note", "auto_submit_toolbar", "logo", "logo_url", "name", "sign_on_mode", "features", "single_logout_issuer", "single_logout_url", "single_logout_certificate", "user_name_template_type", "user_name_template_suffix", "user_name_template_push_status", "user_name_template", "app_links_json", "metadata_url", "certificate", "preconfigured_app", "entity_key", "embed_url", "app_settings_json", "saml_version", "metadata", "http_post_binding", "http_redirect_binding", "digest_algorithm", "signature_algorithm", "sso_url", "recipient", "destination", "audience", "subject_name_id_format", "subject_name_id_template", "assertion_signed", "response_signed", "authn_context_class_ref", "honor_force_authn"], k)
 #   }
 # }
