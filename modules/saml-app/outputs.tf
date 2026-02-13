@@ -35,8 +35,8 @@ output "enabled" {
 
 output "app_settings" {
   description = "The application settings."
-  value = jsondecode(one(okta_app_saml_app_settings.this[*].settings) != null
-    ? okta_app_saml_app_settings.this[0].settings
+  value = (one(okta_app_saml_app_settings.this[*].settings) != null
+    ? jsondecode(okta_app_saml_app_settings.this[0].settings)
     : okta_app_saml.this.app_settings_json
   )
 }
@@ -143,7 +143,10 @@ output "notes" {
 
 output "app_links" {
   description = "The application links for the SAML application."
-  value       = jsondecode(okta_app_saml.this.app_links_json)
+  value = (okta_app_saml.this.app_links_json != null
+    ? jsondecode(okta_app_saml.this.app_links_json)
+    : null
+  )
 }
 
 output "custom_error_page" {
