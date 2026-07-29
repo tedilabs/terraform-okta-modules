@@ -18,10 +18,12 @@ variable "rules" {
     (Optional) `priority` - A priority of the authentication policy rule.
     (Optional) `enabled` - Whether to enable the authentication policy rule. Defaults to `true`.
     (Optional) `condition` - A condition of the authentication policy rule. `condition` block as defined below.
-      (Optional) `people` - A configuration for people conditions.
-        (Optional) `users` - Sets of included and excluded user IDs.
-        (Optional) `groups` - Sets of included and excluded group IDs.
-        (Optional) `user_types` - Sets of included and excluded user type IDs.
+      (Optional) `excluded_users` - A set of user IDs to exclude.
+      (Optional) `included_users` - A set of user IDs to include.
+      (Optional) `excluded_groups` - A set of group IDs to exclude.
+      (Optional) `included_groups` - A set of group IDs to include.
+      (Optional) `excluded_user_types` - A set of user type IDs to exclude.
+      (Optional) `included_user_types` - A set of user type IDs to include.
       (Optional) `network` - A configuration for network conditions.
         (Optional) `scope` - Valid values are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK`, or `ZONE`. Defaults to `ANYWHERE`.
         (Optional) `excluded_zones` - A set of excluded network zone IDs.
@@ -47,20 +49,12 @@ variable "rules" {
     enabled  = optional(bool, true)
 
     condition = optional(object({
-      people = optional(object({
-        users = optional(object({
-          excluded = optional(set(string), [])
-          included = optional(set(string), [])
-        }), {})
-        groups = optional(object({
-          excluded = optional(set(string), [])
-          included = optional(set(string), [])
-        }), {})
-        user_types = optional(object({
-          excluded = optional(set(string), [])
-          included = optional(set(string), [])
-        }), {})
-      }), {})
+      excluded_users      = optional(set(string), [])
+      included_users      = optional(set(string), [])
+      excluded_groups     = optional(set(string), [])
+      included_groups     = optional(set(string), [])
+      excluded_user_types = optional(set(string), [])
+      included_user_types = optional(set(string), [])
       network = optional(object({
         scope          = optional(string, "ANYWHERE")
         excluded_zones = optional(set(string), [])

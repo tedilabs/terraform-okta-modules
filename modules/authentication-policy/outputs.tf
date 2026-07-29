@@ -24,20 +24,12 @@ output "rules" {
       enabled  = rule.status == "ACTIVE"
 
       condition = {
-        people = {
-          users = {
-            excluded = rule.users_excluded
-            included = rule.users_included
-          }
-          groups = {
-            excluded = rule.groups_excluded
-            included = rule.groups_included
-          }
-          user_types = {
-            excluded = rule.user_types_excluded
-            included = rule.user_types_included
-          }
-        }
+        excluded_users      = rule.users_excluded
+        included_users      = rule.users_included
+        excluded_groups     = rule.groups_excluded
+        included_groups     = rule.groups_included
+        excluded_user_types = rule.user_types_excluded
+        included_user_types = rule.user_types_included
         network = {
           scope = rule.network_connection
 

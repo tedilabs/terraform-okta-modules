@@ -16,14 +16,14 @@ resource "okta_app_signon_policy_rule" "this" {
 
 
   ## Conditions
-  users_excluded = each.value.condition.people.users.excluded
-  users_included = each.value.condition.people.users.included
+  users_excluded = each.value.condition.excluded_users
+  users_included = each.value.condition.included_users
 
-  groups_excluded = each.value.condition.people.groups.excluded
-  groups_included = each.value.condition.people.groups.included
+  groups_excluded = each.value.condition.excluded_groups
+  groups_included = each.value.condition.included_groups
 
-  user_types_excluded = each.value.condition.people.user_types.excluded
-  user_types_included = each.value.condition.people.user_types.included
+  user_types_excluded = each.value.condition.excluded_user_types
+  user_types_included = each.value.condition.included_user_types
 
   network_connection = each.value.condition.network.scope
   network_excludes = (each.value.condition.network.scope == "ZONE" && length(each.value.condition.network.excluded_zones) > 0
