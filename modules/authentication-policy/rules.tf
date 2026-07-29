@@ -35,9 +35,9 @@ resource "okta_app_signon_policy_rule" "this" {
     : null
   )
 
-  device_is_registered       = each.value.condition.device.registered
-  device_is_managed          = each.value.condition.device.managed
-  device_assurances_included = each.value.condition.device.assurances
+  device_is_registered       = each.value.condition.device.type == "ANY" ? null : true
+  device_is_managed          = each.value.condition.device.type == "ANY" ? null : each.value.condition.device.type == "MANAGED"
+  device_assurances_included = each.value.condition.device.assurance_policies
 
   dynamic "platform_include" {
     for_each = each.value.condition.platforms
@@ -93,4 +93,13 @@ resource "okta_app_signon_policy_rule" "this" {
       if value != null
     })
   ]
+
+  dynamic "keep_me_signed_in" {
+    for_each = each.value.keep_me_signed_in == null ? [] : [each.value.keep_me_signed_in]
+
+    content {
+      post_auth                  = keep_me_signed_in.value.post_auth
+      post_auth_prompt_frequency = keep_me_signed_in.value.prompt_frequency
+    }
+  }
 }

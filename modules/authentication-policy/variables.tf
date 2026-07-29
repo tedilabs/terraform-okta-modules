@@ -29,9 +29,10 @@ variable "rules" {
         (Optional) `excluded_zones` - A set of excluded network zone IDs.
         (Optional) `included_zones` - A set of included network zone IDs.
       (Optional) `device` - A configuration for device conditions.
-        (Optional) `registered` - Whether the device must be registered.
-        (Optional) `managed` - Whether the device must be managed. Requires `registered` to be `true`.
-        (Optional) `assurances` - A set of included device assurance policy IDs.
+        (Optional) `type` - The required device state. Valid values are `ANY`, `REGISTERED`, or `MANAGED`. `REGISTERED`
+          requires an Okta-registered device, and `MANAGED` additionally requires device management. Defaults to `ANY`.
+        (Optional) `assurance_policies` - A set of included device assurance policy IDs. A device type other than `ANY`
+          is required when device assurance policies are configured.
       (Optional) `platforms` - A set of platform conditions.
       (Optional) `risk_score` - Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`. Defaults to `ANY`.
       (Optional) `expression` - An Okta Expression Language condition.
@@ -51,6 +52,11 @@ variable "rules" {
         API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is
         configured.
       (Optional) `constraints` - Knowledge and possession factor constraints.
+    (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
+      (Optional) `post_auth` - Whether to allow the prompt. Valid values are `ALLOWED` or `NOT_ALLOWED`. Defaults to
+        `NOT_ALLOWED`.
+      (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to
+        `post_auth_prompt_frequency` in the Terraform Provider.
   EOF
   type = list(object({
     name     = string
@@ -70,9 +76,8 @@ variable "rules" {
         included_zones = optional(set(string), [])
       }), {})
       device = optional(object({
-        registered = optional(bool)
-        managed    = optional(bool)
-        assurances = optional(set(string), [])
+        type               = optional(string, "ANY")
+        assurance_policies = optional(set(string), [])
       }), {})
       platforms = optional(set(object({
         type          = string
@@ -104,6 +109,10 @@ variable "rules" {
         }))
       })), [])
     }), {})
+    keep_me_signed_in = optional(object({
+      post_auth        = optional(string, "NOT_ALLOWED")
+      prompt_frequency = optional(string)
+    }))
   }))
   default  = []
   nullable = false
@@ -118,9 +127,16 @@ variable "rules" {
   validation {
     condition = alltrue([
       for rule in var.rules :
-      rule.condition.device.managed != true || rule.condition.device.registered == true
+      contains(["ANY", "REGISTERED", "MANAGED"], rule.condition.device.type)
     ])
-    error_message = "`condition.device.registered` must be `true` when `condition.device.managed` is `true`."
+    error_message = "Valid values for `condition.device.type` are `ANY`, `REGISTERED`, or `MANAGED`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      length(rule.condition.device.assurance_policies) == 0 || rule.condition.device.type != "ANY"
+    ])
+    error_message = "`condition.device.type` must be `REGISTERED` or `MANAGED` when `condition.device.assurance_policies` is configured."
   }
   validation {
     condition = alltrue([
@@ -160,5 +176,12 @@ variable "rules" {
       ]
     ]))
     error_message = "Possession constraint values must be `OPTIONAL` or `REQUIRED`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      rule.keep_me_signed_in == null || contains(["ALLOWED", "NOT_ALLOWED"], rule.keep_me_signed_in.post_auth)
+    ])
+    error_message = "Valid values for `keep_me_signed_in.post_auth` are `ALLOWED` or `NOT_ALLOWED`."
   }
 }

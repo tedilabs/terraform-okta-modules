@@ -38,9 +38,12 @@ output "rules" {
           included_zones = rule.network_includes
         }
         device = {
-          registered = rule.device_is_registered
-          managed    = rule.device_is_managed
-          assurances = rule.device_assurances_included
+          type = (
+            rule.device_is_managed == true ? "MANAGED"
+            : rule.device_is_registered == true ? "REGISTERED"
+            : "ANY"
+          )
+          assurance_policies = rule.device_assurances_included
         }
         platforms = [
           for platform in rule.platform_include :
@@ -61,6 +64,10 @@ output "rules" {
         reauthentication_timeout = rule.re_authentication_frequency
         inactivity_timeout       = rule.inactivity_period
         constraints              = rule.constraints
+      }
+      keep_me_signed_in = length(rule.keep_me_signed_in) == 0 ? null : {
+        post_auth        = rule.keep_me_signed_in[0].post_auth
+        prompt_frequency = rule.keep_me_signed_in[0].post_auth_prompt_frequency
       }
     }
   }
