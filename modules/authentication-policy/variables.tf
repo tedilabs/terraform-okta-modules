@@ -177,7 +177,7 @@ variable "rules" {
             constraint.possession.user_presence,
             constraint.possession.user_verification,
           ] :
-          value == null || contains(["OPTIONAL", "REQUIRED"], value)
+          contains(["OPTIONAL", "REQUIRED"], value)
         ])
       ]
     ]))

@@ -112,26 +112,14 @@ resource "okta_app_signon_policy_rule" "this" {
           required = constraint.knowledge.required
           types    = constraint.knowledge.types
         }
-        possession = constraint.possession == null ? null : merge(
-          {
-            required = constraint.possession.required
-          },
-          constraint.possession.device_bound == null ? {} : {
-            deviceBound = constraint.possession.device_bound
-          },
-          constraint.possession.hardware_protection == null ? {} : {
-            hardwareProtection = constraint.possession.hardware_protection
-          },
-          constraint.possession.phishing_resistant == null ? {} : {
-            phishingResistant = constraint.possession.phishing_resistant
-          },
-          constraint.possession.user_presence == null ? {} : {
-            userPresence = constraint.possession.user_presence
-          },
-          constraint.possession.user_verification == null ? {} : {
-            userVerification = constraint.possession.user_verification
-          },
-        )
+        possession = constraint.possession == null ? null : {
+          required           = constraint.possession.required
+          deviceBound        = constraint.possession.device_bound
+          hardwareProtection = constraint.possession.hardware_protection
+          phishingResistant  = constraint.possession.phishing_resistant
+          userPresence       = constraint.possession.user_presence
+          userVerification   = constraint.possession.user_verification
+        }
       } : type => value
       if value != null
     })
