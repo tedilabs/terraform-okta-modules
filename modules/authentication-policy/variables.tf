@@ -37,10 +37,19 @@ variable "rules" {
       (Optional) `expression` - An Okta Expression Language condition.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
     (Optional) `verification` - A configuration for authentication requirements.
-      (Optional) `type` - The verification method type. Defaults to `ASSURANCE`.
+      (Optional) `type` - The verification method type. Valid value is `ASSURANCE`, which verifies that the selected
+        factor count and constraints are satisfied. The Okta API also defines `AUTH_METHOD_CHAIN`, which prompts for
+        specific authentication methods in a configured sequence, but this module doesn't support it because
+        authentication method chains aren't implemented. Defaults to `ASSURANCE`.
       (Optional) `factor_mode` - Valid values are `1FA` or `2FA`. Defaults to `2FA`.
-      (Optional) `reauthentication_frequency` - An ISO 8601 duration. Defaults to once per session.
-      (Optional) `inactivity_period` - An optional ISO 8601 inactivity duration.
+      (Optional) `reauthentication_timeout` - The maximum authentication age after which the user must re-authenticate,
+        regardless of activity, in ISO 8601 duration format. Maps to `verificationMethod.reauthenticateIn` in the Okta
+        Policy API and `re_authentication_frequency` in the Terraform Provider. `PT0S` means every sign-in attempt and
+        Okta uses `PT43800H` to represent once per active Okta global session. Defaults to `PT43800H`.
+      (Optional) `inactivity_timeout` - The duration without authentication activity after which the user must
+        re-authenticate, in ISO 8601 duration format. Maps to `verificationMethod.inactivityPeriod` in the Okta Policy
+        API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is
+        configured.
       (Optional) `constraints` - Knowledge and possession factor constraints.
   EOF
   type = list(object({
@@ -76,10 +85,10 @@ variable "rules" {
 
     allow_access = optional(bool, true)
     verification = optional(object({
-      type                       = optional(string, "ASSURANCE")
-      factor_mode                = optional(string, "2FA")
-      reauthentication_frequency = optional(string, "PT43800H")
-      inactivity_period          = optional(string)
+      type                     = optional(string, "ASSURANCE")
+      factor_mode              = optional(string, "2FA")
+      reauthentication_timeout = optional(string, "PT43800H")
+      inactivity_timeout       = optional(string)
       constraints = optional(list(object({
         knowledge = optional(object({
           required = optional(bool, true)
@@ -130,9 +139,9 @@ variable "rules" {
   validation {
     condition = alltrue([
       for rule in var.rules :
-      rule.verification.type == "ASSURANCE"
+      contains(["ASSURANCE"], rule.verification.type)
     ])
-    error_message = "Valid value for `verification.type` is `ASSURANCE`."
+    error_message = "Valid value for `verification.type` is `ASSURANCE`. `AUTH_METHOD_CHAIN` isn't supported because authentication method chains aren't implemented by this module."
   }
   validation {
     condition = alltrue(flatten([

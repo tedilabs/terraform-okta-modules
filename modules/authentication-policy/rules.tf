@@ -58,8 +58,8 @@ resource "okta_app_signon_policy_rule" "this" {
 
   type                        = each.value.verification.type
   factor_mode                 = each.value.verification.factor_mode
-  re_authentication_frequency = each.value.verification.reauthentication_frequency
-  inactivity_period           = each.value.verification.inactivity_period
+  re_authentication_frequency = each.value.verification.reauthentication_timeout
+  inactivity_period           = each.value.verification.inactivity_timeout
 
   constraints = [
     for constraint in each.value.verification.constraints :

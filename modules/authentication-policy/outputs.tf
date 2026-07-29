@@ -56,11 +56,11 @@ output "rules" {
 
       allow_access = rule.access == "ALLOW"
       verification = {
-        type                       = rule.type
-        factor_mode                = rule.factor_mode
-        reauthentication_frequency = rule.re_authentication_frequency
-        inactivity_period          = rule.inactivity_period
-        constraints                = rule.constraints
+        type                     = rule.type
+        factor_mode              = rule.factor_mode
+        reauthentication_timeout = rule.re_authentication_frequency
+        inactivity_timeout       = rule.inactivity_period
+        constraints              = rule.constraints
       }
     }
   }
