@@ -1,3 +1,21 @@
+locals {
+  device_condition = {
+    "ANY" = {
+      registered = null
+      managed    = null
+    }
+    "REGISTERED" = {
+      registered = true
+      managed    = false
+    }
+    "MANAGED" = {
+      registered = true
+      managed    = true
+    }
+  }
+}
+
+
 ###################################################
 # Rules of Okta Authentication Policy
 ###################################################
@@ -35,8 +53,8 @@ resource "okta_app_signon_policy_rule" "this" {
     : null
   )
 
-  device_is_registered       = each.value.condition.device.type == "ANY" ? null : true
-  device_is_managed          = each.value.condition.device.type == "ANY" ? null : each.value.condition.device.type == "MANAGED"
+  device_is_registered       = local.device_condition[each.value.condition.device.type].registered
+  device_is_managed          = local.device_condition[each.value.condition.device.type].managed
   device_assurances_included = each.value.condition.device.assurance_policies
 
   dynamic "platform_include" {
