@@ -1,4 +1,14 @@
 locals {
+  native_platform_os_types = toset([
+    "ANDROID",
+    "ANY",
+    "CHROMEOS",
+    "IOS",
+    "MACOS",
+    "OTHER",
+    "WINDOWS",
+  ])
+
   device_condition = {
     "ANY" = {
       registered = null
@@ -58,12 +68,27 @@ resource "okta_app_signon_policy_rule" "this" {
   device_assurances_included = each.value.condition.device.assurance_policies
 
   dynamic "platform_include" {
-    for_each = each.value.condition.platforms
+    for_each = concat(
+      [
+        for os_type in each.value.condition.platform.included_os_types.desktop :
+        {
+          type    = "DESKTOP"
+          os_type = os_type
+        }
+      ],
+      [
+        for os_type in each.value.condition.platform.included_os_types.mobile :
+        {
+          type    = "MOBILE"
+          os_type = os_type
+        }
+      ],
+    )
 
     content {
       type          = platform_include.value.type
-      os_type       = platform_include.value.os_type
-      os_expression = platform_include.value.os_expression
+      os_type       = contains(local.native_platform_os_types, platform_include.value.os_type) ? platform_include.value.os_type : "OTHER"
+      os_expression = contains(local.native_platform_os_types, platform_include.value.os_type) ? null : platform_include.value.os_type
     }
   }
 

@@ -33,7 +33,12 @@ variable "rules" {
           requires an Okta-registered device, and `MANAGED` additionally requires device management. Defaults to `ANY`.
         (Optional) `assurance_policies` - A set of included device assurance policy IDs. A device type other than `ANY`
           is required when device assurance policies are configured.
-      (Optional) `platforms` - A set of platform conditions.
+      (Optional) `platform` - A configuration for platform conditions.
+        (Optional) `included_os_types` - Operating systems to include by platform type.
+          (Optional) `desktop` - A set of desktop operating systems.
+          (Optional) `mobile` - A set of mobile operating systems.
+          `ANDROID`, `ANY`, `CHROMEOS`, `IOS`, `MACOS`, `OTHER`, and `WINDOWS` map directly to the Okta OS type.
+          Other values, including `LINUX`, map to the `OTHER` OS type and are passed as the Okta OS expression.
       (Optional) `risk_score` - Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`. Defaults to `ANY`.
       (Optional) `expression` - An Okta Expression Language condition.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
@@ -78,11 +83,12 @@ variable "rules" {
         type               = optional(string, "ANY")
         assurance_policies = optional(set(string), [])
       }), {})
-      platforms = optional(set(object({
-        type          = string
-        os_type       = string
-        os_expression = optional(string)
-      })), [])
+      platform = optional(object({
+        included_os_types = optional(object({
+          desktop = optional(set(string), [])
+          mobile  = optional(set(string), [])
+        }), {})
+      }), {})
       risk_score = optional(string, "ANY")
       expression = optional(string)
     }), {})

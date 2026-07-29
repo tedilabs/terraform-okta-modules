@@ -45,14 +45,20 @@ output "rules" {
           )
           assurance_policies = rule.device_assurances_included
         }
-        platforms = [
-          for platform in rule.platform_include :
-          {
-            type          = platform.type
-            os_type       = platform.os_type
-            os_expression = platform.os_expression
+        platform = {
+          included_os_types = {
+            desktop = [
+              for platform in rule.platform_include :
+              platform.os_expression == null ? platform.os_type : platform.os_expression
+              if platform.type == "DESKTOP"
+            ]
+            mobile = [
+              for platform in rule.platform_include :
+              platform.os_expression == null ? platform.os_type : platform.os_expression
+              if platform.type == "MOBILE"
+            ]
           }
-        ]
+        }
         risk_score = rule.risk_score
         expression = rule.custom_expression
       }
