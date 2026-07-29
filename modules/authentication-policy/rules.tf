@@ -112,12 +112,8 @@ resource "okta_app_signon_policy_rule" "this" {
     })
   ]
 
-  dynamic "keep_me_signed_in" {
-    for_each = each.value.keep_me_signed_in == null ? [] : [each.value.keep_me_signed_in]
-
-    content {
-      post_auth                  = keep_me_signed_in.value.post_auth
-      post_auth_prompt_frequency = keep_me_signed_in.value.prompt_frequency
-    }
+  keep_me_signed_in {
+    post_auth                  = each.value.keep_me_signed_in.enabled ? "ALLOWED" : "NOT_ALLOWED"
+    post_auth_prompt_frequency = each.value.keep_me_signed_in.enabled ? each.value.keep_me_signed_in.prompt_frequency : null
   }
 }

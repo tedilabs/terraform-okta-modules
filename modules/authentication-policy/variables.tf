@@ -53,10 +53,9 @@ variable "rules" {
         configured.
       (Optional) `constraints` - Knowledge and possession factor constraints.
     (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
-      (Optional) `post_auth` - Whether to allow the prompt. Valid values are `ALLOWED` or `NOT_ALLOWED`. Defaults to
-        `NOT_ALLOWED`.
+      (Optional) `enabled` - Whether to allow the post-authentication prompt. Defaults to `false`.
       (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to
-        `post_auth_prompt_frequency` in the Terraform Provider.
+        `post_auth_prompt_frequency` in the Terraform Provider. Defaults to `PT168H` (7 days).
   EOF
   type = list(object({
     name     = string
@@ -110,9 +109,9 @@ variable "rules" {
       })), [])
     }), {})
     keep_me_signed_in = optional(object({
-      post_auth        = optional(string, "NOT_ALLOWED")
-      prompt_frequency = optional(string)
-    }))
+      enabled          = optional(bool, false)
+      prompt_frequency = optional(string, "PT168H")
+    }), {})
   }))
   default  = []
   nullable = false
@@ -176,12 +175,5 @@ variable "rules" {
       ]
     ]))
     error_message = "Possession constraint values must be `OPTIONAL` or `REQUIRED`."
-  }
-  validation {
-    condition = alltrue([
-      for rule in var.rules :
-      rule.keep_me_signed_in == null || contains(["ALLOWED", "NOT_ALLOWED"], rule.keep_me_signed_in.post_auth)
-    ])
-    error_message = "Valid values for `keep_me_signed_in.post_auth` are `ALLOWED` or `NOT_ALLOWED`."
   }
 }

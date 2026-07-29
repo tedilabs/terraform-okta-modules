@@ -65,8 +65,8 @@ output "rules" {
         inactivity_timeout       = rule.inactivity_period
         constraints              = rule.constraints
       }
-      keep_me_signed_in = length(rule.keep_me_signed_in) == 0 ? null : {
-        post_auth        = rule.keep_me_signed_in[0].post_auth
+      keep_me_signed_in = {
+        enabled          = rule.keep_me_signed_in[0].post_auth == "ALLOWED"
         prompt_frequency = rule.keep_me_signed_in[0].post_auth_prompt_frequency
       }
     }
