@@ -56,8 +56,8 @@ resource "okta_app_signon_policy_rule" "this" {
   ## Effects
   access = each.value.allow_access ? "ALLOW" : "DENY"
 
-  factor_mode                 = each.value.verification.factor_mode
   type                        = each.value.verification.type
+  factor_mode                 = each.value.verification.factor_mode
   re_authentication_frequency = each.value.verification.reauthentication_frequency
   inactivity_period           = each.value.verification.inactivity_period
 

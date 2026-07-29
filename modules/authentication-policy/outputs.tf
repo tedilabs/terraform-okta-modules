@@ -19,6 +19,7 @@ output "rules" {
     for name, rule in okta_app_signon_policy_rule.this :
     name => {
       id       = rule.id
+      type     = rule.system ? "SYSTEM" : "CUSTOM"
       name     = rule.name
       priority = rule.priority
       enabled  = rule.status == "ACTIVE"
@@ -55,8 +56,8 @@ output "rules" {
 
       allow_access = rule.access == "ALLOW"
       verification = {
-        factor_mode                = rule.factor_mode
         type                       = rule.type
+        factor_mode                = rule.factor_mode
         reauthentication_frequency = rule.re_authentication_frequency
         inactivity_period          = rule.inactivity_period
         constraints                = rule.constraints

@@ -37,8 +37,8 @@ variable "rules" {
       (Optional) `expression` - An Okta Expression Language condition.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
     (Optional) `verification` - A configuration for authentication requirements.
-      (Optional) `factor_mode` - Valid values are `1FA` or `2FA`. Defaults to `2FA`.
       (Optional) `type` - The verification method type. Defaults to `ASSURANCE`.
+      (Optional) `factor_mode` - Valid values are `1FA` or `2FA`. Defaults to `2FA`.
       (Optional) `reauthentication_frequency` - An ISO 8601 duration. Defaults to once per session.
       (Optional) `inactivity_period` - An optional ISO 8601 inactivity duration.
       (Optional) `constraints` - Knowledge and possession factor constraints.
@@ -76,8 +76,8 @@ variable "rules" {
 
     allow_access = optional(bool, true)
     verification = optional(object({
-      factor_mode                = optional(string, "2FA")
       type                       = optional(string, "ASSURANCE")
+      factor_mode                = optional(string, "2FA")
       reauthentication_frequency = optional(string, "PT43800H")
       inactivity_period          = optional(string)
       constraints = optional(list(object({
