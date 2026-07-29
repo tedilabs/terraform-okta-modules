@@ -13,6 +13,66 @@ output "description" {
   value       = okta_app_signon_policy.this.description
 }
 
+output "rules" {
+  description = "The configuration for rules of the Okta Authentication Policy."
+  value = {
+    for name, rule in okta_app_signon_policy_rule.this :
+    name => {
+      id       = rule.id
+      name     = rule.name
+      priority = rule.priority
+      enabled  = rule.status == "ACTIVE"
+
+      condition = {
+        people = {
+          users = {
+            excluded = rule.users_excluded
+            included = rule.users_included
+          }
+          groups = {
+            excluded = rule.groups_excluded
+            included = rule.groups_included
+          }
+          user_types = {
+            excluded = rule.user_types_excluded
+            included = rule.user_types_included
+          }
+        }
+        network = {
+          scope = rule.network_connection
+
+          excluded_zones = rule.network_excludes
+          included_zones = rule.network_includes
+        }
+        device = {
+          registered = rule.device_is_registered
+          managed    = rule.device_is_managed
+          assurances = rule.device_assurances_included
+        }
+        platforms = [
+          for platform in rule.platform_include :
+          {
+            type          = platform.type
+            os_type       = platform.os_type
+            os_expression = platform.os_expression
+          }
+        ]
+        risk_score = rule.risk_score
+        expression = rule.custom_expression
+      }
+
+      allow_access = rule.access == "ALLOW"
+      verification = {
+        factor_mode                = rule.factor_mode
+        type                       = rule.type
+        reauthentication_frequency = rule.re_authentication_frequency
+        inactivity_period          = rule.inactivity_period
+        constraints                = rule.constraints
+      }
+    }
+  }
+}
+
 # output "debug" {
 #   value = {
 #     for k, v in okta_app_signon_policy.this :

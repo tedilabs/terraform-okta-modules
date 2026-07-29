@@ -10,3 +10,152 @@ variable "description" {
   default     = "Managed by Terraform."
   nullable    = false
 }
+
+variable "rules" {
+  description = <<EOF
+  (Optional) A configuration for rules of the Okta Authentication Policy. Each item of `rules` block as defined below.
+    (Required) `name` - A name of the authentication policy rule.
+    (Optional) `priority` - A priority of the authentication policy rule.
+    (Optional) `enabled` - Whether to enable the authentication policy rule. Defaults to `true`.
+    (Optional) `condition` - A condition of the authentication policy rule. `condition` block as defined below.
+      (Optional) `people` - A configuration for people conditions.
+        (Optional) `users` - Sets of included and excluded user IDs.
+        (Optional) `groups` - Sets of included and excluded group IDs.
+        (Optional) `user_types` - Sets of included and excluded user type IDs.
+      (Optional) `network` - A configuration for network conditions.
+        (Optional) `scope` - Valid values are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK`, or `ZONE`. Defaults to `ANYWHERE`.
+        (Optional) `excluded_zones` - A set of excluded network zone IDs.
+        (Optional) `included_zones` - A set of included network zone IDs.
+      (Optional) `device` - A configuration for device conditions.
+        (Optional) `registered` - Whether the device must be registered.
+        (Optional) `managed` - Whether the device must be managed. Requires `registered` to be `true`.
+        (Optional) `assurances` - A set of included device assurance policy IDs.
+      (Optional) `platforms` - A set of platform conditions.
+      (Optional) `risk_score` - Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`. Defaults to `ANY`.
+      (Optional) `expression` - An Okta Expression Language condition.
+    (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
+    (Optional) `verification` - A configuration for authentication requirements.
+      (Optional) `factor_mode` - Valid values are `1FA` or `2FA`. Defaults to `2FA`.
+      (Optional) `type` - The verification method type. Defaults to `ASSURANCE`.
+      (Optional) `reauthentication_frequency` - An ISO 8601 duration. Defaults to once per session.
+      (Optional) `inactivity_period` - An optional ISO 8601 inactivity duration.
+      (Optional) `constraints` - Knowledge and possession factor constraints.
+  EOF
+  type = list(object({
+    name     = string
+    priority = optional(number)
+    enabled  = optional(bool, true)
+
+    condition = optional(object({
+      people = optional(object({
+        users = optional(object({
+          excluded = optional(set(string), [])
+          included = optional(set(string), [])
+        }), {})
+        groups = optional(object({
+          excluded = optional(set(string), [])
+          included = optional(set(string), [])
+        }), {})
+        user_types = optional(object({
+          excluded = optional(set(string), [])
+          included = optional(set(string), [])
+        }), {})
+      }), {})
+      network = optional(object({
+        scope          = optional(string, "ANYWHERE")
+        excluded_zones = optional(set(string), [])
+        included_zones = optional(set(string), [])
+      }), {})
+      device = optional(object({
+        registered = optional(bool)
+        managed    = optional(bool)
+        assurances = optional(set(string), [])
+      }), {})
+      platforms = optional(set(object({
+        type          = string
+        os_type       = string
+        os_expression = optional(string)
+      })), [])
+      risk_score = optional(string, "ANY")
+      expression = optional(string)
+    }), {})
+
+    allow_access = optional(bool, true)
+    verification = optional(object({
+      factor_mode                = optional(string, "2FA")
+      type                       = optional(string, "ASSURANCE")
+      reauthentication_frequency = optional(string, "PT43800H")
+      inactivity_period          = optional(string)
+      constraints = optional(list(object({
+        knowledge = optional(object({
+          required = optional(bool, true)
+          types    = optional(set(string), [])
+        }))
+        possession = optional(object({
+          required            = optional(bool, true)
+          device_bound        = optional(string)
+          hardware_protection = optional(string)
+          phishing_resistant  = optional(string)
+          user_presence       = optional(string)
+          user_verification   = optional(string)
+        }))
+      })), [])
+    }), {})
+  }))
+  default  = []
+  nullable = false
+
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["ANYWHERE", "ON_NETWORK", "OFF_NETWORK", "ZONE"], rule.condition.network.scope)
+    ])
+    error_message = "Valid values for `condition.network.scope` are `ANYWHERE`, `ON_NETWORK`, `OFF_NETWORK`, or `ZONE`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      rule.condition.device.managed != true || rule.condition.device.registered == true
+    ])
+    error_message = "`condition.device.registered` must be `true` when `condition.device.managed` is `true`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["ANY", "LOW", "MEDIUM", "HIGH"], rule.condition.risk_score)
+    ])
+    error_message = "Valid values for `condition.risk_score` are `ANY`, `LOW`, `MEDIUM`, or `HIGH`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      contains(["1FA", "2FA"], rule.verification.factor_mode)
+    ])
+    error_message = "Valid values for `verification.factor_mode` are `1FA` or `2FA`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      rule.verification.type == "ASSURANCE"
+    ])
+    error_message = "Valid value for `verification.type` is `ASSURANCE`."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for constraint in rule.verification.constraints :
+        constraint.possession == null || alltrue([
+          for value in [
+            constraint.possession.device_bound,
+            constraint.possession.hardware_protection,
+            constraint.possession.phishing_resistant,
+            constraint.possession.user_presence,
+            constraint.possession.user_verification,
+          ] :
+          value == null || contains(["OPTIONAL", "REQUIRED"], value)
+        ])
+      ]
+    ]))
+    error_message = "Possession constraint values must be `OPTIONAL` or `REQUIRED`."
+  }
+}
