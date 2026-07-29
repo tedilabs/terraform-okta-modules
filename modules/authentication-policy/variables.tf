@@ -56,7 +56,8 @@ variable "rules" {
         re-authenticate, in ISO 8601 duration format. Maps to `verificationMethod.inactivityPeriod` in the Okta Policy
         API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is
         configured.
-      (Optional) `constraints` - Knowledge and possession factor constraints.
+      (Optional) `constraints` - Knowledge and possession factor constraints. Possession constraints default to optional
+        device binding, hardware protection, phishing resistance, and user verification, with user presence required.
     (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
       (Optional) `enabled` - Whether to allow the post-authentication prompt. Defaults to `false`.
       (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to
@@ -106,11 +107,11 @@ variable "rules" {
         }))
         possession = optional(object({
           required            = optional(bool, true)
-          device_bound        = optional(string)
-          hardware_protection = optional(string)
-          phishing_resistant  = optional(string)
-          user_presence       = optional(string)
-          user_verification   = optional(string)
+          device_bound        = optional(string, "OPTIONAL")
+          hardware_protection = optional(string, "OPTIONAL")
+          phishing_resistant  = optional(string, "OPTIONAL")
+          user_presence       = optional(string, "REQUIRED")
+          user_verification   = optional(string, "OPTIONAL")
         }))
       })), [])
     }), {})
