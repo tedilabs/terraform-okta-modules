@@ -109,16 +109,24 @@ resource "okta_app_signon_policy_rule" "this" {
     jsonencode({
       for type, value in {
         knowledge = constraint.knowledge == null ? null : {
-          required = constraint.knowledge.required
-          types    = constraint.knowledge.types
+          for key, value in {
+            required         = constraint.knowledge.required
+            types            = constraint.knowledge.types
+            reauthenticateIn = constraint.knowledge.reauthentication_timeout
+          } : key => value
+          if value != null
         }
         possession = constraint.possession == null ? null : {
-          required           = constraint.possession.required
-          deviceBound        = constraint.possession.device_bound
-          hardwareProtection = constraint.possession.hardware_protection
-          phishingResistant  = constraint.possession.phishing_resistant
-          userPresence       = constraint.possession.user_presence
-          userVerification   = constraint.possession.user_verification
+          for key, value in {
+            required           = constraint.possession.required
+            deviceBound        = constraint.possession.device_bound
+            hardwareProtection = constraint.possession.hardware_protection
+            phishingResistant  = constraint.possession.phishing_resistant
+            userPresence       = constraint.possession.user_presence
+            userVerification   = constraint.possession.user_verification
+            reauthenticateIn   = constraint.possession.reauthentication_timeout
+          } : key => value
+          if value != null
         }
       } : type => value
       if value != null

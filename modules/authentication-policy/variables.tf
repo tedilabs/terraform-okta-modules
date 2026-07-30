@@ -56,8 +56,28 @@ variable "rules" {
         re-authenticate, in ISO 8601 duration format. Maps to `verificationMethod.inactivityPeriod` in the Okta Policy
         API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is
         configured.
-      (Optional) `constraints` - Knowledge and possession factor constraints. Possession constraints default to optional
-        device binding, hardware protection, phishing resistance, and user verification, with user presence required.
+      (Optional) `constraints` - Knowledge and possession factor constraints.
+        (Optional) `knowledge` - Requirements for knowledge factors, such as a password.
+          (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`.
+          (Optional) `types` - Permitted knowledge authenticator types. The Okta API currently documents `password`.
+          (Optional) `reauthentication_timeout` - The maximum authentication age for the knowledge factor, in ISO 8601
+            duration format. Maps to `knowledge.reauthenticateIn` in the Okta Policy API and overrides the verification
+            method's `reauthenticateIn` interval for this factor.
+        (Optional) `possession` - Requirements for possession factors, such as Okta Verify or a security key.
+          (Optional) `required` - Whether a possession factor is required. Defaults to `true`.
+          (Optional) `device_bound` - Whether the factor must be bound to a device. Valid values are `OPTIONAL` or
+            `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `hardware_protection` - Whether authentication secrets or private keys must be hardware-protected
+            and non-exportable. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `phishing_resistant` - Whether the factor must resist credential phishing. Valid values are
+            `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `user_presence` - Whether the user must approve an Okta Verify prompt or provide biometrics.
+            Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `REQUIRED`.
+          (Optional) `user_verification` - Whether the factor must verify the user with an interaction such as a PIN or
+            biometrics. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `reauthentication_timeout` - The maximum authentication age for the possession factor, in ISO 8601
+            duration format. Maps to `possession.reauthenticateIn` in the Okta Policy API and overrides the verification
+            method's `reauthenticateIn` interval for this factor.
     (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
       (Optional) `enabled` - Whether to allow the post-authentication prompt. Defaults to `false`.
       (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to
@@ -102,16 +122,18 @@ variable "rules" {
       inactivity_timeout       = optional(string)
       constraints = optional(list(object({
         knowledge = optional(object({
-          required = optional(bool, true)
-          types    = optional(set(string), [])
+          required                 = optional(bool, true)
+          types                    = optional(set(string), [])
+          reauthentication_timeout = optional(string)
         }))
         possession = optional(object({
-          required            = optional(bool, true)
-          device_bound        = optional(string, "OPTIONAL")
-          hardware_protection = optional(string, "OPTIONAL")
-          phishing_resistant  = optional(string, "OPTIONAL")
-          user_presence       = optional(string, "REQUIRED")
-          user_verification   = optional(string, "OPTIONAL")
+          required                 = optional(bool, true)
+          device_bound             = optional(string, "OPTIONAL")
+          hardware_protection      = optional(string, "OPTIONAL")
+          phishing_resistant       = optional(string, "OPTIONAL")
+          user_presence            = optional(string, "REQUIRED")
+          user_verification        = optional(string, "OPTIONAL")
+          reauthentication_timeout = optional(string)
         }))
       })), [])
     }), {})
