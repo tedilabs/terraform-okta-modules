@@ -39,7 +39,8 @@ variable "rules" {
           (Optional) `mobile` - A set of mobile operating systems.
           `ANDROID`, `ANY`, `CHROMEOS`, `IOS`, `MACOS`, `OTHER`, and `WINDOWS` map directly to the Okta OS type.
           Other values, including `LINUX`, map to the `OTHER` OS type and are passed as the Okta OS expression.
-      (Optional) `risk_score` - Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`. Defaults to `ANY`.
+      (Optional) `risk_score` - A risk score condition. Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`.
+        By default, the risk score condition isn't sent to Okta.
       (Optional) `expression` - An Okta Expression Language condition.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
     (Optional) `verification` - A configuration for authentication requirements.
@@ -112,7 +113,7 @@ variable "rules" {
           mobile  = optional(set(string), [])
         }), {})
       }), {})
-      risk_score = optional(string, "ANY")
+      risk_score = optional(string)
       expression = optional(string)
     }), {})
 
@@ -171,7 +172,7 @@ variable "rules" {
   validation {
     condition = alltrue([
       for rule in var.rules :
-      contains(["ANY", "LOW", "MEDIUM", "HIGH"], rule.condition.risk_score)
+      rule.condition.risk_score == null ? true : contains(["ANY", "LOW", "MEDIUM", "HIGH"], rule.condition.risk_score)
     ])
     error_message = "Valid values for `condition.risk_score` are `ANY`, `LOW`, `MEDIUM`, or `HIGH`."
   }
