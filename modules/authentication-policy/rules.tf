@@ -111,7 +111,7 @@ resource "okta_app_signon_policy_rule" "this" {
         knowledge = constraint.knowledge == null ? null : {
           for key, value in {
             required         = constraint.knowledge.required
-            types            = constraint.knowledge.types
+            types            = [for type in constraint.knowledge.types : lower(type)]
             reauthenticateIn = constraint.knowledge.reauthentication_timeout
           } : key => value
           if value != null

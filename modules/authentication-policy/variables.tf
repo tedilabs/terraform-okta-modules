@@ -60,7 +60,8 @@ variable "rules" {
         (Optional) `knowledge` - Requirements for knowledge factors, such as a password.
           (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`.
           (Optional) `types` - Permitted knowledge authenticator types. Valid values are `SECURITY_KEY`, `PHONE`,
-            `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`.
+            `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`. Values are mapped to lowercase when passed
+            to the Okta Policy API.
           (Optional) `reauthentication_timeout` - The maximum authentication age for the knowledge factor, in ISO 8601
             duration format. Maps to `knowledge.reauthenticateIn` in the Okta Policy API and overrides the verification
             method's `reauthenticateIn` interval for this factor.
