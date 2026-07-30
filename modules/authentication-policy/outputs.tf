@@ -69,7 +69,31 @@ output "rules" {
         factor_mode              = rule.factor_mode
         reauthentication_timeout = rule.re_authentication_frequency
         inactivity_timeout       = rule.inactivity_period
-        constraints              = rule.constraints
+        constraints = [
+          for constraint in [
+            for value in rule.constraints :
+            jsondecode(value)
+          ] :
+          {
+            knowledge = try(constraint.knowledge, null) == null ? null : {
+              required = try(constraint.knowledge.required, true)
+              types = toset([
+                for type in try(constraint.knowledge.types, []) :
+                upper(type)
+              ])
+              reauthentication_timeout = try(constraint.knowledge.reauthenticateIn, null)
+            }
+            possession = try(constraint.possession, null) == null ? null : {
+              required                 = try(constraint.possession.required, true)
+              device_bound             = try(constraint.possession.deviceBound, "OPTIONAL")
+              hardware_protection      = try(constraint.possession.hardwareProtection, "OPTIONAL")
+              phishing_resistant       = try(constraint.possession.phishingResistant, "OPTIONAL")
+              user_presence            = try(constraint.possession.userPresence, "REQUIRED")
+              user_verification        = try(constraint.possession.userVerification, "OPTIONAL")
+              reauthentication_timeout = try(constraint.possession.reauthenticateIn, null)
+            }
+          }
+        ]
       }
       keep_me_signed_in = {
         enabled          = rule.keep_me_signed_in[0].post_auth == "ALLOWED"
