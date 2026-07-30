@@ -59,7 +59,8 @@ variable "rules" {
       (Optional) `constraints` - Knowledge and possession factor constraints.
         (Optional) `knowledge` - Requirements for knowledge factors, such as a password.
           (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`.
-          (Optional) `types` - Permitted knowledge authenticator types. The Okta API currently documents `password`.
+          (Optional) `types` - Permitted knowledge authenticator types. Valid values are `SECURITY_KEY`, `PHONE`,
+            `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`.
           (Optional) `reauthentication_timeout` - The maximum authentication age for the knowledge factor, in ISO 8601
             duration format. Maps to `knowledge.reauthenticateIn` in the Okta Policy API and overrides the verification
             method's `reauthenticateIn` interval for this factor.
@@ -186,6 +187,18 @@ variable "rules" {
       contains(["ASSURANCE"], rule.verification.type)
     ])
     error_message = "Valid value for `verification.type` is `ASSURANCE`. `AUTH_METHOD_CHAIN` isn't supported because authentication method chains aren't implemented by this module."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for constraint in rule.verification.constraints :
+        constraint.knowledge == null || alltrue([
+          for type in constraint.knowledge.types :
+          contains(["SECURITY_KEY", "PHONE", "EMAIL", "PASSWORD", "SECURITY_QUESTION", "APP", "FEDERATED"], type)
+        ])
+      ]
+    ]))
+    error_message = "Valid values for knowledge constraint `types` are `SECURITY_KEY`, `PHONE`, `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`."
   }
   validation {
     condition = alltrue(flatten([
