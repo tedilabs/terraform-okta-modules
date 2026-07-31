@@ -110,21 +110,61 @@ resource "okta_app_signon_policy_rule" "this" {
       for type, value in {
         knowledge = constraint.knowledge == null ? null : {
           for key, value in {
-            required         = constraint.knowledge.required
-            types            = [for type in constraint.knowledge.types : lower(type)]
+            required = length(constraint.knowledge.excluded_authentication_methods) > 0 ? false : constraint.knowledge.required
+            types    = [for type in constraint.knowledge.types : lower(type)]
+            authenticationMethods = [
+              for authentication_method in constraint.knowledge.authentication_methods : {
+                for key, value in {
+                  id     = authentication_method.id
+                  key    = authentication_method.key
+                  method = authentication_method.method
+                } : key => value
+                if value != null
+              }
+            ]
+            excludedAuthenticationMethods = [
+              for authentication_method in constraint.knowledge.excluded_authentication_methods : {
+                for key, value in {
+                  id     = authentication_method.id
+                  key    = authentication_method.key
+                  method = authentication_method.method
+                } : key => value
+                if value != null
+              }
+            ]
             reauthenticateIn = constraint.knowledge.reauthentication_timeout
           } : key => value
           if value != null
         }
         possession = constraint.possession == null ? null : {
           for key, value in {
-            required           = constraint.possession.required
+            required           = length(constraint.possession.excluded_authentication_methods) > 0 ? false : constraint.possession.required
             deviceBound        = constraint.possession.device_bound
             hardwareProtection = constraint.possession.hardware_protection
             phishingResistant  = constraint.possession.phishing_resistant
             userPresence       = constraint.possession.user_presence
             userVerification   = constraint.possession.user_verification
-            reauthenticateIn   = constraint.possession.reauthentication_timeout
+            authenticationMethods = [
+              for authentication_method in constraint.possession.authentication_methods : {
+                for key, value in {
+                  id     = authentication_method.id
+                  key    = authentication_method.key
+                  method = authentication_method.method
+                } : key => value
+                if value != null
+              }
+            ]
+            excludedAuthenticationMethods = [
+              for authentication_method in constraint.possession.excluded_authentication_methods : {
+                for key, value in {
+                  id     = authentication_method.id
+                  key    = authentication_method.key
+                  method = authentication_method.method
+                } : key => value
+                if value != null
+              }
+            ]
+            reauthenticateIn = constraint.possession.reauthentication_timeout
           } : key => value
           if value != null
         }
