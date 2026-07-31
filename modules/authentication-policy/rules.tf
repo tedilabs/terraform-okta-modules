@@ -104,7 +104,7 @@ resource "okta_app_signon_policy_rule" "this" {
   re_authentication_frequency = each.value.verification.reauthentication_timeout != null ? each.value.verification.reauthentication_timeout : (
     anytrue(flatten([
       for chain in each.value.verification.chains : [
-        for step in chain.steps :
+        for step in chain :
         step.reauthentication_timeout != null
       ]
     ])) ? null : "PT43800H"
@@ -191,7 +191,7 @@ resource "okta_app_signon_policy_rule" "this" {
     jsonencode(merge(
       {
         authenticationMethods = [
-          for method in chain.steps[0].authentication_methods : {
+          for method in chain[0].authentication_methods : {
             for key, value in {
               id                      = method.id
               key                     = method.key
@@ -205,14 +205,14 @@ resource "okta_app_signon_policy_rule" "this" {
           }
         ]
       },
-      chain.steps[0].reauthentication_timeout == null ? {} : {
-        reauthenticateIn = chain.steps[0].reauthentication_timeout
+      chain[0].reauthentication_timeout == null ? {} : {
+        reauthenticateIn = chain[0].reauthentication_timeout
       },
-      length(chain.steps) > 1 ? {
+      length(chain) > 1 ? {
         next = [merge(
           {
             authenticationMethods = [
-              for method in chain.steps[1].authentication_methods : {
+              for method in chain[1].authentication_methods : {
                 for key, value in {
                   id                      = method.id
                   key                     = method.key
@@ -226,14 +226,14 @@ resource "okta_app_signon_policy_rule" "this" {
               }
             ]
           },
-          chain.steps[1].reauthentication_timeout == null ? {} : {
-            reauthenticateIn = chain.steps[1].reauthentication_timeout
+          chain[1].reauthentication_timeout == null ? {} : {
+            reauthenticateIn = chain[1].reauthentication_timeout
           },
-          length(chain.steps) > 2 ? {
+          length(chain) > 2 ? {
             next = [merge(
               {
                 authenticationMethods = [
-                  for method in chain.steps[2].authentication_methods : {
+                  for method in chain[2].authentication_methods : {
                     for key, value in {
                       id                      = method.id
                       key                     = method.key
@@ -247,8 +247,8 @@ resource "okta_app_signon_policy_rule" "this" {
                   }
                 ]
               },
-              chain.steps[2].reauthentication_timeout == null ? {} : {
-                reauthenticateIn = chain.steps[2].reauthentication_timeout
+              chain[2].reauthentication_timeout == null ? {} : {
+                reauthenticateIn = chain[2].reauthentication_timeout
               },
             )]
           } : {},

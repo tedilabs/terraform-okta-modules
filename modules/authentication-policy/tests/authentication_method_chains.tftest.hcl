@@ -10,35 +10,31 @@ run "maps_ordered_authentication_method_chains" {
       verification = {
         type = "AUTH_METHOD_CHAIN"
         chains = [
-          {
-            steps = [
-              {
-                authentication_methods = [{
-                  key                       = "okta_verify"
-                  method                    = "signed_nonce"
-                  phishing_resistant        = "REQUIRED"
-                  user_verification         = "REQUIRED"
-                  user_verification_methods = ["BIOMETRICS"]
-                }]
-                reauthentication_timeout = "PT12H"
-              },
-              {
-                authentication_methods = [{
-                  key    = "okta_password"
-                  method = "password"
-                }]
-              },
-            ]
-          },
-          {
-            steps = [{
+          [
+            {
               authentication_methods = [{
-                id     = "autenticator-id"
-                key    = "webauthn"
-                method = "webauthn"
+                key                       = "okta_verify"
+                method                    = "signed_nonce"
+                phishing_resistant        = "REQUIRED"
+                user_verification         = "REQUIRED"
+                user_verification_methods = ["BIOMETRICS"]
               }]
+              reauthentication_timeout = "PT12H"
+            },
+            {
+              authentication_methods = [{
+                key    = "okta_password"
+                method = "password"
+              }]
+            },
+          ],
+          [{
+            authentication_methods = [{
+              id     = "authenticator-id"
+              key    = "webauthn"
+              method = "webauthn"
             }]
-          },
+          }],
         ]
       }
     }]
@@ -60,12 +56,12 @@ run "maps_ordered_authentication_method_chains" {
   }
 
   assert {
-    condition     = one(output.rules["default"].verification.chains[0].steps[0].authentication_methods).phishing_resistant == "REQUIRED"
+    condition     = one(one([for chain in output.rules["default"].verification.chains : chain if length(chain) == 2])[0].authentication_methods).phishing_resistant == "REQUIRED"
     error_message = "Authentication method requirements didn't round-trip."
   }
 
   assert {
-    condition     = one(output.rules["default"].verification.chains[0].steps[1].authentication_methods).key == "okta_password"
+    condition     = one(one([for chain in output.rules["default"].verification.chains : chain if length(chain) == 2])[1].authentication_methods).key == "okta_password"
     error_message = "Ordered authentication method chain steps didn't round-trip."
   }
 }
@@ -82,14 +78,12 @@ run "rejects_assurance_fields_for_authentication_method_chain" {
         constraints = [{
           possession = {}
         }]
-        chains = [{
-          steps = [{
+        chains = [[{
             authentication_methods = [{
               key    = "okta_verify"
               method = "signed_nonce"
             }]
-          }]
-        }]
+        }]]
       }
     }]
   }
@@ -108,16 +102,14 @@ run "rejects_more_than_three_chain_steps" {
       name = "default"
       verification = {
         type = "AUTH_METHOD_CHAIN"
-        chains = [{
-          steps = [
+        chains = [[
             for index in range(4) : {
               authentication_methods = [{
                 key    = "method-${index}"
                 method = "method"
               }]
             }
-          ]
-        }]
+        ]]
       }
     }]
   }
@@ -137,15 +129,13 @@ run "rejects_conflicting_reauthentication_timeouts" {
       verification = {
         type                     = "AUTH_METHOD_CHAIN"
         reauthentication_timeout = "PT24H"
-        chains = [{
-          steps = [{
+        chains = [[{
             authentication_methods = [{
               key    = "okta_verify"
               method = "signed_nonce"
             }]
             reauthentication_timeout = "PT12H"
-          }]
-        }]
+        }]]
       }
     }]
   }
@@ -164,15 +154,13 @@ run "rejects_verification_methods_without_required_verification" {
       name = "default"
       verification = {
         type = "AUTH_METHOD_CHAIN"
-        chains = [{
-          steps = [{
+        chains = [[{
             authentication_methods = [{
               key                       = "okta_verify"
               method                    = "signed_nonce"
               user_verification_methods = ["PIN"]
             }]
-          }]
-        }]
+        }]]
       }
     }]
   }

@@ -122,33 +122,31 @@ output "rules" {
             }
           }
         ]
-        chains = [
+        chains = toset([
           for chain in [
             for value in coalesce(rule.chains, []) :
             jsondecode(value)
-            ] : {
-            steps = [
-              for step in concat(
-                [chain],
-                try(chain.next, []),
-                try(chain.next[0].next, []),
-                ) : {
-                authentication_methods = toset([
-                  for method in step.authenticationMethods : {
-                    id                        = try(method.id, null)
-                    key                       = method.key
-                    method                    = method.method
-                    hardware_protection       = try(method.hardwareProtection, "OPTIONAL")
-                    phishing_resistant        = try(method.phishingResistant, "OPTIONAL")
-                    user_verification         = try(method.userVerification, "OPTIONAL")
-                    user_verification_methods = toset(try(method.userVerificationMethods, []))
-                  }
-                ])
-                reauthentication_timeout = try(step.reauthenticateIn, null)
-              }
-            ]
-          }
-        ]
+            ] : [
+            for step in concat(
+              [chain],
+              try(chain.next, []),
+              try(chain.next[0].next, []),
+              ) : {
+              authentication_methods = toset([
+                for method in step.authenticationMethods : {
+                  id                        = try(method.id, null)
+                  key                       = method.key
+                  method                    = method.method
+                  hardware_protection       = try(method.hardwareProtection, "OPTIONAL")
+                  phishing_resistant        = try(method.phishingResistant, "OPTIONAL")
+                  user_verification         = try(method.userVerification, "OPTIONAL")
+                  user_verification_methods = toset(try(method.userVerificationMethods, []))
+                }
+              ])
+              reauthentication_timeout = try(step.reauthenticateIn, null)
+            }
+          ]
+        ])
       }
       keep_me_signed_in = {
         enabled          = rule.keep_me_signed_in[0].post_auth == "ALLOWED"

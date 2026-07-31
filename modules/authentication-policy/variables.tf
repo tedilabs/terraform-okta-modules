@@ -65,13 +65,12 @@ variable "rules" {
           (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API. The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
           (Optional) `reauthentication_timeout` - The maximum authentication age for the possession factor, in ISO 8601 duration format. Maps to `possession.reauthenticateIn` in the Okta Policy API and overrides the verification method's `reauthenticateIn` interval for this factor.
       (Optional) `chains` - Ordered authentication method chains for `AUTH_METHOD_CHAIN`. A rule supports up to five alternative chains. Each chain is satisfied when its one to three steps are completed in order.
-        (Required) `steps` - Ordered authentication steps. Methods within one step are alternatives.
-          (Required) `authentication_methods` - Authentication methods accepted by this step. Each method requires the Okta authenticator `key` and `method`, and optionally accepts its `id`.
-          (Optional) `hardware_protection` - Whether the method must use hardware-protected keys. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `phishing_resistant` - Whether the method must be phishing-resistant. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `user_verification` - Whether the method must verify the user locally. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `user_verification_methods` - Permitted local verification methods. Valid values are `BIOMETRICS` or `PIN`, and may only be set when `user_verification` is `REQUIRED`.
-          (Optional) `reauthentication_timeout` - Maximum authentication age for this step in ISO 8601 duration format. Maps to `AuthenticationMethodChain.reauthenticateIn`. It can't be combined with the verification-level `reauthentication_timeout`.
+        (Required) `authentication_methods` - Authentication methods accepted by this step. Each method requires the Okta authenticator `key` and `method`, and optionally accepts its `id`.
+        (Optional) `hardware_protection` - Whether the method must use hardware-protected keys. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+        (Optional) `phishing_resistant` - Whether the method must be phishing-resistant. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+        (Optional) `user_verification` - Whether the method must verify the user locally. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+        (Optional) `user_verification_methods` - Permitted local verification methods. Valid values are `BIOMETRICS` or `PIN`, and may only be set when `user_verification` is `REQUIRED`.
+        (Optional) `reauthentication_timeout` - Maximum authentication age for this step in ISO 8601 duration format. Maps to `AuthenticationMethodChain.reauthenticateIn`. It can't be combined with the verification-level `reauthentication_timeout`.
     (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
       (Optional) `enabled` - Whether to allow the post-authentication prompt. Defaults to `false`.
       (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to `post_auth_prompt_frequency` in the Terraform Provider. Defaults to `PT168H` (7 days).
@@ -149,20 +148,18 @@ variable "rules" {
           reauthentication_timeout = optional(string)
         }))
       })), [])
-      chains = optional(list(object({
-        steps = list(object({
-          authentication_methods = set(object({
-            id                        = optional(string)
-            key                       = string
-            method                    = string
-            hardware_protection       = optional(string, "OPTIONAL")
-            phishing_resistant        = optional(string, "OPTIONAL")
-            user_verification         = optional(string, "OPTIONAL")
-            user_verification_methods = optional(set(string), [])
-          }))
-          reauthentication_timeout = optional(string)
+      chains = optional(set(list(object({
+        authentication_methods = set(object({
+          id                        = optional(string)
+          key                       = string
+          method                    = string
+          hardware_protection       = optional(string, "OPTIONAL")
+          phishing_resistant        = optional(string, "OPTIONAL")
+          user_verification         = optional(string, "OPTIONAL")
+          user_verification_methods = optional(set(string), [])
         }))
-      })), [])
+        reauthentication_timeout = optional(string)
+      }))), [])
     }), {})
     keep_me_signed_in = optional(object({
       enabled          = optional(bool, false)
@@ -229,7 +226,7 @@ variable "rules" {
     condition = alltrue(flatten([
       for rule in var.rules : [
         for chain in rule.verification.chains :
-        length(chain.steps) >= 1 && length(chain.steps) <= 3
+        length(chain) >= 1 && length(chain) <= 3
       ]
     ]))
     error_message = "Each authentication method chain must contain one to three `steps`."
@@ -238,7 +235,7 @@ variable "rules" {
     condition = alltrue(flatten([
       for rule in var.rules : [
         for chain in rule.verification.chains : [
-          for step in chain.steps :
+          for step in chain :
           length(step.authentication_methods) >= 1
         ]
       ]
@@ -249,7 +246,7 @@ variable "rules" {
     condition = alltrue(flatten([
       for rule in var.rules : [
         for chain in rule.verification.chains : [
-          for step in chain.steps : [
+          for step in chain : [
             for method in step.authentication_methods :
             contains(["OPTIONAL", "REQUIRED"], method.hardware_protection) &&
             contains(["OPTIONAL", "REQUIRED"], method.phishing_resistant) &&
@@ -270,7 +267,7 @@ variable "rules" {
       for rule in var.rules :
       rule.verification.reauthentication_timeout == null || !anytrue(flatten([
         for chain in rule.verification.chains : [
-          for step in chain.steps :
+          for step in chain :
           step.reauthentication_timeout != null
         ]
       ]))
