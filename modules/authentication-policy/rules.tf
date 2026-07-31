@@ -197,7 +197,8 @@ resource "okta_app_signon_policy_rule" "this" {
               phishingResistant       = method.phishing_resistant
               userVerification        = method.user_verification
               userVerificationMethods = method.user_verification == "REQUIRED" ? method.user_verification_methods : null
-            } : key => value
+            } :
+            key => value
             if value != null
           }
         ]
@@ -218,7 +219,8 @@ resource "okta_app_signon_policy_rule" "this" {
                   phishingResistant       = method.phishing_resistant
                   userVerification        = method.user_verification
                   userVerificationMethods = method.user_verification == "REQUIRED" ? method.user_verification_methods : null
-                } : key => value
+                } :
+                key => value
                 if value != null
               }
             ]
@@ -239,7 +241,8 @@ resource "okta_app_signon_policy_rule" "this" {
                       phishingResistant       = method.phishing_resistant
                       userVerification        = method.user_verification
                       userVerificationMethods = method.user_verification == "REQUIRED" ? method.user_verification_methods : null
-                    } : key => value
+                    } :
+                    key => value
                     if value != null
                   }
                 ]
