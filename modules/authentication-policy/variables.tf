@@ -59,15 +59,22 @@ variable "rules" {
         configured.
       (Optional) `constraints` - Knowledge and possession factor constraints.
         (Optional) `knowledge` - Requirements for knowledge factors, such as a password.
-          (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`.
+          (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`, or `false` when
+            `excluded_authentication_methods` is configured.
           (Optional) `types` - Permitted knowledge authenticator types. Valid values are `SECURITY_KEY`, `PHONE`,
             `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`. Values are mapped to lowercase when passed
             to the Okta Policy API.
+          (Optional) `authentication_methods` - Precise authenticator methods to allow. Each item requires `key` and
+            optionally accepts `method` and the Limited GA `id`. Maps to `authenticationMethods` in the Okta Policy API.
+          (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item
+            structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API.
+            The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
           (Optional) `reauthentication_timeout` - The maximum authentication age for the knowledge factor, in ISO 8601
             duration format. Maps to `knowledge.reauthenticateIn` in the Okta Policy API and overrides the verification
             method's `reauthenticateIn` interval for this factor.
         (Optional) `possession` - Requirements for possession factors, such as Okta Verify or a security key.
-          (Optional) `required` - Whether a possession factor is required. Defaults to `true`.
+          (Optional) `required` - Whether a possession factor is required. Defaults to `true`, or `false` when
+            `excluded_authentication_methods` is configured.
           (Optional) `device_bound` - Whether the factor must be bound to a device. Valid values are `OPTIONAL` or
             `REQUIRED`. Defaults to `OPTIONAL`.
           (Optional) `hardware_protection` - Whether authentication secrets or private keys must be hardware-protected
@@ -78,6 +85,11 @@ variable "rules" {
             Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `REQUIRED`.
           (Optional) `user_verification` - Whether the factor must verify the user with an interaction such as a PIN or
             biometrics. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `authentication_methods` - Precise authenticator methods to allow. Each item requires `key` and
+            optionally accepts `method` and the Limited GA `id`. Maps to `authenticationMethods` in the Okta Policy API.
+          (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item
+            structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API.
+            The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
           (Optional) `reauthentication_timeout` - The maximum authentication age for the possession factor, in ISO 8601
             duration format. Maps to `possession.reauthenticateIn` in the Okta Policy API and overrides the verification
             method's `reauthenticateIn` interval for this factor.
@@ -125,17 +137,37 @@ variable "rules" {
       inactivity_timeout       = optional(string)
       constraints = optional(list(object({
         knowledge = optional(object({
-          required                 = optional(bool, true)
-          types                    = optional(set(string), [])
+          required = optional(bool)
+          types    = optional(set(string), [])
+          authentication_methods = optional(set(object({
+            id     = optional(string)
+            key    = string
+            method = optional(string)
+          })), [])
+          excluded_authentication_methods = optional(set(object({
+            id     = optional(string)
+            key    = string
+            method = optional(string)
+          })), [])
           reauthentication_timeout = optional(string)
         }))
         possession = optional(object({
-          required                 = optional(bool, true)
-          device_bound             = optional(string, "OPTIONAL")
-          hardware_protection      = optional(string, "OPTIONAL")
-          phishing_resistant       = optional(string, "OPTIONAL")
-          user_presence            = optional(string, "REQUIRED")
-          user_verification        = optional(string, "OPTIONAL")
+          required            = optional(bool)
+          device_bound        = optional(string, "OPTIONAL")
+          hardware_protection = optional(string, "OPTIONAL")
+          phishing_resistant  = optional(string, "OPTIONAL")
+          user_presence       = optional(string, "REQUIRED")
+          user_verification   = optional(string, "OPTIONAL")
+          authentication_methods = optional(set(object({
+            id     = optional(string)
+            key    = string
+            method = optional(string)
+          })), [])
+          excluded_authentication_methods = optional(set(object({
+            id     = optional(string)
+            key    = string
+            method = optional(string)
+          })), [])
           reauthentication_timeout = optional(string)
         }))
       })), [])
@@ -201,6 +233,47 @@ variable "rules" {
       ]
     ]))
     error_message = "Valid values for knowledge constraint `types` are `SECURITY_KEY`, `PHONE`, `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for constraint in rule.verification.constraints :
+        constraint.knowledge == null ? true : (
+          length(constraint.knowledge.authentication_methods) == 0 ||
+          length(constraint.knowledge.excluded_authentication_methods) == 0
+        )
+      ]
+    ]))
+    error_message = "Only one of knowledge constraint `authentication_methods` or `excluded_authentication_methods` can be configured."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for constraint in rule.verification.constraints :
+        constraint.possession == null ? true : (
+          length(constraint.possession.authentication_methods) == 0 ||
+          length(constraint.possession.excluded_authentication_methods) == 0
+        )
+      ]
+    ]))
+    error_message = "Only one of possession constraint `authentication_methods` or `excluded_authentication_methods` can be configured."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for constraint in rule.verification.constraints : [
+          constraint.knowledge == null ? true : (
+            length(constraint.knowledge.excluded_authentication_methods) == 0 ||
+            constraint.knowledge.required != true
+          ),
+          constraint.possession == null ? true : (
+            length(constraint.possession.excluded_authentication_methods) == 0 ||
+            constraint.possession.required != true
+          ),
+        ]
+      ]
+    ]))
+    error_message = "Constraint `required` can't be `true` when `excluded_authentication_methods` is configured."
   }
   validation {
     condition = alltrue(flatten([

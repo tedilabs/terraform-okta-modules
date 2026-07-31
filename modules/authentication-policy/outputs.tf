@@ -81,15 +81,43 @@ output "rules" {
                 for type in try(constraint.knowledge.types, []) :
                 upper(type)
               ])
+              authentication_methods = toset([
+                for authentication_method in try(constraint.knowledge.authenticationMethods, []) : {
+                  id     = try(authentication_method.id, null)
+                  key    = authentication_method.key
+                  method = try(authentication_method.method, null)
+                }
+              ])
+              excluded_authentication_methods = toset([
+                for authentication_method in try(constraint.knowledge.excludedAuthenticationMethods, []) : {
+                  id     = try(authentication_method.id, null)
+                  key    = authentication_method.key
+                  method = try(authentication_method.method, null)
+                }
+              ])
               reauthentication_timeout = try(constraint.knowledge.reauthenticateIn, null)
             }
             possession = try(constraint.possession, null) == null ? null : {
-              required                 = try(constraint.possession.required, true)
-              device_bound             = try(constraint.possession.deviceBound, "OPTIONAL")
-              hardware_protection      = try(constraint.possession.hardwareProtection, "OPTIONAL")
-              phishing_resistant       = try(constraint.possession.phishingResistant, "OPTIONAL")
-              user_presence            = try(constraint.possession.userPresence, "REQUIRED")
-              user_verification        = try(constraint.possession.userVerification, "OPTIONAL")
+              required            = try(constraint.possession.required, true)
+              device_bound        = try(constraint.possession.deviceBound, "OPTIONAL")
+              hardware_protection = try(constraint.possession.hardwareProtection, "OPTIONAL")
+              phishing_resistant  = try(constraint.possession.phishingResistant, "OPTIONAL")
+              user_presence       = try(constraint.possession.userPresence, "REQUIRED")
+              user_verification   = try(constraint.possession.userVerification, "OPTIONAL")
+              authentication_methods = toset([
+                for authentication_method in try(constraint.possession.authenticationMethods, []) : {
+                  id     = try(authentication_method.id, null)
+                  key    = authentication_method.key
+                  method = try(authentication_method.method, null)
+                }
+              ])
+              excluded_authentication_methods = toset([
+                for authentication_method in try(constraint.possession.excludedAuthenticationMethods, []) : {
+                  id     = try(authentication_method.id, null)
+                  key    = authentication_method.key
+                  method = try(authentication_method.method, null)
+                }
+              ])
               reauthentication_timeout = try(constraint.possession.reauthenticateIn, null)
             }
           }
