@@ -110,8 +110,11 @@ resource "okta_app_signon_policy_rule" "this" {
       for type, value in {
         knowledge = constraint.knowledge == null ? null : {
           for key, value in {
-            required = length(constraint.knowledge.excluded_authentication_methods) > 0 ? false : constraint.knowledge.required
-            types    = [for type in constraint.knowledge.types : lower(type)]
+            required = coalesce(
+              constraint.knowledge.required,
+              length(constraint.knowledge.excluded_authentication_methods) == 0,
+            )
+            types = [for type in constraint.knowledge.types : lower(type)]
             authenticationMethods = [
               for authentication_method in constraint.knowledge.authentication_methods : {
                 for key, value in {
@@ -138,7 +141,10 @@ resource "okta_app_signon_policy_rule" "this" {
         }
         possession = constraint.possession == null ? null : {
           for key, value in {
-            required           = length(constraint.possession.excluded_authentication_methods) > 0 ? false : constraint.possession.required
+            required = coalesce(
+              constraint.possession.required,
+              length(constraint.possession.excluded_authentication_methods) == 0,
+            )
             deviceBound        = constraint.possession.device_bound
             hardwareProtection = constraint.possession.hardware_protection
             phishingResistant  = constraint.possession.phishing_resistant
