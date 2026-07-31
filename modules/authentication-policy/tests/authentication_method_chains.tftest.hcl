@@ -93,6 +93,32 @@ run "rejects_assurance_fields_for_authentication_method_chain" {
   ]
 }
 
+run "maps_chain_level_reauthentication_timeout" {
+  command = plan
+
+  variables {
+    name = "test"
+    rules = [{
+      name = "default"
+      verification = {
+        type                     = "AUTH_METHOD_CHAIN"
+        reauthentication_timeout = "PT24H"
+        chains = [[{
+          authentication_methods = [{
+            key    = "okta_verify"
+            method = "signed_nonce"
+          }]
+        }]]
+      }
+    }]
+  }
+
+  assert {
+    condition     = output.rules["default"].verification.reauthentication_timeout == "PT24H"
+    error_message = "The chain-level reauthentication timeout didn't round-trip."
+  }
+}
+
 run "rejects_more_than_three_chain_steps" {
   command = plan
 

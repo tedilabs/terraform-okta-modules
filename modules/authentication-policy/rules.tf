@@ -101,13 +101,10 @@ resource "okta_app_signon_policy_rule" "this" {
 
   type        = each.value.verification.type
   factor_mode = each.value.verification.type == "ASSURANCE" ? each.value.verification.factor_mode : null
-  re_authentication_frequency = each.value.verification.reauthentication_timeout != null ? each.value.verification.reauthentication_timeout : (
-    anytrue(flatten([
-      for chain in each.value.verification.chains : [
-        for step in chain :
-        step.reauthentication_timeout != null
-      ]
-    ])) ? null : "PT43800H"
+  re_authentication_frequency = (
+    each.value.verification.type == "ASSURANCE"
+    ? coalesce(each.value.verification.reauthentication_timeout, "PT43800H")
+    : each.value.verification.reauthentication_timeout
   )
   inactivity_period = each.value.verification.type == "ASSURANCE" ? each.value.verification.inactivity_timeout : null
 
