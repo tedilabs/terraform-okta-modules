@@ -196,9 +196,9 @@ resource "okta_app_signon_policy_rule" "this" {
               hardwareProtection      = method.hardware_protection
               phishingResistant       = method.phishing_resistant
               userVerification        = method.user_verification
-              userVerificationMethods = method.user_verification_methods
+              userVerificationMethods = method.user_verification == "REQUIRED" ? method.user_verification_methods : null
             } : key => value
-            if value != null && (key != "userVerificationMethods" || length(value) > 0)
+            if value != null
           }
         ]
       },
@@ -217,9 +217,9 @@ resource "okta_app_signon_policy_rule" "this" {
                   hardwareProtection      = method.hardware_protection
                   phishingResistant       = method.phishing_resistant
                   userVerification        = method.user_verification
-                  userVerificationMethods = method.user_verification_methods
+                  userVerificationMethods = method.user_verification == "REQUIRED" ? method.user_verification_methods : null
                 } : key => value
-                if value != null && (key != "userVerificationMethods" || length(value) > 0)
+                if value != null
               }
             ]
           },
@@ -238,9 +238,9 @@ resource "okta_app_signon_policy_rule" "this" {
                       hardwareProtection      = method.hardware_protection
                       phishingResistant       = method.phishing_resistant
                       userVerification        = method.user_verification
-                      userVerificationMethods = method.user_verification_methods
+                      userVerificationMethods = method.user_verification == "REQUIRED" ? method.user_verification_methods : null
                     } : key => value
-                    if value != null && (key != "userVerificationMethods" || length(value) > 0)
+                    if value != null
                   }
                 ]
               },
