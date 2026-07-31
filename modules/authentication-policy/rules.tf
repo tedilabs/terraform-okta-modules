@@ -99,12 +99,19 @@ resource "okta_app_signon_policy_rule" "this" {
   ## Effects
   access = each.value.allow_access ? "ALLOW" : "DENY"
 
-  type                        = each.value.verification.type
-  factor_mode                 = each.value.verification.factor_mode
-  re_authentication_frequency = each.value.verification.reauthentication_timeout
-  inactivity_period           = each.value.verification.inactivity_timeout
+  type        = each.value.verification.type
+  factor_mode = each.value.verification.type == "ASSURANCE" ? each.value.verification.factor_mode : null
+  re_authentication_frequency = each.value.verification.reauthentication_timeout != null ? each.value.verification.reauthentication_timeout : (
+    anytrue(flatten([
+      for chain in each.value.verification.chains : [
+        for step in chain.steps :
+        step.reauthentication_timeout != null
+      ]
+    ])) ? null : "PT43800H"
+  )
+  inactivity_period = each.value.verification.type == "ASSURANCE" ? each.value.verification.inactivity_timeout : null
 
-  constraints = [
+  constraints = each.value.verification.type == "ASSURANCE" ? [
     for constraint in each.value.verification.constraints :
     jsonencode({
       for type, value in {
@@ -177,7 +184,78 @@ resource "okta_app_signon_policy_rule" "this" {
       } : type => value
       if value != null
     })
-  ]
+  ] : null
+
+  chains = each.value.verification.type == "AUTH_METHOD_CHAIN" ? [
+    for chain in each.value.verification.chains :
+    jsonencode(merge(
+      {
+        authenticationMethods = [
+          for method in chain.steps[0].authentication_methods : {
+            for key, value in {
+              id                      = method.id
+              key                     = method.key
+              method                  = method.method
+              hardwareProtection      = method.hardware_protection
+              phishingResistant       = method.phishing_resistant
+              userVerification        = method.user_verification
+              userVerificationMethods = method.user_verification_methods
+            } : key => value
+            if value != null && (key != "userVerificationMethods" || length(value) > 0)
+          }
+        ]
+      },
+      chain.steps[0].reauthentication_timeout == null ? {} : {
+        reauthenticateIn = chain.steps[0].reauthentication_timeout
+      },
+      length(chain.steps) > 1 ? {
+        next = [merge(
+          {
+            authenticationMethods = [
+              for method in chain.steps[1].authentication_methods : {
+                for key, value in {
+                  id                      = method.id
+                  key                     = method.key
+                  method                  = method.method
+                  hardwareProtection      = method.hardware_protection
+                  phishingResistant       = method.phishing_resistant
+                  userVerification        = method.user_verification
+                  userVerificationMethods = method.user_verification_methods
+                } : key => value
+                if value != null && (key != "userVerificationMethods" || length(value) > 0)
+              }
+            ]
+          },
+          chain.steps[1].reauthentication_timeout == null ? {} : {
+            reauthenticateIn = chain.steps[1].reauthentication_timeout
+          },
+          length(chain.steps) > 2 ? {
+            next = [merge(
+              {
+                authenticationMethods = [
+                  for method in chain.steps[2].authentication_methods : {
+                    for key, value in {
+                      id                      = method.id
+                      key                     = method.key
+                      method                  = method.method
+                      hardwareProtection      = method.hardware_protection
+                      phishingResistant       = method.phishing_resistant
+                      userVerification        = method.user_verification
+                      userVerificationMethods = method.user_verification_methods
+                    } : key => value
+                    if value != null && (key != "userVerificationMethods" || length(value) > 0)
+                  }
+                ]
+              },
+              chain.steps[2].reauthentication_timeout == null ? {} : {
+                reauthenticateIn = chain.steps[2].reauthentication_timeout
+              },
+            )]
+          } : {},
+        )]
+      } : {},
+    ))
+  ] : null
 
   keep_me_signed_in {
     post_auth                  = each.value.keep_me_signed_in.enabled ? "ALLOWED" : "NOT_ALLOWED"

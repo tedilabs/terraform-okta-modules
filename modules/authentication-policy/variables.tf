@@ -44,15 +44,15 @@ variable "rules" {
       (Optional) `expression` - An Okta Expression Language condition.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
     (Optional) `verification` - A configuration for authentication requirements.
-      (Optional) `type` - The verification method type. Valid value is `ASSURANCE`, which verifies that the selected
-        factor count and constraints are satisfied. The Okta API also defines `AUTH_METHOD_CHAIN`, which prompts for
-        specific authentication methods in a configured sequence, but this module doesn't support it because
-        authentication method chains aren't implemented. Defaults to `ASSURANCE`.
+      (Optional) `type` - The verification method type. Valid values are `ASSURANCE`, which verifies that the selected
+        factor count and constraints are satisfied, or `AUTH_METHOD_CHAIN`, which requires configured authentication
+        methods in order. Defaults to `ASSURANCE`.
       (Optional) `factor_mode` - Valid values are `1FA` or `2FA`. Defaults to `2FA`.
       (Optional) `reauthentication_timeout` - The maximum authentication age after which the user must re-authenticate,
         regardless of activity, in ISO 8601 duration format. Maps to `verificationMethod.reauthenticateIn` in the Okta
         Policy API and `re_authentication_frequency` in the Terraform Provider. `PT0S` means every sign-in attempt and
-        Okta uses `PT43800H` to represent once per active Okta global session. Defaults to `PT43800H`.
+        Okta uses `PT43800H` to represent once per active Okta global session. Defaults to `PT43800H` when no
+        chain-step timeout is configured.
       (Optional) `inactivity_timeout` - The duration without authentication activity after which the user must
         re-authenticate, in ISO 8601 duration format. Maps to `verificationMethod.inactivityPeriod` in the Okta Policy
         API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is
@@ -93,6 +93,22 @@ variable "rules" {
           (Optional) `reauthentication_timeout` - The maximum authentication age for the possession factor, in ISO 8601
             duration format. Maps to `possession.reauthenticateIn` in the Okta Policy API and overrides the verification
             method's `reauthenticateIn` interval for this factor.
+      (Optional) `chains` - Ordered authentication method chains for `AUTH_METHOD_CHAIN`. A rule supports up to five
+        alternative chains. Each chain is satisfied when its one to three steps are completed in order.
+        (Required) `steps` - Ordered authentication steps. Methods within one step are alternatives.
+          (Required) `authentication_methods` - Authentication methods accepted by this step. Each method requires the
+            Okta authenticator `key` and `method`, and optionally accepts its `id`.
+          (Optional) `hardware_protection` - Whether the method must use hardware-protected keys. Valid values are
+            `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `phishing_resistant` - Whether the method must be phishing-resistant. Valid values are `OPTIONAL`
+            or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `user_verification` - Whether the method must verify the user locally. Valid values are `OPTIONAL`
+            or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `user_verification_methods` - Permitted local verification methods. Valid values are `BIOMETRICS`
+            or `PIN`, and may only be set when `user_verification` is `REQUIRED`.
+          (Optional) `reauthentication_timeout` - Maximum authentication age for this step in ISO 8601 duration format.
+            Maps to `AuthenticationMethodChain.reauthenticateIn`. It can't be combined with the verification-level
+            `reauthentication_timeout`.
     (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
       (Optional) `enabled` - Whether to allow the post-authentication prompt. Defaults to `false`.
       (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to
@@ -133,7 +149,7 @@ variable "rules" {
     verification = optional(object({
       type                     = optional(string, "ASSURANCE")
       factor_mode              = optional(string, "2FA")
-      reauthentication_timeout = optional(string, "PT43800H")
+      reauthentication_timeout = optional(string)
       inactivity_timeout       = optional(string)
       constraints = optional(list(object({
         knowledge = optional(object({
@@ -168,6 +184,20 @@ variable "rules" {
             key    = string
             method = optional(string)
           })), [])
+          reauthentication_timeout = optional(string)
+        }))
+      })), [])
+      chains = optional(list(object({
+        steps = list(object({
+          authentication_methods = set(object({
+            id                        = optional(string)
+            key                       = string
+            method                    = string
+            hardware_protection       = optional(string, "OPTIONAL")
+            phishing_resistant        = optional(string, "OPTIONAL")
+            user_verification         = optional(string, "OPTIONAL")
+            user_verification_methods = optional(set(string), [])
+          }))
           reauthentication_timeout = optional(string)
         }))
       })), [])
@@ -211,16 +241,79 @@ variable "rules" {
   validation {
     condition = alltrue([
       for rule in var.rules :
-      contains(["1FA", "2FA"], rule.verification.factor_mode)
+      rule.verification.type != "ASSURANCE" || contains(["1FA", "2FA"], rule.verification.factor_mode)
     ])
     error_message = "Valid values for `verification.factor_mode` are `1FA` or `2FA`."
   }
   validation {
     condition = alltrue([
       for rule in var.rules :
-      contains(["ASSURANCE"], rule.verification.type)
+      contains(["ASSURANCE", "AUTH_METHOD_CHAIN"], rule.verification.type)
     ])
-    error_message = "Valid value for `verification.type` is `ASSURANCE`. `AUTH_METHOD_CHAIN` isn't supported because authentication method chains aren't implemented by this module."
+    error_message = "Valid values for `verification.type` are `ASSURANCE` or `AUTH_METHOD_CHAIN`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      rule.verification.type == "ASSURANCE" ? length(rule.verification.chains) == 0 : (
+        length(rule.verification.constraints) == 0 &&
+        length(rule.verification.chains) >= 1 &&
+        length(rule.verification.chains) <= 5
+      )
+    ])
+    error_message = "`ASSURANCE` uses `constraints` and can't use `chains`; `AUTH_METHOD_CHAIN` requires one to five `chains` and can't use `constraints`."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for chain in rule.verification.chains :
+        length(chain.steps) >= 1 && length(chain.steps) <= 3
+      ]
+    ]))
+    error_message = "Each authentication method chain must contain one to three `steps`."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for chain in rule.verification.chains : [
+          for step in chain.steps :
+          length(step.authentication_methods) >= 1
+        ]
+      ]
+    ]))
+    error_message = "Each authentication method chain step must contain at least one `authentication_methods` item."
+  }
+  validation {
+    condition = alltrue(flatten([
+      for rule in var.rules : [
+        for chain in rule.verification.chains : [
+          for step in chain.steps : [
+            for method in step.authentication_methods :
+            contains(["OPTIONAL", "REQUIRED"], method.hardware_protection) &&
+            contains(["OPTIONAL", "REQUIRED"], method.phishing_resistant) &&
+            contains(["OPTIONAL", "REQUIRED"], method.user_verification) &&
+            alltrue([
+              for verification_method in method.user_verification_methods :
+              contains(["BIOMETRICS", "PIN"], verification_method)
+            ]) &&
+            (length(method.user_verification_methods) == 0 || method.user_verification == "REQUIRED")
+          ]
+        ]
+      ]
+    ]))
+    error_message = "Chain method protection values must be `OPTIONAL` or `REQUIRED`; `user_verification_methods` accepts `BIOMETRICS` or `PIN` only when `user_verification` is `REQUIRED`."
+  }
+  validation {
+    condition = alltrue([
+      for rule in var.rules :
+      rule.verification.reauthentication_timeout == null || !anytrue(flatten([
+        for chain in rule.verification.chains : [
+          for step in chain.steps :
+          step.reauthentication_timeout != null
+        ]
+      ]))
+    ])
+    error_message = "Verification-level `reauthentication_timeout` can't be combined with a chain step `reauthentication_timeout`."
   }
   validation {
     condition = alltrue(flatten([
