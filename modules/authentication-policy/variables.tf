@@ -29,90 +29,52 @@ variable "rules" {
         (Optional) `excluded_zones` - A set of excluded network zone IDs.
         (Optional) `included_zones` - A set of included network zone IDs.
       (Optional) `device` - A configuration for device conditions.
-        (Optional) `type` - The required device state. Valid values are `ANY`, `REGISTERED`, or `MANAGED`. `REGISTERED`
-          requires an Okta-registered device, and `MANAGED` additionally requires device management. Defaults to `ANY`.
-        (Optional) `assurance_policies` - A set of included device assurance policy IDs. A device type other than `ANY`
-          is required when device assurance policies are configured.
+        (Optional) `type` - The required device state. Valid values are `ANY`, `REGISTERED`, or `MANAGED`. `REGISTERED` requires an Okta-registered device, and `MANAGED` additionally requires device management. Defaults to `ANY`.
+        (Optional) `assurance_policies` - A set of included device assurance policy IDs. A device type other than `ANY` is required when device assurance policies are configured.
       (Optional) `platform` - A configuration for platform conditions.
         (Optional) `included_os_types` - Operating systems to include by platform type.
           (Optional) `desktop` - A set of desktop operating systems.
           (Optional) `mobile` - A set of mobile operating systems.
-          `ANDROID`, `ANY`, `CHROMEOS`, `IOS`, `MACOS`, `OTHER`, and `WINDOWS` map directly to the Okta OS type.
-          Other values, including `LINUX`, map to the `OTHER` OS type and are passed as the Okta OS expression.
-      (Optional) `risk_score` - A risk score condition. Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`.
-        By default, the risk score condition isn't sent to Okta.
+          - `ANDROID`, `ANY`, `CHROMEOS`, `IOS`, `MACOS`, `OTHER`, and `WINDOWS`: Map directly to the Okta OS type.
+          - Other values, including `LINUX`: Map to the `OTHER` OS type and are passed as the Okta OS expression.
+      (Optional) `risk_score` - A risk score condition. Valid values are `ANY`, `LOW`, `MEDIUM`, or `HIGH`. By default, the risk score condition isn't sent to Okta.
       (Optional) `expression` - An Okta Expression Language condition.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
     (Optional) `verification` - A configuration for authentication requirements.
-      (Optional) `type` - The verification method type. Valid values are `ASSURANCE`, which verifies that the selected
-        factor count and constraints are satisfied, or `AUTH_METHOD_CHAIN`, which requires configured authentication
-        methods in order. Defaults to `ASSURANCE`.
+      (Optional) `type` - Valid values for `type` are `ASSURANCE`, `AUTH_METHOD_CHAIN`. Defaults to `ASSURANCE`.
+        - `ASSURANCE`: Verifies that the configured factor count and constraints are satisfied.
+        - `AUTH_METHOD_CHAIN`: Requires configured authentication methods to be completed in order.
       (Optional) `factor_mode` - Valid values are `1FA` or `2FA`. Defaults to `2FA`.
-      (Optional) `reauthentication_timeout` - The maximum authentication age after which the user must re-authenticate,
-        regardless of activity, in ISO 8601 duration format. Maps to `verificationMethod.reauthenticateIn` in the Okta
-        Policy API and `re_authentication_frequency` in the Terraform Provider. `PT0S` means every sign-in attempt and
-        Okta uses `PT43800H` to represent once per active Okta global session. Defaults to `PT43800H` when no
-        chain-step timeout is configured.
-      (Optional) `inactivity_timeout` - The duration without authentication activity after which the user must
-        re-authenticate, in ISO 8601 duration format. Maps to `verificationMethod.inactivityPeriod` in the Okta Policy
-        API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is
-        configured.
+      (Optional) `reauthentication_timeout` - The maximum authentication age after which the user must re-authenticate, regardless of activity, in ISO 8601 duration format. Maps to `verificationMethod.reauthenticateIn` in the Okta Policy API and `re_authentication_frequency` in the Terraform Provider. `PT0S` means every sign-in attempt and Okta uses `PT43800H` to represent once per active Okta global session. Defaults to `PT43800H` when no chain-step timeout is configured.
+      (Optional) `inactivity_timeout` - The duration without authentication activity after which the user must re-authenticate, in ISO 8601 duration format. Maps to `verificationMethod.inactivityPeriod` in the Okta Policy API and `inactivity_period` in the Terraform Provider. By default, no inactivity-based re-authentication is configured.
       (Optional) `constraints` - Knowledge and possession factor constraints.
         (Optional) `knowledge` - Requirements for knowledge factors, such as a password.
-          (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`, or `false` when
-            `excluded_authentication_methods` is configured.
-          (Optional) `types` - Permitted knowledge authenticator types. Valid values are `SECURITY_KEY`, `PHONE`,
-            `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`. Values are mapped to lowercase when passed
-            to the Okta Policy API.
-          (Optional) `authentication_methods` - Precise authenticator methods to allow. Each item requires `key` and
-            optionally accepts `method` and the Limited GA `id`. Maps to `authenticationMethods` in the Okta Policy API.
-          (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item
-            structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API.
-            The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
-          (Optional) `reauthentication_timeout` - The maximum authentication age for the knowledge factor, in ISO 8601
-            duration format. Maps to `knowledge.reauthenticateIn` in the Okta Policy API and overrides the verification
-            method's `reauthenticateIn` interval for this factor.
+          (Optional) `required` - Whether a knowledge factor is required. Defaults to `true`, or `false` when `excluded_authentication_methods` is configured.
+          (Optional) `types` - Permitted knowledge authenticator types. Valid values are `SECURITY_KEY`, `PHONE`, `EMAIL`, `PASSWORD`, `SECURITY_QUESTION`, `APP`, or `FEDERATED`. Values are mapped to lowercase when passed to the Okta Policy API.
+          (Optional) `authentication_methods` - Precise authenticator methods to allow. Each item requires `key` and optionally accepts `method` and the Limited GA `id`. Maps to `authenticationMethods` in the Okta Policy API.
+          (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API. The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
+          (Optional) `reauthentication_timeout` - The maximum authentication age for the knowledge factor, in ISO 8601 duration format. Maps to `knowledge.reauthenticateIn` in the Okta Policy API and overrides the verification method's `reauthenticateIn` interval for this factor.
         (Optional) `possession` - Requirements for possession factors, such as Okta Verify or a security key.
-          (Optional) `required` - Whether a possession factor is required. Defaults to `true`, or `false` when
-            `excluded_authentication_methods` is configured.
-          (Optional) `device_bound` - Whether the factor must be bound to a device. Valid values are `OPTIONAL` or
-            `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `hardware_protection` - Whether authentication secrets or private keys must be hardware-protected
-            and non-exportable. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `phishing_resistant` - Whether the factor must resist credential phishing. Valid values are
-            `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `user_presence` - Whether the user must approve an Okta Verify prompt or provide biometrics.
-            Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `REQUIRED`.
-          (Optional) `user_verification` - Whether the factor must verify the user with an interaction such as a PIN or
-            biometrics. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `authentication_methods` - Precise authenticator methods to allow. Each item requires `key` and
-            optionally accepts `method` and the Limited GA `id`. Maps to `authenticationMethods` in the Okta Policy API.
-          (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item
-            structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API.
-            The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
-          (Optional) `reauthentication_timeout` - The maximum authentication age for the possession factor, in ISO 8601
-            duration format. Maps to `possession.reauthenticateIn` in the Okta Policy API and overrides the verification
-            method's `reauthenticateIn` interval for this factor.
-      (Optional) `chains` - Ordered authentication method chains for `AUTH_METHOD_CHAIN`. A rule supports up to five
-        alternative chains. Each chain is satisfied when its one to three steps are completed in order.
+          (Optional) `required` - Whether a possession factor is required. Defaults to `true`, or `false` when `excluded_authentication_methods` is configured.
+          (Optional) `device_bound` - Whether the factor must be bound to a device. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `hardware_protection` - Whether authentication secrets or private keys must be hardware-protected and non-exportable. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `phishing_resistant` - Whether the factor must resist credential phishing. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `user_presence` - Whether the user must approve an Okta Verify prompt or provide biometrics. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `REQUIRED`.
+          (Optional) `user_verification` - Whether the factor must verify the user with an interaction such as a PIN or biometrics. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `authentication_methods` - Precise authenticator methods to allow. Each item requires `key` and optionally accepts `method` and the Limited GA `id`. Maps to `authenticationMethods` in the Okta Policy API.
+          (Optional) `excluded_authentication_methods` - Precise authenticator methods to exclude. Uses the same item structure as `authentication_methods` and maps to `excludedAuthenticationMethods` in the Okta Policy API. The module sets `required` to `false` when this is configured, as required by the Okta Policy API.
+          (Optional) `reauthentication_timeout` - The maximum authentication age for the possession factor, in ISO 8601 duration format. Maps to `possession.reauthenticateIn` in the Okta Policy API and overrides the verification method's `reauthenticateIn` interval for this factor.
+      (Optional) `chains` - Ordered authentication method chains for `AUTH_METHOD_CHAIN`. A rule supports up to five alternative chains. Each chain is satisfied when its one to three steps are completed in order.
         (Required) `steps` - Ordered authentication steps. Methods within one step are alternatives.
-          (Required) `authentication_methods` - Authentication methods accepted by this step. Each method requires the
-            Okta authenticator `key` and `method`, and optionally accepts its `id`.
-          (Optional) `hardware_protection` - Whether the method must use hardware-protected keys. Valid values are
-            `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `phishing_resistant` - Whether the method must be phishing-resistant. Valid values are `OPTIONAL`
-            or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `user_verification` - Whether the method must verify the user locally. Valid values are `OPTIONAL`
-            or `REQUIRED`. Defaults to `OPTIONAL`.
-          (Optional) `user_verification_methods` - Permitted local verification methods. Valid values are `BIOMETRICS`
-            or `PIN`, and may only be set when `user_verification` is `REQUIRED`.
-          (Optional) `reauthentication_timeout` - Maximum authentication age for this step in ISO 8601 duration format.
-            Maps to `AuthenticationMethodChain.reauthenticateIn`. It can't be combined with the verification-level
-            `reauthentication_timeout`.
+          (Required) `authentication_methods` - Authentication methods accepted by this step. Each method requires the Okta authenticator `key` and `method`, and optionally accepts its `id`.
+          (Optional) `hardware_protection` - Whether the method must use hardware-protected keys. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `phishing_resistant` - Whether the method must be phishing-resistant. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `user_verification` - Whether the method must verify the user locally. Valid values are `OPTIONAL` or `REQUIRED`. Defaults to `OPTIONAL`.
+          (Optional) `user_verification_methods` - Permitted local verification methods. Valid values are `BIOMETRICS` or `PIN`, and may only be set when `user_verification` is `REQUIRED`.
+          (Optional) `reauthentication_timeout` - Maximum authentication age for this step in ISO 8601 duration format. Maps to `AuthenticationMethodChain.reauthenticateIn`. It can't be combined with the verification-level `reauthentication_timeout`.
     (Optional) `keep_me_signed_in` - A configuration for the post-authentication Keep Me Signed In prompt.
       (Optional) `enabled` - Whether to allow the post-authentication prompt. Defaults to `false`.
-      (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to
-        `post_auth_prompt_frequency` in the Terraform Provider. Defaults to `PT168H` (7 days).
+      (Optional) `prompt_frequency` - How often the prompt is presented, in ISO 8601 duration format. Maps to `post_auth_prompt_frequency` in the Terraform Provider. Defaults to `PT168H` (7 days).
   EOF
   type = list(object({
     name     = string
