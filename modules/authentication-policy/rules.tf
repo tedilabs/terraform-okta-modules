@@ -119,7 +119,7 @@ resource "okta_app_signon_policy_rule" "this" {
               length(constraint.knowledge.excluded_authentication_methods) == 0,
             )
             types = [for type in constraint.knowledge.types : lower(type)]
-            authenticationMethods = [
+            authenticationMethods = length(constraint.knowledge.authentication_methods) == 0 ? null : [
               for authentication_method in constraint.knowledge.authentication_methods : {
                 for key, value in {
                   id     = authentication_method.id
@@ -129,7 +129,7 @@ resource "okta_app_signon_policy_rule" "this" {
                 if value != null
               }
             ]
-            excludedAuthenticationMethods = [
+            excludedAuthenticationMethods = length(constraint.knowledge.excluded_authentication_methods) == 0 ? null : [
               for authentication_method in constraint.knowledge.excluded_authentication_methods : {
                 for key, value in {
                   id     = authentication_method.id
@@ -154,7 +154,7 @@ resource "okta_app_signon_policy_rule" "this" {
             phishingResistant  = constraint.possession.phishing_resistant
             userPresence       = constraint.possession.user_presence
             userVerification   = constraint.possession.user_verification
-            authenticationMethods = [
+            authenticationMethods = length(constraint.possession.authentication_methods) == 0 ? null : [
               for authentication_method in constraint.possession.authentication_methods : {
                 for key, value in {
                   id     = authentication_method.id
@@ -164,7 +164,7 @@ resource "okta_app_signon_policy_rule" "this" {
                 if value != null
               }
             ]
-            excludedAuthenticationMethods = [
+            excludedAuthenticationMethods = length(constraint.possession.excluded_authentication_methods) == 0 ? null : [
               for authentication_method in constraint.possession.excluded_authentication_methods : {
                 for key, value in {
                   id     = authentication_method.id

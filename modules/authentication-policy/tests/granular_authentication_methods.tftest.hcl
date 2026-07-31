@@ -47,6 +47,22 @@ run "maps_granular_authentication_methods" {
     condition     = output.rules["default"].verification.constraints[1].knowledge.required == false
     error_message = "A constraint with excluded authentication methods must default required to false."
   }
+
+  assert {
+    condition = !contains(
+      keys(jsondecode(okta_app_signon_policy_rule.this["default"].constraints[0]).possession),
+      "excludedAuthenticationMethods",
+    )
+    error_message = "An empty possession excluded authentication methods list must be omitted from the API JSON."
+  }
+
+  assert {
+    condition = !contains(
+      keys(jsondecode(okta_app_signon_policy_rule.this["default"].constraints[1]).knowledge),
+      "authenticationMethods",
+    )
+    error_message = "An empty knowledge authentication methods list must be omitted from the API JSON."
+  }
 }
 
 run "rejects_required_with_excluded_authentication_methods" {
