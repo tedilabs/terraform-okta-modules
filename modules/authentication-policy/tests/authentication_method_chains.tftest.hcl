@@ -79,10 +79,10 @@ run "rejects_assurance_fields_for_authentication_method_chain" {
           possession = {}
         }]
         chains = [[{
-            authentication_methods = [{
-              key    = "okta_verify"
-              method = "signed_nonce"
-            }]
+          authentication_methods = [{
+            key    = "okta_verify"
+            method = "signed_nonce"
+          }]
         }]]
       }
     }]
@@ -129,12 +129,12 @@ run "rejects_more_than_three_chain_steps" {
       verification = {
         type = "AUTH_METHOD_CHAIN"
         chains = [[
-            for index in range(4) : {
-              authentication_methods = [{
-                key    = "method-${index}"
-                method = "method"
-              }]
-            }
+          for index in range(4) : {
+            authentication_methods = [{
+              key    = "method-${index}"
+              method = "method"
+            }]
+          }
         ]]
       }
     }]
@@ -156,11 +156,11 @@ run "rejects_conflicting_reauthentication_timeouts" {
         type                     = "AUTH_METHOD_CHAIN"
         reauthentication_timeout = "PT24H"
         chains = [[{
-            authentication_methods = [{
-              key    = "okta_verify"
-              method = "signed_nonce"
-            }]
-            reauthentication_timeout = "PT12H"
+          authentication_methods = [{
+            key    = "okta_verify"
+            method = "signed_nonce"
+          }]
+          reauthentication_timeout = "PT12H"
         }]]
       }
     }]
@@ -181,11 +181,11 @@ run "rejects_verification_methods_without_required_verification" {
       verification = {
         type = "AUTH_METHOD_CHAIN"
         chains = [[{
-            authentication_methods = [{
-              key                       = "okta_verify"
-              method                    = "signed_nonce"
-              user_verification_methods = ["PIN"]
-            }]
+          authentication_methods = [{
+            key                       = "okta_verify"
+            method                    = "signed_nonce"
+            user_verification_methods = ["PIN"]
+          }]
         }]]
       }
     }]
