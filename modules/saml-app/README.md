@@ -11,15 +11,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.5.3 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -28,7 +28,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_app_group_assignments.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_group_assignments) | resource |
 | [okta_app_saml.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_saml) | resource |
 | [okta_app_saml_app_settings.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_saml_app_settings) | resource |
@@ -39,7 +39,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) The label of the Okta saml application. The application's display name. | `string` | n/a | yes |
 | <a name="input_app_settings"></a> [app\_settings](#input\_app\_settings) | (Optional) A configuration for application settings. The structure of this object varies by application. If `preconfigured_app` is set, this can be left empty to use the default settings for the preconfigured app. See the [Okta App Integration Network](https://developer.okta.com/docs/reference/app-integration-network/) for more details on the settings for each preconfigured app. | `any` | `null` | no |
 | <a name="input_custom_error_page"></a> [custom\_error\_page](#input\_custom\_error\_page) | (Optional) The URL for custom error page. | `string` | `null` | no |
@@ -60,7 +60,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_app_links"></a> [app\_links](#output\_app\_links) | The application links for the SAML application. |
 | <a name="output_app_settings"></a> [app\_settings](#output\_app\_settings) | The application settings. |
 | <a name="output_catalog_id"></a> [catalog\_id](#output\_catalog\_id) | The ID of the application template in Okta application catalog. |

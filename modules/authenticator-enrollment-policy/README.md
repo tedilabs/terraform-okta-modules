@@ -10,15 +10,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.2.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_policy_mfa.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/policy_mfa) | resource |
 | [okta_policy_mfa_default.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/policy_mfa_default) | resource |
 | [okta_policy_rule_mfa.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/policy_rule_mfa) | resource |
@@ -36,7 +36,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) A name of the Okta Authenticator Enrollment Policy. Use `default` to manage the default password policy. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | (Optional) A description of the Okta Authenticator Enrollment Policy. Only used when `name` is not `default`. | `string` | `"Managed by Terraform."` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | (Optional) Whether to enable the Okta Authenticator Enrollment Policy. Defaults to `true`. Only used when `name` is not `default`. | `bool` | `true` | no |
@@ -49,7 +49,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_description"></a> [description](#output\_description) | The description of the Okta Authenticator Enrollment Policy. |
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether the Okta Authenticator Enrollment Policy is enabled. |
 | <a name="output_groups"></a> [groups](#output\_groups) | The information for the assigned groups of the Okta Authenticator Enrollment Policy. |

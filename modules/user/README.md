@@ -11,15 +11,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.0.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -28,7 +28,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_admin_role_targets.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/admin_role_targets) | resource |
 | [okta_user.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/user) | resource |
 | [okta_user_admin_roles.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/user_admin_roles) | resource |
@@ -38,7 +38,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_email"></a> [email](#input\_email) | (Required) A primary email address for the user. | `string` | n/a | yes |
 | <a name="input_first_name"></a> [first\_name](#input\_first\_name) | (Required) A given name of the user. | `string` | n/a | yes |
 | <a name="input_last_name"></a> [last\_name](#input\_last\_name) | (Required) A family name of the user. | `string` | n/a | yes |
@@ -73,7 +73,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_address_info"></a> [address\_info](#output\_address\_info) | The address information of the user. |
 | <a name="output_admin_role_assignments"></a> [admin\_role\_assignments](#output\_admin\_role\_assignments) | The configurations for admin roles assigned to the Okta user. |
 | <a name="output_admin_role_notification_enabled"></a> [admin\_role\_notification\_enabled](#output\_admin\_role\_notification\_enabled) | Whether to send the default Okta administrator emails. |

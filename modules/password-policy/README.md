@@ -10,15 +10,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.2.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_policy_password.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/policy_password) | resource |
 | [okta_policy_password_default.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/policy_password_default) | resource |
 | [okta_policy_rule_password.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/policy_rule_password) | resource |
@@ -36,7 +36,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) A name of the Okta Password Policy. Use `default` to manage the default password policy. | `string` | n/a | yes |
 | <a name="input_authentication_provider"></a> [authentication\_provider](#input\_authentication\_provider) | (Optional) The authentication provider which the Okta Password Policy applies to. Valid values are `OKTA`, `LDAP`, `ACTIVE_DIRECTORY`. Defaults to `OKTA`. | `string` | `"OKTA"` | no |
 | <a name="input_complexity"></a> [complexity](#input\_complexity) | (Optional) A configuration for password complexity requirements of the Okta Password Policy. `complexity` block as defined below.<br/>    (Optional) `min_length` - Minimum password length. Defaults to `8`.<br/>    (Optional) `lowercase_required` - If a password must contain at least one lower case letter. Defaults to `true`.<br/>    (Optional) `uppercase_required` - If a password must contain at least one upper case letter. Defaults to `true`.<br/>    (Optional) `number_required` - If a password must contain at least one number. Defaults to `true`.<br/>    (Optional) `symbol_required` - If a password must contain at least one symbol (!@#$%^&*). Defaults to `false`.<br/>    (Optional) `first_name_restricted` - If a password must not contain the user's first name. Defaults to `false`.<br/>    (Optional) `last_name_restricted` - If a password must not contain the user's last name. Defaults to `false`.<br/>    (Optional) `username_restricted` - If a password must not contain the user's username. Defaults to `true`.<br/>    (Optional) `common_password_restricted` - Whether to restrict passwords against common password dictionary. Defaults to `true`.<br/>    (Optional) `reuse_restriction_count` - The number of distinct passwords that must be created before they can be reused. The value of `0` means no restriction. Defaults to `0`. | <pre>object({<br/>    min_length = optional(number, 8)<br/><br/>    lowercase_required = optional(bool, true)<br/>    uppercase_required = optional(bool, true)<br/>    number_required    = optional(bool, true)<br/>    symbol_required    = optional(bool, false)<br/><br/>    first_name_restricted      = optional(bool, false)<br/>    last_name_restricted       = optional(bool, false)<br/>    username_restricted        = optional(bool, true)<br/>    common_password_restricted = optional(bool, true)<br/><br/>    reuse_restriction_count = optional(number, 0)<br/>  })</pre> | `{}` | no |
@@ -52,7 +52,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_authentication_provider"></a> [authentication\_provider](#output\_authentication\_provider) | The authentication provider which the Okta Password Policy applies to. |
 | <a name="output_complexity"></a> [complexity](#output\_complexity) | The complexity requirements of the Okta Password Policy. |
 | <a name="output_description"></a> [description](#output\_description) | The description of the Okta Password Policy. |
