@@ -10,15 +10,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.0.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -27,14 +27,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_org_configuration.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/org_configuration) | resource |
 | [okta_security_notification_emails.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/security_notification_emails) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) A name of the organization. | `string` | n/a | yes |
 | <a name="input_communication_emails_enabled"></a> [communication\_emails\_enabled](#input\_communication\_emails\_enabled) | (Optional) Whether the organization's users receive Okta Communication emails. Defaults to `true`. | `bool` | `true` | no |
 | <a name="input_contact"></a> [contact](#input\_contact) | (Optional) The configuration of the contact for the Okta organization. `contact` as defined below.<br/>    (Optional) `country_code` - The ISO-3166 two-letter country code for the contact address.<br/>    (Optional) `state` - The state or region of the contact address. This field is required in selected countries.<br/>    (Optional) `city` - The city of the contact address.<br/>    (Optional) `district` - The district or county of the contact address, if any.<br/>    (Optional) `address_line_1` - The first line of the contact address.<br/>    (Optional) `address_line_2` - The second line of the contact address, if any.<br/>    (Optional) `postal_code` - The postal code of the contact address.<br/>    (Optional) `phone` - The phone number of the contact information.<br/>    (Optional) `website_url` - The URL of the website associated with the contact information, if any. | <pre>object({<br/>    country_code   = optional(string)<br/>    state          = optional(string)<br/>    city           = optional(string)<br/>    district       = optional(string)<br/>    address_line_1 = optional(string)<br/>    address_line_2 = optional(string)<br/>    postal_code    = optional(string)<br/>    phone          = optional(string)<br/>    website_url    = optional(string)<br/>  })</pre> | `null` | no |
@@ -45,7 +45,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_communication_emails_enabled"></a> [communication\_emails\_enabled](#output\_communication\_emails\_enabled) | Whether to enable communication emails. |
 | <a name="output_contact"></a> [contact](#output\_contact) | The contact attached to the Okta organization. |
 | <a name="output_end_user_support"></a> [end\_user\_support](#output\_end\_user\_support) | The information for the end-user support. |

@@ -8,15 +8,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.2.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -25,13 +25,13 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_network_zone.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/network_zone) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) The name of the Network Zone. | `string` | n/a | yes |
 | <a name="input_access_block_enabled"></a> [access\_block\_enabled](#input\_access\_block\_enabled) | (Optional) Whether the Network Zone is used to block access. Defaults to `false`. | `bool` | `false` | no |
 | <a name="input_dynamic_config"></a> [dynamic\_config](#input\_dynamic\_config) | (Optional) A configurations for dynamic network zones. Required if `type` is `DYNAMIC`. `dynamic_config` as defined below.<br/>    (Optional) `asns` - A set of ASNs (Autonomous System Numbers) to include in the network zone.<br/>    (Optional) `locations_to_exclude` - A set of locations to exclude from the network zone. Format code: countryCode OR countryCode-regionCode.<br/>    (Optional) `locations_to_include` - A set of locations to include in the network zone. Format code: countryCode OR countryCode-regionCode.<br/>    (Optional) `ip_service_categories_to_exclude` - A set of IP service categories to exclude from the network zone.<br/>    (Optional) `ip_service_categories_to_include` - A set of IP service categories to include in the network zone. | <pre>object({<br/>    asns                             = optional(set(number), [])<br/>    locations_to_exclude             = optional(set(string), [])<br/>    locations_to_include             = optional(set(string), [])<br/>    ip_service_categories_to_exclude = optional(set(string), [])<br/>    ip_service_categories_to_include = optional(set(string), [])<br/>  })</pre> | `{}` | no |
@@ -43,7 +43,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_access_block_enabled"></a> [access\_block\_enabled](#output\_access\_block\_enabled) | Whether the Network Zone is used to block access. |
 | <a name="output_dynamic_config"></a> [dynamic\_config](#output\_dynamic\_config) | A configurations for dynamic network zones. |
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether the Network Zone is enabled. |

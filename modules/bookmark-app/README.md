@@ -10,15 +10,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.3.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -27,7 +27,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_app_bookmark.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_bookmark) | resource |
 | [okta_app_group_assignments.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_group_assignments) | resource |
 | [okta_app_user.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_user) | resource |
@@ -37,7 +37,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) The label of the Okta bookmark application. The application's display name. | `string` | n/a | yes |
 | <a name="input_url"></a> [url](#input\_url) | (Required) The URL of the Okta bookmark application. | `string` | n/a | yes |
 | <a name="input_custom_error_page"></a> [custom\_error\_page](#input\_custom\_error\_page) | (Optional) The URL for custom error page. | `string` | `null` | no |
@@ -53,7 +53,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_catalog_id"></a> [catalog\_id](#output\_catalog\_id) | The ID of the application template in Okta application catalog. |
 | <a name="output_custom_error_page"></a> [custom\_error\_page](#output\_custom\_error\_page) | The URL for custom error page. |
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether to enable the bookmark application. |

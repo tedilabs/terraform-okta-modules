@@ -12,15 +12,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.2.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -29,7 +29,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_auth_server.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/auth_server) | resource |
 | [okta_auth_server_claim.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/auth_server_claim) | resource |
 | [okta_auth_server_policy.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/auth_server_policy) | resource |
@@ -37,7 +37,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_audiences"></a> [audiences](#input\_audiences) | (Required) A set of recipients that the tokens are intended for. This becomes the aud claim in an access token. Currently Okta only supports a single value here. | `set(string)` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) A name of the authorization server. | `string` | n/a | yes |
 | <a name="input_access_policies"></a> [access\_policies](#input\_access\_policies) | (Optional) A list of access policies to be created for the authorization server. Each block of `access_policies` as defined below.<br/>    (Optional) `priority` - A priority of the access policy.<br/>    (Required) `name` - A name of the access policy.<br/>    (Optional) `description` - A description of the access policy. Defaults to `Managed by Terraform.`<br/>    (Optional) `enabled` - Whether to enable the access policy. Defaults to `true`.<br/>    (Optional) `assigned_clients` - A set of client IDs to be assigned to the access policy. `["ALL_CLIENTS"]` is a special value that can be used to whitelist all clients. | <pre>list(object({<br/>    priority         = optional(number)<br/>    name             = string<br/>    description      = optional(string, "Managed by Terraform.")<br/>    enabled          = optional(bool, true)<br/>    assigned_clients = optional(set(string), [])<br/>  }))</pre> | `[]` | no |
@@ -50,7 +50,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_access_policies"></a> [access\_policies](#output\_access\_policies) | The access policies of the authorization server. |
 | <a name="output_audiences"></a> [audiences](#output\_audiences) | The audiences of the authorization server. |
 | <a name="output_claims"></a> [claims](#output\_claims) | The claims of the authorization server. |

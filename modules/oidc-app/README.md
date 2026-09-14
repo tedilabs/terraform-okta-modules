@@ -12,15 +12,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.3.0 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -29,7 +29,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_app_group_assignments.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_group_assignments) | resource |
 | [okta_app_oauth.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_oauth) | resource |
 | [okta_app_user.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/app_user) | resource |
@@ -39,7 +39,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_name"></a> [name](#input\_name) | (Required) The label of the Okta OIDC application. The application's display name. | `string` | n/a | yes |
 | <a name="input_type"></a> [type](#input\_type) | (Required) The type of client application. Valid values are `browser`, `natvie`, `service`, `web`. | `string` | n/a | yes |
 | <a name="input_client_authentication"></a> [client\_authentication](#input\_client\_authentication) | (Optional) A configurations for client authentication. `client_authentication` block as defined below.<br/>    (Optional) `method` - The requested authentication method for the token endpoint. Valid values are `client_secret_basic`, `client_secret_jwt`, `client_secret_post`, `none`, `private_key_jwt`. Defaults to `none`.<br/>    (Optional) `client_id` - The OAuth client ID. If set during creation, app is created with this id.<br/>    (Optional) `pkce_required` - Require Proof Key for Code Exchange (PKCE) for additional verification key rotation mode. Defaults to `true`. | <pre>object({<br/>    method        = optional(string, "none")<br/>    client_id     = optional(string)<br/>    pkce_required = optional(bool, true)<br/>  })</pre> | `{}` | no |
@@ -61,7 +61,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_client_authentication"></a> [client\_authentication](#output\_client\_authentication) | The client authentication method for the OIDC application. |
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether to enable the OIDC application. |
 | <a name="output_federation_broker_mode"></a> [federation\_broker\_mode](#output\_federation\_broker\_mode) | The configuration for federation broker mode. |

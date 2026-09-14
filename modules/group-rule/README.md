@@ -8,15 +8,15 @@ This module creates following resources.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_okta"></a> [okta](#provider\_okta) | 6.5.1 |
+| ---- | ------- |
+| <a name="provider_okta"></a> [okta](#provider\_okta) | >= 6.5 |
 
 ## Modules
 
@@ -25,14 +25,14 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [okta_group_rule.this](https://registry.terraform.io/providers/okta/okta/latest/docs/resources/group_rule) | resource |
 | [okta_group.this](https://registry.terraform.io/providers/okta/okta/latest/docs/data-sources/group) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_expression"></a> [expression](#input\_expression) | (Required) The Okta expression for Okta group rule. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | (Required) The name of the Okta Group Rule. | `string` | n/a | yes |
 | <a name="input_cascade_on_delete"></a> [cascade\_on\_delete](#input\_cascade\_on\_delete) | (Optional) Whether to remove users added by this rule from the assigned group after deleting this resource. Defaults to `false`. | `bool` | `false` | no |
@@ -43,7 +43,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_enabled"></a> [enabled](#output\_enabled) | Whether to enable the Okta Group Rule. |
 | <a name="output_excluded_users"></a> [excluded\_users](#output\_excluded\_users) | The list of user IDs that would be excluded when rules are processed. |
 | <a name="output_expression"></a> [expression](#output\_expression) | The Okta expression for Okta group rule. |
