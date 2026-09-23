@@ -76,6 +76,14 @@ output "oidc_id_token" {
   }
 }
 
+output "refresh_token" {
+  description = "The configurations for the refresh token of the OIDC application."
+  value = {
+    behavior              = okta_app_oauth.this.refresh_token_rotation
+    rotation_grace_period = okta_app_oauth.this.refresh_token_leeway
+  }
+}
+
 output "federation_broker_mode" {
   description = "The configuration for federation broker mode."
   value = {

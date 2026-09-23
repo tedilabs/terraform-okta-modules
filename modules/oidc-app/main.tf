@@ -58,9 +58,6 @@ locals {
 # login_mode (String) The type of Idp-Initiated login that the client supports, if any
 # login_scopes (Set of String) List of scopes to use for the request
 # profile (String) Custom JSON that represents an OAuth application's profile
-# refresh_token_leeway (Number) Early Access Property Grace period for token rotation, required with grant types refresh_token
-# refresh_token_rotation (String) Early Access Property Refresh token rotation behavior, required with grant types refresh_token
-# timeouts (Block, Optional) (see below for nested schema)
 # INFO: Not supported attributes
 # - `accessibility_login_redirect_url`
 # - `accessibility_self_service`
@@ -106,6 +103,11 @@ resource "okta_app_oauth" "this" {
   }
 
 
+  ## Refresh Token
+  refresh_token_rotation = var.refresh_token.behavior
+  refresh_token_leeway   = var.refresh_token.rotation_grace_period
+
+
   ## Federation Broker Mode
   implicit_assignment = var.federation_broker_mode.enabled
 
@@ -143,6 +145,12 @@ resource "okta_app_oauth" "this" {
 
   hide_ios = var.hide_app_on_ios
   hide_web = var.hide_app_on_web
+
+  timeouts {
+    create = var.timeouts.create
+    read   = var.timeouts.read
+    update = var.timeouts.update
+  }
 
   lifecycle {
     ignore_changes = [

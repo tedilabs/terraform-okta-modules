@@ -132,6 +132,29 @@ variable "oidc_id_token" {
   }
 }
 
+variable "refresh_token" {
+  description = <<EOF
+  (Optional) A configurations for the refresh token of the OIDC application. Only effective if `refresh_token` is included in `grant_types`. `refresh_token` block as defined below.
+    (Optional) `behavior` - The refresh token rotation behavior. Valid values are `ROTATE`, `STATIC`. Defaults to `STATIC`.
+    (Optional) `rotation_grace_period` - The grace period in seconds during which the previous refresh token stays valid after the rotation. Okta accepts a value from `0` to `60`. Only effective if `behavior` is `ROTATE`. Defaults to `0`.
+  EOF
+  type = object({
+    behavior              = optional(string, "STATIC")
+    rotation_grace_period = optional(number, 0)
+  })
+  default  = {}
+  nullable = false
+
+  validation {
+    condition     = contains(["ROTATE", "STATIC"], var.refresh_token.behavior)
+    error_message = "Valid value for `refresh_token.behavior` is `ROTATE` or `STATIC`."
+  }
+  validation {
+    condition     = var.refresh_token.rotation_grace_period >= 0
+    error_message = "Valid value for `refresh_token.rotation_grace_period` is greater than or equal to `0`."
+  }
+}
+
 variable "federation_broker_mode" {
   description = <<EOF
   (Optional) A configurations for Federation Broker Mode. `federation_broker_mode` block as defined below.
@@ -277,5 +300,16 @@ variable "group_assignments" {
     profile  = optional(map(string), {})
   }))
   default  = []
+  nullable = false
+}
+
+variable "timeouts" {
+  description = "(Optional) How long to wait for the OIDC application to be created/read/updated."
+  type = object({
+    create = optional(string)
+    read   = optional(string)
+    update = optional(string)
+  })
+  default  = {}
   nullable = false
 }
