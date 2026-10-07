@@ -1,4 +1,11 @@
 locals {
+  metadata = {
+    package = "terraform-okta-modules"
+    version = trimspace(file("${path.module}/../../VERSION"))
+    module  = basename(path.module)
+    name    = var.name
+  }
+
   is_default = var.name == "default"
 
   policy = (local.is_default
