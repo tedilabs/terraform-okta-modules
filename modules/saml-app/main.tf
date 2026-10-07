@@ -1,3 +1,13 @@
+locals {
+  metadata = {
+    package = "terraform-okta-modules"
+    version = trimspace(file("${path.module}/../../VERSION"))
+    module  = basename(path.module)
+    name    = var.name
+  }
+}
+
+
 data "okta_user" "this" {
   for_each = toset([
     for assignment in var.user_assignments :
