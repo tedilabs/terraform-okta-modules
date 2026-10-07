@@ -1,3 +1,13 @@
+locals {
+  metadata = {
+    package = "terraform-okta-modules"
+    version = trimspace(file("${path.module}/../../VERSION"))
+    module  = basename(path.module)
+    name    = var.name
+  }
+}
+
+
 ###################################################
 # Okta Authentication Policy
 ###################################################
