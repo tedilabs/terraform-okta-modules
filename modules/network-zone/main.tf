@@ -1,4 +1,11 @@
 locals {
+  metadata = {
+    package = "terraform-okta-modules"
+    version = trimspace(file("${path.module}/../../VERSION"))
+    module  = basename(path.module)
+    name    = var.name
+  }
+
   type = {
     STATIC  = "IP",
     DYNAMIC = "DYNAMIC_V2",
