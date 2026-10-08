@@ -6,5 +6,9 @@ terraform {
       source  = "okta/okta"
       version = ">= 6.5"
     }
+    telemetry = {
+      source  = "tedilabs/telemetry"
+      version = ">= 0.1.1"
+    }
   }
 }
