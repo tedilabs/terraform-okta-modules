@@ -14,6 +14,7 @@ This module creates following resources.
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.12 |
 | <a name="requirement_okta"></a> [okta](#requirement\_okta) | >= 6.5 |
+| <a name="requirement_telemetry"></a> [telemetry](#requirement\_telemetry) | >= 0.1.1 |
 
 ## Providers
 
@@ -67,6 +68,7 @@ No modules.
 | <a name="input_primary_phone"></a> [primary\_phone](#input\_primary\_phone) | (Optional) A primary phone number of the user such as home number. | `string` | `null` | no |
 | <a name="input_profile_url"></a> [profile\_url](#input\_profile\_url) | (Optional) The URL of the user's online profile. | `string` | `null` | no |
 | <a name="input_status"></a> [status](#input\_status) | (Optional) A status of the user account which provides information about the user account and whether administrative or user action is required. Valid values are `STAGED`, `ACTIVE`, `SUSPENDED`, `DEPROVISIONED`. Defaults to `ACTIVE`. | `string` | `"ACTIVE"` | no |
+| <a name="input_telemetry"></a> [telemetry](#input\_telemetry) | (Optional) A configuration to collect telemetry data for the module. This is used to improve the module and its features. The data collected is anonymous and does not contain any sensitive information. The default configuration enables telemetry collection for machine, network, git, github, github actions, terraform, and toolchain. You can disable telemetry collection by setting `enabled` to `false`. `telemetry` block as defined below.<br/>    (Optional) `enabled` - Whether to enable telemetry collection. Default is `true`.<br/>    (Optional) `capture_machine` - Whether to capture machine information. Default is `true`.<br/>    (Optional) `capture_network` - Whether to capture network information. Default is `true`.<br/>    (Optional) `capture_git` - Whether to capture git information. Default is `true`.<br/>    (Optional) `capture_github` - Whether to capture GitHub information. Default is `true`.<br/>    (Optional) `capture_github_actions` - Whether to capture GitHub Actions information. Default is `true`.<br/>    (Optional) `capture_terraform` - Whether to capture Terraform information. Default is `true`.<br/>    (Optional) `capture_toolchain` - Whether to capture toolchain information. Default is `true`. | <pre>object({<br/>    enabled = optional(bool, true)<br/><br/>    capture_machine        = optional(bool, true)<br/>    capture_network        = optional(bool, true)<br/>    capture_git            = optional(bool, true)<br/>    capture_github         = optional(bool, true)<br/>    capture_github_actions = optional(bool, true)<br/>    capture_terraform      = optional(bool, true)<br/>    capture_toolchain      = optional(bool, true)<br/>  })</pre> | `{}` | no |
 | <a name="input_timezone"></a> [timezone](#input\_timezone) | (Optional) A time zone of the user like `Asia/Seoul`. | `string` | `null` | no |
 | <a name="input_title"></a> [title](#input\_title) | (Optional) A title of the user like "Vice President". | `string` | `null` | no |
 
