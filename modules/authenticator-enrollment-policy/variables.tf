@@ -42,7 +42,7 @@ variable "groups" {
 
 variable "required_authenticators" {
   description = <<EOF
-  (Optional) A set of authenticators that are required for the Okta Authenticator Enrollment Policy. Valid values are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`.
+  (Optional) A set of authenticators that are required for the Okta Authenticator Enrollment Policy. Valid values are `DUO`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`.
   EOF
   type        = set(string)
   default     = []
@@ -51,15 +51,15 @@ variable "required_authenticators" {
   validation {
     condition = alltrue([
       for authenticator in var.required_authenticators :
-      contains(["CUSTOM_OTP", "DUO", "EXTERNAL_IDP", "GOOGLE_OTP", "OKTA_EMAIL", "OKTA_PASSWORD", "OKTA_VERIFY", "ONPREM_MFA", "PHONE_NUMBER", "RSA_TOKEN", "SECURITY_QUESTION", "WEBAUTHN"], authenticator)
+      contains(["DUO", "GOOGLE_OTP", "OKTA_EMAIL", "OKTA_PASSWORD", "OKTA_VERIFY", "ONPREM_MFA", "PHONE_NUMBER", "RSA_TOKEN", "SECURITY_QUESTION", "WEBAUTHN"], authenticator)
     ])
-    error_message = "Valid values for `required_authenticators` are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
+    error_message = "Valid values for `required_authenticators` are `DUO`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
   }
 }
 
 variable "optional_authenticators" {
   description = <<EOF
-  (Optional) A set of authenticators that are optional for the Okta Authenticator Enrollment Policy. Valid values are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`.
+  (Optional) A set of authenticators that are optional for the Okta Authenticator Enrollment Policy. Valid values are `DUO`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`.
   EOF
   type        = set(string)
   default     = []
@@ -68,9 +68,9 @@ variable "optional_authenticators" {
   validation {
     condition = alltrue([
       for authenticator in var.optional_authenticators :
-      contains(["CUSTOM_OTP", "DUO", "EXTERNAL_IDP", "GOOGLE_OTP", "OKTA_EMAIL", "OKTA_PASSWORD", "OKTA_VERIFY", "ONPREM_MFA", "PHONE_NUMBER", "RSA_TOKEN", "SECURITY_QUESTION", "WEBAUTHN"], authenticator)
+      contains(["DUO", "GOOGLE_OTP", "OKTA_EMAIL", "OKTA_PASSWORD", "OKTA_VERIFY", "ONPREM_MFA", "PHONE_NUMBER", "RSA_TOKEN", "SECURITY_QUESTION", "WEBAUTHN"], authenticator)
     ])
-    error_message = "Valid values for `required_authenticators` are `CUSTOM_OTP`, `DUO`, `EXTERNAL_IDP`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
+    error_message = "Valid values for `required_authenticators` are `DUO`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
   }
 }
 

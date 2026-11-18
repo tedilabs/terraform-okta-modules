@@ -35,6 +35,16 @@ resource "okta_policy_mfa" "this" {
 
 
   ## Authenticators
+  duo = {
+    enroll = (contains(var.required_authenticators, "DUO")
+      ? "REQUIRED"
+      : (contains(var.optional_authenticators, "DUO")
+        ? "OPTIONAL"
+        : null
+      )
+    )
+  }
+
   google_otp = {
     enroll = (contains(var.required_authenticators, "GOOGLE_OTP")
       ? "REQUIRED"
@@ -75,10 +85,30 @@ resource "okta_policy_mfa" "this" {
     )
   }
 
+  onprem_mfa = {
+    enroll = (contains(var.required_authenticators, "ONPREM_MFA")
+      ? "REQUIRED"
+      : (contains(var.optional_authenticators, "ONPREM_MFA")
+        ? "OPTIONAL"
+        : null
+      )
+    )
+  }
+
   phone_number = {
     enroll = (contains(var.required_authenticators, "PHONE_NUMBER")
       ? "REQUIRED"
       : (contains(var.optional_authenticators, "PHONE_NUMBER")
+        ? "OPTIONAL"
+        : null
+      )
+    )
+  }
+
+  rsa_token = {
+    enroll = (contains(var.required_authenticators, "RSA_TOKEN")
+      ? "REQUIRED"
+      : (contains(var.optional_authenticators, "RSA_TOKEN")
         ? "OPTIONAL"
         : null
       )
@@ -113,6 +143,16 @@ resource "okta_policy_mfa_default" "this" {
 
 
   ## Authenticators
+  duo = {
+    enroll = (contains(var.required_authenticators, "DUO")
+      ? "REQUIRED"
+      : (contains(var.optional_authenticators, "DUO")
+        ? "OPTIONAL"
+        : null
+      )
+    )
+  }
+
   google_otp = {
     enroll = (contains(var.required_authenticators, "GOOGLE_OTP")
       ? "REQUIRED"
@@ -153,10 +193,30 @@ resource "okta_policy_mfa_default" "this" {
     )
   }
 
+  onprem_mfa = {
+    enroll = (contains(var.required_authenticators, "ONPREM_MFA")
+      ? "REQUIRED"
+      : (contains(var.optional_authenticators, "ONPREM_MFA")
+        ? "OPTIONAL"
+        : null
+      )
+    )
+  }
+
   phone_number = {
     enroll = (contains(var.required_authenticators, "PHONE_NUMBER")
       ? "REQUIRED"
       : (contains(var.optional_authenticators, "PHONE_NUMBER")
+        ? "OPTIONAL"
+        : null
+      )
+    )
+  }
+
+  rsa_token = {
+    enroll = (contains(var.required_authenticators, "RSA_TOKEN")
+      ? "REQUIRED"
+      : (contains(var.optional_authenticators, "RSA_TOKEN")
         ? "OPTIONAL"
         : null
       )
