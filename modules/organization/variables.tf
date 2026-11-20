@@ -42,8 +42,8 @@ variable "contact" {
     phone          = optional(string)
     website_url    = optional(string)
   })
-  nullable = true
-  default  = null
+  nullable = false
+  default  = {}
 }
 
 variable "end_user_support" {
@@ -56,8 +56,8 @@ variable "end_user_support" {
     phone = optional(string)
     url   = optional(string)
   })
-  nullable = true
-  default  = null
+  nullable = false
+  default  = {}
 }
 
 # variable "rate_limiting_preferences" {
