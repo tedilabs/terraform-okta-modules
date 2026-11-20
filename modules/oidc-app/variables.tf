@@ -31,7 +31,7 @@ variable "enabled" {
 
 variable "grant_types" {
   description = <<EOF
-  (Optional) A set of OAuth 2.0 grant types. Valid values are `authorization_code`, `client_credentials`, `implicit`, `interaction-code`, `password`, `refresh_token`. Defaults to `["authorization_code"]`.
+  (Optional) A set of OAuth 2.0 grant types. Valid values are `authorization_code`, `client_credentials`, `implicit`, `interaction_code`, `password`, `refresh_token`. Defaults to `["authorization_code"]`.
   EOF
   type        = set(string)
   default     = ["authorization_code"]
@@ -40,9 +40,9 @@ variable "grant_types" {
   validation {
     condition = alltrue([
       for type in var.grant_types :
-      contains(["authorization_code", "client_credentials", "implicit", "interaction-code", "password", "refresh_token"], type)
+      contains(["authorization_code", "client_credentials", "implicit", "interaction_code", "password", "refresh_token"], type)
     ])
-    error_message = "Valid values for `grant_types` are `authorization_code`, `client_credentials`, `implicit`, `interaction-code`, `password`, or `refresh_token`."
+    error_message = "Valid values for `grant_types` are `authorization_code`, `client_credentials`, `implicit`, `interaction_code`, `password`, or `refresh_token`."
   }
 }
 
