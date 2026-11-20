@@ -63,7 +63,7 @@ variable "saml_config" {
     subject_name_id = optional(object({
       format   = optional(string)
       template = optional(string, "$${user.userName}")
-    }))
+    }), {})
 
     assertion_signed    = optional(bool, true)
     response_signed     = optional(bool, true)
