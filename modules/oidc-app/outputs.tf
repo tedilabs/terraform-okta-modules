@@ -67,7 +67,7 @@ output "oidc_id_token" {
     groups_claim_filter = (
       length(okta_app_oauth.this.groups_claim) > 0
       ? {
-        type  = one(okta_app_oauth.this.groups_claim[*].type)
+        type  = one(okta_app_oauth.this.groups_claim[*].filter_type)
         name  = one(okta_app_oauth.this.groups_claim[*].name)
         value = one(okta_app_oauth.this.groups_claim[*].value)
       }
