@@ -56,7 +56,7 @@ output "login" {
     redirect_uris             = okta_app_oauth.this.redirect_uris
     post_logout_redirect_uris = okta_app_oauth.this.post_logout_redirect_uris
     initiate_login_uri        = okta_app_oauth.this.login_uri
-    allow_wildcard_redirect   = okta_app_oauth.this.wildcard_redirect == "ENABLED"
+    allow_wildcard_redirect   = okta_app_oauth.this.wildcard_redirect == "SUBDOMAIN"
   }
 }
 
