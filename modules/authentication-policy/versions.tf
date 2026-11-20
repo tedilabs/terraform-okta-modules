@@ -4,7 +4,7 @@ terraform {
   required_providers {
     okta = {
       source  = "okta/okta"
-      version = ">= 6.5"
+      version = ">= 6.11"
     }
     telemetry = {
       source  = "tedilabs/telemetry"
