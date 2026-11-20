@@ -30,7 +30,7 @@ output "powered_by_okta" {
   description = <<EOF
   Whether "Powered by Okta" appears in any visible footers. Defaults to `false`.
   EOF
-  value       = okta_brand.this.remove_powered_by_okta
+  value       = !okta_brand.this.remove_powered_by_okta
 }
 
 output "custom_domains" {
