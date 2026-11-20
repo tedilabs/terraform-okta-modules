@@ -93,7 +93,7 @@ resource "okta_app_oauth" "this" {
   redirect_uris             = var.login.redirect_uris
   post_logout_redirect_uris = var.login.post_logout_redirect_uris
   login_uri                 = var.login.initiate_login_uri
-  wildcard_redirect         = var.login.allow_wildcard_redirect ? "ENABLED" : "DISABLED"
+  wildcard_redirect         = var.login.allow_wildcard_redirect ? "SUBDOMAIN" : "DISABLED"
 
 
   ## OIDC ID Token
