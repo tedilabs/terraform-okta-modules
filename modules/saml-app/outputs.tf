@@ -37,7 +37,7 @@ output "app_settings" {
   description = "The application settings."
   value = (one(okta_app_saml_app_settings.this[*].settings) != null
     ? jsondecode(okta_app_saml_app_settings.this[0].settings)
-    : okta_app_saml.this.app_settings_json
+    : try(jsondecode(okta_app_saml.this.app_settings_json), null)
   )
 }
 
