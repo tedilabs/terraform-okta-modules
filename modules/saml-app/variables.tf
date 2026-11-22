@@ -84,7 +84,7 @@ variable "saml_attributes" {
     (Optional) `namespace` - The namespace for the attribute. Valid values are `urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified`, `urn:oasis:names:tc:SAML:2.0:attrname-format:uri`, `urn:oasis:names:tc:SAML:2.0:attrname-format:basic`. Defaults to `urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified`.
     (Optional) `type` - The type of the attribute. Valid values are `EXPRESSION`, `GROUP`.
     (Optional) `values` - The values for the attribute.
-    (Optional) `filter` - A filter configuration for group attributes. Only requirded if `type` is `GROUP`. `filter` block as defined below.
+    (Optional) `filter` - A filter configuration for group attributes. Only required if `type` is `GROUP`. `filter` block as defined below.
       (Required) `type` - The filter type for group attributes. Valid values are `REGEX`, `STARTS_WITH`, `EQUALS`, `CONTAINS`.
       (Required) `value` - The filter value for group attributes.
   EOF

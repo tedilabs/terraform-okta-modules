@@ -58,7 +58,7 @@ variable "rules" {
       (Optional) `remember_device_by_default` - Whether Okta should automatically remember the device. Defaults to `false`.
     (Optional) `session` - A configuration for session of the global session policy rule. `session` block as defined below.
       (Optional) `duration` - Max minutes a session is active. Setting a maximum session lifetime reduces the risk of session cookie misuse or hijacking. The value of `0` means unlimited. Defaults to `720` (12 hours).
-      (Optional) `idle_timeout` - Max minutes a seesion can be idle. A global session will expire when the user is inactive for the specified amount of time, regardless of the maximum global session lifetime. Defaults to `120` (2 hours).
+      (Optional) `idle_timeout` - Max minutes a session can be idle. A global session will expire when the user is inactive for the specified amount of time, regardless of the maximum global session lifetime. Defaults to `120` (2 hours).
       (Optional) `persistent_cookie_enabled` - Whether to enable persistent cookie. If enabled, when a user reopens their browser, and their session is still active, they won’t be asked to sign in again. Defaults to `false`.
   EOF
   type = list(object({

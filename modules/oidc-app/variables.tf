@@ -5,7 +5,7 @@ variable "name" {
 }
 
 variable "type" {
-  description = "(Required) The type of client application. Valid values are `browser`, `natvie`, `service`, `web`."
+  description = "(Required) The type of client application. Valid values are `browser`, `native`, `service`, `web`."
   type        = string
   nullable    = false
 
@@ -109,7 +109,7 @@ variable "oidc_id_token" {
     (Optional) `groups_claim_filter` - A configuration for filtering groups claim. `groups_claim_filter` block as defined below.
       (Required) `type` - The type of filter. Valid values are `STARTS_WITH`, `EQUALS`, `CONTAINS`, `REGEX`.
       (Required) `name` - A name of the claim that will be used in the token.
-      (Required) `value` - A fliter value for the list of groups.
+      (Required) `value` - A filter value for the list of groups.
   EOF
   type = object({
     issuer_mode = optional(string, "ORG_URL")
@@ -158,7 +158,7 @@ variable "refresh_token" {
 variable "federation_broker_mode" {
   description = <<EOF
   (Optional) A configurations for Federation Broker Mode. `federation_broker_mode` block as defined below.
-    (Optional) `enabled` - Whether to enable Federation Broker Mode. Improves app performance by granting access without the need to explicitly pre-assign your app to users. Access is managed by sign-on policies and any authorizationrules in your application. Defaults to `false`.
+    (Optional) `enabled` - Whether to enable Federation Broker Mode. Improves app performance by granting access without the need to explicitly pre-assign your app to users. Access is managed by sign-on policies and any authorization rules in your application. Defaults to `false`.
   EOF
   type = object({
     enabled = optional(bool, false)
@@ -170,7 +170,7 @@ variable "federation_broker_mode" {
 variable "user_consent" {
   description = <<EOF
   (Optional) A configurations for user consent of the OIDC application. `user_consent` block as defined below.
-    (Optional) `method` - The method of user consent. Whether ruser consent is required or implicit. Valid values are `REQUIRED`, `TRUSTED`. Defaults to `TRUSTED`.
+    (Optional) `method` - The method of user consent. Whether user consent is required or implicit. Valid values are `REQUIRED`, `TRUSTED`. Defaults to `TRUSTED`.
     (Optional) `logo_uri` - URI that references a logo for the client.
     (Optional) `policy_uri` - URI to web page providing client policy document.
     (Optional) `tos_uri` - URI to web page providing client tos (terms of service).
