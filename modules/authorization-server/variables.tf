@@ -69,7 +69,7 @@ variable "claims" {
     (Required) `token_type` - The token type of the claim. Valid values are `ID_TOKEN`, `ACCESS_TOKEN`.
     (Optional) `always_include_in_token` - Whether to always include the claim in the token. Defaults to `true`.
     (Required) `name` - The name of the claim.
-    (Optional) `value_type` - The value type of the claim. Valid values are `EXPRESSIONS` and `GROUPS`. Defaults to `EXPRESSION`.
+    (Optional) `value_type` - The value type of the claim. Valid values are `EXPRESSION` and `GROUPS`. Defaults to `EXPRESSION`.
     (Optional) `operator` - The operator of group filter if `value_type` is `GROUPS`. Valid values are `STARTS_WITH`, `EQUALS`, `CONTAINS`, `REGEX`. Defaults to `REGEX`.
     (Required) `value` - The value of the claim.
     (Optional) `enabled` - Whether the claim is enabled. Defaults to `true`.

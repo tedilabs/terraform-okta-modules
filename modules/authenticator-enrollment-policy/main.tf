@@ -246,7 +246,7 @@ resource "okta_policy_mfa_default" "this" {
 
 
 ###################################################
-# Okta Groups for Password Policy
+# Okta Groups for Authenticator Enrollment Policy
 ###################################################
 
 data "okta_group" "this" {

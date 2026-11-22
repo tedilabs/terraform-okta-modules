@@ -2,8 +2,6 @@
 # Rules of Okta Global Session Policy
 ###################################################
 
-# TODO:
-# identity_provider_ids (List of String) When identity_provider is SPECIFIC_IDP then this is the list of IdP IDs to apply the rule on
 # INFO: Not supported attributes
 # - `behaviors`
 # INFO: Deprecated attributes

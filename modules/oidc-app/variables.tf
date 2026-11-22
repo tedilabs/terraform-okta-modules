@@ -23,7 +23,7 @@ variable "logo_path" {
 }
 
 variable "enabled" {
-  description = "(Optional) Whether to enable the Okta saml application. Defaults to `true`."
+  description = "(Optional) Whether to enable the Okta OIDC application. Defaults to `true`."
   type        = bool
   default     = true
   nullable    = false
@@ -271,7 +271,7 @@ variable "hide_app_on_web" {
 
 variable "user_assignments" {
   description = <<EOF
-  (Optional) A configurations to assign users for the Okta saml application. Each item of `user_assignments` block as defined below.
+  (Optional) A configurations to assign users for the Okta OIDC application. Each item of `user_assignments` block as defined below.
     (Required) `user` - The ID of the user to assign.
     (Optional) `profile` - JSON document containing application profile.
     (Optional) `username` - The username for the app user. In case the user is assigned to the app with SHARED_USERNAME_AND_PASSWORD credentials scheme, this field will be computed and should not be set.
@@ -289,7 +289,7 @@ variable "user_assignments" {
 
 variable "group_assignments" {
   description = <<EOF
-  (Optional) A configurations to assign groups for the Okta saml application. Each item of `group_assignments` block as defined below.
+  (Optional) A configurations to assign groups for the Okta OIDC application. Each item of `group_assignments` block as defined below.
     (Required) `group` - The ID of the group to assign.
     (Optional) `priority` - A priority of group assignment
     (Optional) `profile` - JSON document containing application profile.

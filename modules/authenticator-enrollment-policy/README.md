@@ -38,7 +38,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_name"></a> [name](#input\_name) | (Required) A name of the Okta Authenticator Enrollment Policy. Use `default` to manage the default password policy. | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | (Required) A name of the Okta Authenticator Enrollment Policy. Use `default` to manage the default authenticator enrollment policy. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | (Optional) A description of the Okta Authenticator Enrollment Policy. Only used when `name` is not `default`. | `string` | `"Managed by Terraform."` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | (Optional) Whether to enable the Okta Authenticator Enrollment Policy. Defaults to `true`. Only used when `name` is not `default`. | `bool` | `true` | no |
 | <a name="input_groups"></a> [groups](#input\_groups) | (Optional) A set of group IDs to assign the Okta Authenticator Enrollment Policy to. | `set(string)` | `[]` | no |
