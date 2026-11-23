@@ -46,7 +46,9 @@ variable "rules" {
         (Optional) `included_zones` - A set of zone IDs to include. Only used when `scope` is `ZONE`.
       (Optional) `authentication` - A configuration for authentication condition. `authentication` block as defined below.
         (Optional) `entrypoint` - The entry point for the authentication. Valid values are `ANY`, `LDAP_INTERFACE`, or `RADIUS`. Defaults to `ANY`.
-        (Optional) `identity_provider` - The identity provider for the authentication. Valid values are `ANY`, `OKTA`, or `SPECIFIC_IDP`. Defaults to `ANY`. WARNING: Use of identity_provider requires a feature flag to be enabled.
+        (Optional) `identity_provider` - A configuration for the identity provider of the authentication. WARNING: Use of identity_provider requires a feature flag to be enabled. `identity_provider` block as defined below.
+          (Optional) `type` - The type of identity provider. Valid values are `ANY`, `OKTA`, or `SPECIFIC_IDP`. Defaults to `ANY`.
+          (Optional) `ids` - A set of identity provider IDs. Only used when `type` is `SPECIFIC_IDP`.
     (Optional) `allow_access` - Whether to allow access. Defaults to `true`.
     (Optional) `primary_factor` - The primary authentication factor. Only works for the Okta Identity Engine. Valid values are `PASSWORD_IDP` or `PASSWORD_IDP_ANY_FACTOR`. Defaults to `PASSWORD_IDP_ANY_FACTOR`.
       `PASSWORD_IDP`: Users must always use a password to establish a session.
