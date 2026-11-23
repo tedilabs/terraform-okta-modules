@@ -52,6 +52,10 @@ variable "proxy_ip_addresses" {
     condition     = var.type == "DYNAMIC" ? length(var.proxy_ip_addresses) == 0 : true
     error_message = "You cannot provide `proxy_ip_addresses` when `type` is `DYNAMIC`."
   }
+  validation {
+    condition     = var.access_block_enabled ? length(var.proxy_ip_addresses) == 0 : true
+    error_message = "You cannot provide `proxy_ip_addresses` when `access_block_enabled` is `true`."
+  }
 }
 
 variable "dynamic_config" {
