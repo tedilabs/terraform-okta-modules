@@ -79,6 +79,38 @@ output "access_policies" {
       description      = policy.description
       enabled          = policy.status == "ACTIVE"
       assigned_clients = policy.client_whitelist
+
+      rules = [
+        for rule in okta_auth_server_policy_rule.this :
+        {
+          id       = rule.id
+          name     = rule.name
+          priority = rule.priority
+          enabled  = rule.status == "ACTIVE"
+          system   = rule.system
+
+          condition = {
+            grant_types = rule.grant_type_whitelist
+            scopes      = rule.scope_whitelist
+
+            included_users  = rule.user_whitelist
+            excluded_users  = rule.user_blacklist
+            included_groups = rule.group_whitelist
+            excluded_groups = rule.group_blacklist
+          }
+
+          access_token = {
+            lifetime = rule.access_token_lifetime_minutes
+          }
+          refresh_token = {
+            lifetime = rule.refresh_token_lifetime_minutes
+            window   = rule.refresh_token_window_minutes
+          }
+
+          inline_hook = rule.inline_hook_id
+        }
+        if rule.policy_id == policy.id
+      ]
     }
   ]
 }
