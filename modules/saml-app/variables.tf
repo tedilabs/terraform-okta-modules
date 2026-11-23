@@ -47,7 +47,7 @@ variable "saml_config" {
       (Optional) `template` - Template for app user's username when a user is assigned to the app. Defaults to `$${user.userName}`.
 
     (Optional) `assertion_signed` - Whether to sign the SAML assertion. Defaults to `true`.
-    (Optional) `response_signed` - Whether to sign the SAML auth response. Defaults to
+    (Optional) `response_signed` - Whether to sign the SAML auth response. Defaults to `true`.
     (Optional) `digest_algorithm` - The algorithm used to digitally sign the SAML assertion and response. Valid values are `SHA1`, `SHA256`, `SHA384`, `SHA512`. Defaults to `SHA256`.
     (Optional) `signature_algorithm` - The signing algorithm that's used to digitally sign the SAML assertion and response. Valid values are `RSA_SHA1`, `RSA_SHA256`, `RSA_SHA384`, `RSA_SHA512`, `DSA_SHA1`, `DSA_SHA256`, `DSA_SHA384`, `DSA_SHA512`, `ECDSA_SHA1`, `ECDSA_SHA256`, `ECDSA_SHA384`, `ECDSA_SHA512`. Defaults to `RSA_SHA256`.
 

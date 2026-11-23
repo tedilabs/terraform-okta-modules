@@ -1,5 +1,5 @@
 variable "name" {
-  description = "(Required) A name of the Okta Authenticator Enrollment Policy. Use `default` to manage the default password policy."
+  description = "(Required) A name of the Okta Authenticator Enrollment Policy. Use `default` to manage the default authenticator enrollment policy."
   type        = string
   nullable    = false
 }
@@ -70,7 +70,7 @@ variable "optional_authenticators" {
       for authenticator in var.optional_authenticators :
       contains(["DUO", "GOOGLE_OTP", "OKTA_EMAIL", "OKTA_PASSWORD", "OKTA_VERIFY", "ONPREM_MFA", "PHONE_NUMBER", "RSA_TOKEN", "SECURITY_QUESTION", "WEBAUTHN"], authenticator)
     ])
-    error_message = "Valid values for `required_authenticators` are `DUO`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
+    error_message = "Valid values for `optional_authenticators` are `DUO`, `GOOGLE_OTP`, `OKTA_EMAIL`, `OKTA_PASSWORD`, `OKTA_VERIFY`, `ONPREM_MFA`, `PHONE_NUMBER`, `RSA_TOKEN`, `SECURITY_QUESTION`, or `WEBAUTHN`."
   }
 }
 
