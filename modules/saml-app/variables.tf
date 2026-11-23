@@ -49,7 +49,7 @@ variable "saml_config" {
     (Optional) `assertion_signed` - Whether to sign the SAML assertion. Defaults to `true`.
     (Optional) `response_signed` - Whether to sign the SAML auth response. Defaults to
     (Optional) `digest_algorithm` - The algorithm used to digitally sign the SAML assertion and response. Valid values are `SHA1`, `SHA256`, `SHA384`, `SHA512`. Defaults to `SHA256`.
-    (Optional) `signature_algorithm` - 	The signing algorithm that's used to digitally sign the SAML assertion and response. Valid values are `RSA_SHA1`, `RSA_SHA256`, `RSA_SHA384`, `RSA_SHA512`, `DSA_SHA1`, `DSA_SHA256`, `DSA_SHA384`, `DSA_SHA512`, `ECDSA_SHA1`, `ECDSA_SHA256`, `ECDSA_SHA384`, `ECDSA_SHA512`. Defaults to `RSA_SHA256`.
+    (Optional) `signature_algorithm` - The signing algorithm that's used to digitally sign the SAML assertion and response. Valid values are `RSA_SHA1`, `RSA_SHA256`, `RSA_SHA384`, `RSA_SHA512`, `DSA_SHA1`, `DSA_SHA256`, `DSA_SHA384`, `DSA_SHA512`, `ECDSA_SHA1`, `ECDSA_SHA256`, `ECDSA_SHA384`, `ECDSA_SHA512`. Defaults to `RSA_SHA256`.
 
     (Optional) `authn_context_class_ref` - The authentication context class for the assertion’s authentication statement.
     (Optional) `honor_force_authn` - Whether to honor the ForceAuthn attribute in the SAML request. Defaults to `false`.
@@ -136,7 +136,7 @@ variable "single_logout" {
 variable "sign_on" {
   description = <<EOF
   (Optional) A configurations for application sign-on. `sign_on` block as defined below.
-    (Optional) `authentication_policy` - The ID of the authentication policy to associate to the applicatioauthentication policy to associate to the application. If this is removed from the application the default sign-on-policy will be associated with this application.
+    (Optional) `authentication_policy` - The ID of the authentication policy to associate to the application. If this is removed from the application the default sign-on-policy will be associated with this application.
     (Optional) `user_name_template` - A configuration for the user name template. `user_name_template` block as defined below.
       (Optional) `type` - The type of user name template. Valid values are `BUILT_IN`, `CUSTOM` or `NONE`. Defaults to `BUILT_IN`.
       (Optional) `template` - The template for the user name. Defaults to `$${source.login}`.

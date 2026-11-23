@@ -27,7 +27,7 @@ variable "enabled" {
 variable "sign_on" {
   description = <<EOF
   (Optional) A configurations for application sign-on. `sign_on` block as defined below.
-    (Optional) `authentication_policy` - The ID of the authentication policy to associate to the applicatioauthentication policy to associate to the application. If this is removed from the application the default sign-on-policy will be associated with this application.
+    (Optional) `authentication_policy` - The ID of the authentication policy to associate to the application. If this is removed from the application the default sign-on-policy will be associated with this application.
   EOF
   type = object({
     authentication_policy = optional(string)

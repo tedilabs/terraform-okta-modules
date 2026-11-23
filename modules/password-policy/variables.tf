@@ -89,7 +89,7 @@ variable "expiration" {
   description = <<EOF
   (Optional) A configuration for password expiration of the Okta Password Policy. `expiration` block as defined below.
     (Optional) `max_age_days` - The number of days before a password expires. The value of `0` means no expiration. Defaults to `0`.
-    (Optional) `min_age_minutes` - The minimum number of minutes that must pass before a password can be changed. The value of `0` means no limit. Defaults to `0
+    (Optional) `min_age_minutes` - The minimum number of minutes that must pass before a password can be changed. The value of `0` means no limit. Defaults to `0`.
     (Optional) `remind_before_days` - The number of days before a password expires to remind the user. The value of `0` means no reminder. Defaults to `0`.
   EOF
   type = object({

@@ -68,7 +68,7 @@ variable "client_authentication" {
   (Optional) A configurations for client authentication. `client_authentication` block as defined below.
     (Optional) `method` - The requested authentication method for the token endpoint. Valid values are `client_secret_basic`, `client_secret_jwt`, `client_secret_post`, `none`, `private_key_jwt`. Defaults to `none`.
     (Optional) `client_id` - The OAuth client ID. If set during creation, app is created with this id.
-    (Optional) `pkce_required` - Require Proof Key for Code Exchange (PKCE) for additional verification key rotation mode. Defaults to `true`.
+    (Optional) `pkce_required` - Require Proof Key for Code Exchange (PKCE) for additional verification. Defaults to `true`.
   EOF
   type = object({
     method        = optional(string, "none")
@@ -193,7 +193,7 @@ variable "user_consent" {
 variable "sign_on" {
   description = <<EOF
   (Optional) A configurations for application sign-on. `sign_on` block as defined below.
-    (Optional) `authentication_policy` - The ID of the authentication policy to associate to the applicatioauthentication policy to associate to the application. If this is removed from the application the default sign-on-policy will be associated with this application.
+    (Optional) `authentication_policy` - The ID of the authentication policy to associate to the application. If this is removed from the application the default sign-on-policy will be associated with this application.
     (Optional) `user_name_template` - A configuration for the user name template. `user_name_template` block as defined below.
       (Optional) `type` - The type of user name template. Valid values are `BUILT_IN`, `CUSTOM` or `NONE`. Defaults to `BUILT_IN`.
       (Optional) `template` - The template for the user name. Defaults to `$${source.login}`.
