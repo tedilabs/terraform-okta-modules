@@ -5,13 +5,6 @@ locals {
     module  = basename(path.module)
     name    = var.email
   }
-  module_tags = {
-    "module.terraform.io/package"   = local.metadata.package
-    "module.terraform.io/version"   = local.metadata.version
-    "module.terraform.io/name"      = local.metadata.module
-    "module.terraform.io/full-name" = "${local.metadata.package}/${local.metadata.module}"
-    "module.terraform.io/instance"  = local.metadata.name
-  }
 }
 
 
