@@ -150,8 +150,8 @@ variable "refresh_token" {
     error_message = "Valid value for `refresh_token.behavior` is `ROTATE` or `STATIC`."
   }
   validation {
-    condition     = var.refresh_token.rotation_grace_period >= 0
-    error_message = "Valid value for `refresh_token.rotation_grace_period` is greater than or equal to `0`."
+    condition     = var.refresh_token.rotation_grace_period >= 0 && var.refresh_token.rotation_grace_period <= 60
+    error_message = "Valid value for `refresh_token.rotation_grace_period` is between `0` and `60`."
   }
 }
 

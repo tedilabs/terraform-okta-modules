@@ -26,6 +26,13 @@ variable "admin_role_assignments" {
     ])
     error_message = "Valid values for `admin_role` are `SUPER_ADMIN`, `ORG_ADMIN`, `APP_ADMIN`, `USER_ADMIN`, `HELP_DESK_ADMIN`, `READ_ONLY_ADMIN`, `MOBILE_ADMIN`, `API_ACCESS_MANAGEMENT_ADMIN`, `REPORT_ADMIN`, `GROUP_MEMBERSHIP_ADMIN`."
   }
+  validation {
+    condition = alltrue([
+      for assignment in var.admin_role_assignments :
+      !(length(assignment.target_apps) > 0 && length(assignment.target_groups) > 0)
+    ])
+    error_message = "Only one of `target_apps` or `target_groups` can be set for each item of `admin_role_assignments`."
+  }
 }
 
 variable "admin_role_notification_enabled" {
